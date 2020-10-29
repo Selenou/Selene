@@ -57,7 +57,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)vendor\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)vendor\GLFW\include;$(SolutionDir)Selene\vendor\spdlog\include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SLN_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -73,7 +74,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)vendor\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)vendor\GLFW\include;$(SolutionDir)Selene\vendor\spdlog\include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SLN_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -84,12 +86,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Selene\Log.h" />
     <ClInclude Include="src\Selene\BaseApplication.h" />
     <ClInclude Include="src\Selene.h" />
     <ClInclude Include="src\Selene\Core.h" />
     <ClInclude Include="src\Selene\Main.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Selene\Log.cpp" />
     <ClCompile Include="src\Selene\BaseApplication.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

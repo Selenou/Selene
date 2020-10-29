@@ -27,9 +27,15 @@
     <ClInclude Include="src\Selene\Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Selene\Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Selene\BaseApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Selene\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
