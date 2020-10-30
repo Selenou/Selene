@@ -1,14 +1,14 @@
 #pragma once
 
-extern Selene::BaseApplication* Selene::CreateApplication();
+extern Selene::BaseGame* Selene::CreateGame();
 
 int main(int argc, char** argv)
 {
 	Selene::Log::Init();
-	Selene::Log::GetEngineLogger()->warn("This is a warning");
-	Selene::Log::GetEngineLogger()->error("This is an error");
+	SLN_ENGINE_WARN("This is a warning");
+	SLN_ENGINE_INFO("This is an error");
 
-	auto app = Selene::CreateApplication();
-	app->Run();
-	delete app;
+	auto game = Selene::CreateGame();
+	game->Run();
+	delete game;
 }

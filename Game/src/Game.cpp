@@ -1,6 +1,6 @@
 #include <Selene.h>
 
-class Game : public Selene::BaseApplication 
+class Game : public Selene::BaseGame
 {
 public:
 	Game()
@@ -12,7 +12,7 @@ public:
 	}
 };
 
-Selene::BaseApplication* Selene::CreateApplication() 
+Selene::BaseGame* Selene::CreateGame() 
 {
 	return new Game();
 }
