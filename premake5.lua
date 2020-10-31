@@ -10,6 +10,14 @@ workspace "Selene"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+startproject "Game"
+
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["Glfw"] = "Selene/vendor/glfw/include"
+
+include "Selene/vendor/glfw"
+
 project "Selene"
 	location "Selene"
 	kind "SharedLib"
@@ -29,7 +37,14 @@ project "Selene"
 
 	includedirs 
 	{ 
-		"%{prj.name}/vendor/spdlog/include" 
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.Glfw}"
+	}
+	
+	links 
+	{ 
+		"Glfw",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
