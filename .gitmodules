@@ -1,3 +1,0 @@
-[submodule "Selene/vendor/spdlog"]
-	path = Selene/vendor/spdlog
-	url = https://github.com/gabime/spdlog.git

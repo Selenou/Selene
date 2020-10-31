@@ -1,5 +1,5 @@
 workspace "Selene"
-	architecture "x64"
+	architecture "x86_64"
 
 	configurations 
 	{ 
@@ -17,6 +17,9 @@ project "Selene"
 	
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	
+	pchheader "slnpch.h"
+	pchsource "Selene/src/slnpch.cpp"
 
 	files 
 	{ 
