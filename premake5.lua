@@ -14,7 +14,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["Glfw"] = "%{wks.location}/Selene/vendor/glfw/include"
 
-group "Dependencies"
+group "Vendors"
 	include "Selene/vendor/GLFW"
 group ""
 
