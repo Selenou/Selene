@@ -13,11 +13,12 @@ project "Selene"
 	files 
 	{
 		"src/**.h", 
-		"src/**.cpp" 
+		"src/**.cpp"
 	}
 
 	includedirs 
 	{ 
+		"src",
 		"vendor/spdlog/include",
 		"%{IncludeDir.Glfw}"
 	}
