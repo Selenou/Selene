@@ -13,14 +13,17 @@ project "Selene"
 	files 
 	{
 		"src/**.h", 
-		"src/**.cpp"
+		"src/**.cpp",
+		"vendor/stb_image/stb_image.h",
+		"vendor/stb_image/stb_image.cpp",
 	}
 
 	includedirs 
 	{ 
 		"src",
 		"vendor/spdlog/include",
-		"%{IncludeDir.Glfw}"
+		"%{IncludeDir.Glfw}",
+		"%{IncludeDir.stb_image}"
 	}
 	
 	links 

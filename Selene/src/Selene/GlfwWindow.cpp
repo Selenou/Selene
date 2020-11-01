@@ -1,5 +1,6 @@
 #include "slnpch.h"
 #include "GlfwWindow.h"
+//#include "stb_image.h"
 
 namespace Selene {
 
@@ -42,6 +43,17 @@ namespace Selene {
 			//TODO : Manage error
 		}
 
+		/* need to place image in Game/
+		GLFWimage images[2];
+		int width, height, channels;
+		std::string str = "moon.png";
+		stbi_uc* iconImage = stbi_load(str.c_str(), &width, &height, &channels, 0);
+		images[0].height = height;
+		images[0].width = width;
+		images[0].pixels = iconImage;
+		glfwSetWindowIcon(m_Window, 1, images);
+		stbi_image_free(iconImage);
+		*/
 
 		glfwMakeContextCurrent(m_Window);
 		SetVSync(true);
