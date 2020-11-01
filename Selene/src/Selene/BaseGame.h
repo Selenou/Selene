@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Core.h"
-
 namespace Selene {
 
-	class SELENE_API BaseGame
+	class BaseGame
 	{
 	public:
 		BaseGame();
