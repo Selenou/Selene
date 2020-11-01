@@ -34,12 +34,15 @@ project "Game"
 
 	filter "configurations:Debug"
 		defines "SLN_DEBUG"
+		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:DebugOptimized"
 		defines "SLN_DEBUGOPT"
+		runtime "Release"
 		optimize "on"
 
 	filter "configurations:Release"
 		defines "SLN_RELEASE"
+		runtime "Release"
 		optimize "on"
