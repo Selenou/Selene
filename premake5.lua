@@ -1,5 +1,6 @@
 workspace "Selene"
 	architecture "x86_64"
+	startproject "Game"
 
 	configurations 
 	{ 
@@ -10,114 +11,12 @@ workspace "Selene"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-startproject "Game"
-
--- Include directories relative to root folder (solution directory)
 IncludeDir = {}
-IncludeDir["Glfw"] = "Selene/vendor/glfw/include"
+IncludeDir["Glfw"] = "%{wks.location}/Selene/vendor/glfw/include"
 
-include "Selene/vendor/glfw"
+group "Dependencies"
+	include "Selene/vendor/GLFW"
+group ""
 
-project "Selene"
-	location "Selene"
-	kind "SharedLib"
-	language "C++"
-	
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-	
-	pchheader "slnpch.h"
-	pchsource "Selene/src/slnpch.cpp"
-
-	files 
-	{ 
-		"%{prj.name}/src/**.h", 
-		"%{prj.name}/src/**.cpp" 
-	}
-
-	includedirs 
-	{ 
-		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.Glfw}"
-	}
-	
-	links 
-	{ 
-		"Glfw",
-		"opengl32.lib"
-	}
-
-	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "on"
-		systemversion "latest"
-
-		defines 
-		{ 
-			"SLN_PLATFORM_WINDOWS", 
-			"SLN_BUILD_DLL" 
-		}
-
-		postbuildcommands 
-		{ 
-			"{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Game" 
-		}
-
-	filter "configurations:Debug"
-		defines "SLN_DEBUG"
-		symbols "on"
-
-	filter "configurations:DebugOptimized"
-		defines "SLN_DEBUGOPT"
-		optimize "on"
-
-	filter "configurations:Release"
-		defines "SLN_RELEASE"
-		optimize "on"
-
-project "Game"
-	location "Game"
-	kind "ConsoleApp"
-	language "C++"
-	
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files 
-	{ 
-		"%{prj.name}/src/**.h", 
-		"%{prj.name}/src/**.cpp" 
-	}
-
-	includedirs 
-	{ 
-		"Selene/vendor/spdlog/include", 
-		"Selene/src" 
-	}
-
-	links 
-	{ 
-		"Selene" 
-	}
-
-	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "on"
-		systemversion "latest"
-
-		defines 
-		{ 
-			"SLN_PLATFORM_WINDOWS" 
-		}
-
-	filter "configurations:Debug"
-		defines "SLN_DEBUG"
-		symbols "on"
-
-	filter "configurations:DebugOptimized"
-		defines "SLN_DEBUGOPT"
-		optimize "on"
-
-	filter "configurations:Release"
-		defines "SLN_RELEASE"
-		optimize "on"
+include "Selene"
+include "Game"
