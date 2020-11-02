@@ -1,6 +1,6 @@
 #include "slnpch.h"
+#include <glad/glad.h>
 #include "GlfwWindow.h"
-//#include "stb_image.h"
 
 namespace Selene {
 
@@ -25,17 +25,17 @@ namespace Selene {
 		m_Data.Width = data.Width;
 		m_Data.Height = data.Height;
 
-		int success = glfwInit();
+		int glfwInitSuccess = glfwInit();
 		SLN_ENGINE_INFO("Initializing Glfw");
 
-		if (!success)
+		if (!glfwInitSuccess)
 		{
 			SLN_ENGINE_ERROR("Failed to initialize Glfw");
 			//TODO : Manage error
 		}
 
 		m_Window = glfwCreateWindow(m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		SLN_ENGINE_INFO("Creating window {0} ({1}, {2})", m_Data.Title, m_Data.Width, m_Data.Height);
+		SLN_ENGINE_INFO("Creating window [{0} ({1}, {2}])", m_Data.Title, m_Data.Width, m_Data.Height);
 
 		if (m_Window == NULL)
 		{
@@ -43,19 +43,17 @@ namespace Selene {
 			//TODO : Manage error
 		}
 
-		/* need to place image in Game/
-		GLFWimage images[2];
-		int width, height, channels;
-		std::string str = "moon.png";
-		stbi_uc* iconImage = stbi_load(str.c_str(), &width, &height, &channels, 0);
-		images[0].height = height;
-		images[0].width = width;
-		images[0].pixels = iconImage;
-		glfwSetWindowIcon(m_Window, 1, images);
-		stbi_image_free(iconImage);
-		*/
-
 		glfwMakeContextCurrent(m_Window);
+
+		int gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		SLN_ENGINE_INFO("Initializing Glad");
+
+		if (!gladInitSuccess)
+		{
+			SLN_ENGINE_ERROR("Failed to initialize Glad");
+			//TODO : Manage error
+		}
+
 		SetVSync(true);
 	}
 

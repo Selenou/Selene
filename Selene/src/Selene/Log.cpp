@@ -9,7 +9,7 @@ namespace Selene {
 
 	void Log::Init()
 	{
-		spdlog::set_pattern("%^[%T] %n: %v%$");
+		spdlog::set_pattern("[%T:%e] [%n] [%^%l%$] %v");
 
 		s_EngineLogger = spdlog::stdout_color_mt("SELENE");
 		s_EngineLogger->set_level(spdlog::level::trace);

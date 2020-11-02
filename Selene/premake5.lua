@@ -23,12 +23,14 @@ project "Selene"
 		"src",
 		"vendor/spdlog/include",
 		"%{IncludeDir.Glfw}",
+		"%{IncludeDir.Glad}",
 		"%{IncludeDir.stb_image}"
 	}
 	
 	links 
 	{ 
 		"Glfw",
+		"Glad",
 		"opengl32.lib"
 	}
 
