@@ -30,7 +30,7 @@ namespace Selene {
 
 		if (!glfwInitSuccess)
 		{
-			SLN_ENGINE_ERROR("Failed to initialize Glfw");
+			SLN_ENGINE_CRITICAL("Failed to initialize Glfw");
 			//TODO : Manage error
 		}
 
@@ -39,7 +39,7 @@ namespace Selene {
 
 		if (m_Window == NULL)
 		{
-			SLN_ENGINE_ERROR("Failed to create GLFW window");
+			SLN_ENGINE_CRITICAL("Failed to create GLFW window");
 			//TODO : Manage error
 		}
 
@@ -50,7 +50,7 @@ namespace Selene {
 
 		if (!gladInitSuccess)
 		{
-			SLN_ENGINE_ERROR("Failed to initialize Glad");
+			SLN_ENGINE_CRITICAL("Failed to initialize Glad");
 			//TODO : Manage error
 		}
 
