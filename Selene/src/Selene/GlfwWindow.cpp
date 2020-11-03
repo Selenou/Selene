@@ -2,16 +2,27 @@
 #include <glad/glad.h>
 #include "GlfwWindow.h"
 
+#include "EventSystem/WindowEvent.h"
+
 namespace Selene {
 
-	Window* Window::Create(const WindowData& data)
+	// Forward declarations for Glfw callbacks
+	void OnError(int error, const char* description);
+	void OnWindowClose(GLFWwindow * window);
+	void OnWindowResize(GLFWwindow * window, int width, int height);
+
+	Window* Window::Create(const WindowSettings& settings)
 	{
-		return new GlfwWindow(data);
+		return new GlfwWindow(settings);
 	}
 
-	GlfwWindow::GlfwWindow(const WindowData & data)
+	GlfwWindow::GlfwWindow(const WindowSettings & settings)
 	{
-		Init(data);
+		m_Data.Title = settings.Title;
+		m_Data.Width = settings.Width;
+		m_Data.Height = settings.Height;
+
+		Init();
 	}
 
 	GlfwWindow::~GlfwWindow()
@@ -19,42 +30,46 @@ namespace Selene {
 		Destroy();
 	}
 
-	void GlfwWindow::Init(const WindowData & data)
+	void GlfwWindow::Init()
 	{
-		m_Data.Title = data.Title;
-		m_Data.Width = data.Width;
-		m_Data.Height = data.Height;
-
-		int glfwInitSuccess = glfwInit();
+		// Init Glfw
 		SLN_ENGINE_INFO("Initializing Glfw");
-
+		int glfwInitSuccess = glfwInit();
+		
 		if (!glfwInitSuccess)
 		{
 			SLN_ENGINE_CRITICAL("Failed to initialize Glfw");
-			//TODO : Manage error
 		}
 
-		m_Window = glfwCreateWindow(m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		// Create window
 		SLN_ENGINE_INFO("Creating window [{0} ({1}, {2}])", m_Data.Title, m_Data.Width, m_Data.Height);
-
+		m_Window = glfwCreateWindow(m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		
 		if (m_Window == NULL)
 		{
 			SLN_ENGINE_CRITICAL("Failed to create GLFW window");
-			//TODO : Manage error
 		}
 
+		// Create OpenGL Context
 		glfwMakeContextCurrent(m_Window);
 
-		int gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		// Init Glad
 		SLN_ENGINE_INFO("Initializing Glad");
+		int gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
 		if (!gladInitSuccess)
 		{
 			SLN_ENGINE_CRITICAL("Failed to initialize Glad");
-			//TODO : Manage error
 		}
 
+		// Glfw additional settings
 		SetVSync(true);
+		glfwSetWindowUserPointer(m_Window, &m_Data);
+
+		// Set callbacks
+		glfwSetErrorCallback(OnError);
+		glfwSetWindowCloseCallback(m_Window, OnWindowClose);
+		glfwSetWindowSizeCallback(m_Window, OnWindowResize);
 	}
 
 	void GlfwWindow::Update()
@@ -72,6 +87,25 @@ namespace Selene {
 	void GlfwWindow::SetVSync(bool enabled)
 	{
 		glfwSwapInterval(enabled);
+		m_Data.VSync = enabled;
 	}
 
+	// Glfw callbacks implementation
+
+	void OnError(int error, const char * description)
+	{
+		SLN_ENGINE_ERROR("Glfw Error ({0}): {1}", error, description);
+	}
+
+	void OnWindowClose(GLFWwindow * window)
+	{
+		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
+		data.EventCallback(WindowCloseEvent());
+	}
+
+	void OnWindowResize(GLFWwindow * window, int width, int height)
+	{
+		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
+		data.EventCallback(WindowResizeEvent(width, height));
+	}
 }

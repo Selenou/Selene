@@ -2,21 +2,20 @@
 
 #include "slnpch.h"
 
+#include "EventSystem/Event.h"
+
 namespace Selene {
 
-	struct WindowData
+	struct WindowSettings
 	{
 		std::string Title;
 		uint32_t Width;
 		uint32_t Height;
 
-		WindowData(
-			const std::string& title = "Selene Engine",
-			uint32_t width = 1280,
-			uint32_t height = 720)
-			: Title(title), Width(width), Height(height)
-		{
-		}
+		WindowSettings(const std::string& title = "Selene Engine",
+				   uint32_t width = 1280,
+				   uint32_t height = 720) 
+			: Title(title), Width(width), Height(height){}
 	};
 
 	class Window
@@ -24,12 +23,13 @@ namespace Selene {
 	public:
 		virtual ~Window() {};
 	public:
-		virtual void Init(const WindowData& data) = 0;
+		using EventCallback = std::function<void(Event&)>;
 		virtual void Update() = 0;
-		virtual void Destroy() = 0;
+		virtual void SetEventCallback(const EventCallback& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
-		static Window* Create(const WindowData& props = WindowData());
+		static Window* Create(const WindowSettings& props = WindowSettings());
 	protected:
-		WindowData m_Data;
+		virtual void Init() = 0;
+		virtual void Destroy() = 0;
 	};
 }
