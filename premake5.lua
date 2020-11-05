@@ -12,8 +12,10 @@ workspace "Selene"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["Glfw"] = "%{wks.location}/Selene/vendor/glfw/include"
-IncludeDir["Glad"] = "%{wks.location}/Selene/vendor/glad/include"
+IncludeDir["glfw"] = "%{wks.location}/Selene/vendor/glfw/include"
+IncludeDir["glad"] = "%{wks.location}/Selene/vendor/glad/include"
+IncludeDir["spdlog"] = "%{wks.location}/Selene/vendor/spdlog"
+IncludeDir["glm"] = "%{wks.location}/Selene/vendor/glm"
 IncludeDir["stb_image"] = "%{wks.location}/Selene/vendor/stb_image"
 
 group "Vendors"

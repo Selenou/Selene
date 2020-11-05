@@ -16,7 +16,7 @@ project "Game"
 	includedirs 
 	{ 
         "%{wks.location}/Selene/src",
-		"%{wks.location}/Selene/vendor/spdlog/include"
+		"%{IncludeDir.spdlog}"
 	}
 
 	links 
@@ -26,11 +26,6 @@ project "Game"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines 
-		{ 
-			"SLN_PLATFORM_WINDOWS" 
-		}
 
 	filter "configurations:Debug"
 		defines "SLN_DEBUG"

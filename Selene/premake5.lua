@@ -13,17 +13,16 @@ project "Selene"
 	files 
 	{
 		"src/**.h", 
-		"src/**.cpp",
-		"vendor/stb_image/stb_image.h",
-		"vendor/stb_image/stb_image.cpp",
+		"src/**.cpp"
 	}
 
 	includedirs 
 	{ 
 		"src",
-		"vendor/spdlog/include",
-		"%{IncludeDir.Glfw}",
-		"%{IncludeDir.Glad}",
+		"%{IncludeDir.glfw}",
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.spdlog}",
+		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}"
 	}
 	
@@ -36,11 +35,6 @@ project "Selene"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines 
-		{ 
-			"SLN_PLATFORM_WINDOWS"
-		}
 
 	filter "configurations:Debug"
 		defines "SLN_DEBUG"
