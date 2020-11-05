@@ -4,8 +4,8 @@
 
 #include "EventSystem/Event.h"
 
-namespace Selene {
-
+namespace Selene 
+{
 	struct WindowSettings
 	{
 		std::string Title;

@@ -2,8 +2,8 @@
 
 #include "Event.h"
 
-namespace Selene {
-
+namespace Selene 
+{
 	class WindowCloseEvent : public Event
 	{
 	public:

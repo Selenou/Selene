@@ -3,8 +3,8 @@
 #include "Window.h"
 #include <GLFW/glfw3.h>
 
-namespace Selene {
-
+namespace Selene 
+{
 	struct GlfwWindowData
 	{
 		std::string Title;
@@ -30,5 +30,4 @@ namespace Selene {
 		GLFWwindow* m_Window;
 		GlfwWindowData m_Data;
 	};
-
 }

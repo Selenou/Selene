@@ -3,8 +3,8 @@
 #include "slnpch.h"
 #include "Event.h"
 
-namespace Selene {
-
+namespace Selene
+{
 	class EventDispatcher 
 	{
 	public:
@@ -28,5 +28,4 @@ namespace Selene {
 	private:
 		Event& m_Event;
 	};
-
 }

@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
-namespace Selene {
-
+namespace Selene 
+{
 	class Log
 	{
 	public:
@@ -17,7 +17,6 @@ namespace Selene {
 		static std::shared_ptr<spdlog::logger> s_EngineLogger;
 		static std::shared_ptr<spdlog::logger> s_GameLogger;
 	};
-
 }
 
 // Engine

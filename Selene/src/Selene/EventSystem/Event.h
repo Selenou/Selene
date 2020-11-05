@@ -1,7 +1,7 @@
 #pragma once
 
-namespace Selene {
-
+namespace Selene 
+{
 	enum class EventType
 	{
 		None = 0,
@@ -31,5 +31,4 @@ namespace Selene {
 	{
 		return os << e.ToString();
 	}
-
 }

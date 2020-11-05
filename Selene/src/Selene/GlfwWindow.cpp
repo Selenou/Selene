@@ -4,8 +4,8 @@
 
 #include "EventSystem/WindowEvent.h"
 
-namespace Selene {
-
+namespace Selene 
+{
 	// Forward declarations for Glfw callbacks
 	void OnError(int error, const char* description);
 	void OnWindowClose(GLFWwindow * window);
@@ -40,7 +40,7 @@ namespace Selene {
 		{
 			SLN_ENGINE_CRITICAL("Failed to initialize Glfw");
 		}
-
+		
 		// Create window
 		SLN_ENGINE_INFO("Creating window [{0} ({1}, {2}])", m_Data.Title, m_Data.Width, m_Data.Height);
 		m_Window = glfwCreateWindow(m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
@@ -49,7 +49,7 @@ namespace Selene {
 		{
 			SLN_ENGINE_CRITICAL("Failed to create GLFW window");
 		}
-
+		
 		// Create OpenGL Context
 		glfwMakeContextCurrent(m_Window);
 
@@ -65,11 +65,17 @@ namespace Selene {
 		// Glfw additional settings
 		SetVSync(true);
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-
+		
 		// Set callbacks
 		glfwSetErrorCallback(OnError);
 		glfwSetWindowCloseCallback(m_Window, OnWindowClose);
 		glfwSetWindowSizeCallback(m_Window, OnWindowResize);
+
+		// OpenGl Infos
+		SLN_ENGINE_INFO("OpenGL Vendor : {0}", glGetString(GL_VENDOR));
+		SLN_ENGINE_INFO("OpenGL Renderer : {0}", glGetString(GL_RENDERER));
+		SLN_ENGINE_INFO("OpenGL Version : {0}", glGetString(GL_VERSION));
+		SLN_ENGINE_INFO("OpenGL Shading Language Version : {0}", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	}
 
 	void GlfwWindow::Update()
