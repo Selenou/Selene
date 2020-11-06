@@ -7,7 +7,7 @@ namespace Selene
 	class WindowCloseEvent : public Event
 	{
 	public:
-		EVENT_TYPE(WindowClose);
+		EVENT_TYPE(WindowClose)
 	};
 
 	class WindowResizeEvent : public Event
@@ -16,7 +16,7 @@ namespace Selene
 		WindowResizeEvent(uint32_t width, uint32_t height)
 			: m_Width(width), m_Height(height) {}
 	public:
-		EVENT_TYPE(WindowResize);
+		EVENT_TYPE(WindowResize)
 
 		inline uint32_t GetWidth() const { return m_Width; }
 		inline uint32_t GetHeight() const { return m_Height; }
@@ -24,7 +24,7 @@ namespace Selene
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << GetName() << ": (" << m_Width << ", " << m_Height << ")";
+			ss << GetName() << " : (" << m_Width << ", " << m_Height << ")";
 			return ss.str();
 		}
 	private:

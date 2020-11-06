@@ -1,12 +1,16 @@
 #pragma once
 
+#include "slnpch.h"
+
 namespace Selene 
 {
 	enum class EventType
 	{
 		None = 0,
 		WindowClose,
-		WindowResize
+		WindowResize,
+		MouseButtonPress,
+		MouseButtonRelease
 	};
 
 #define EVENT_TYPE(type) static EventType GetStaticType() { return EventType::type; } \

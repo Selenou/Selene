@@ -3,6 +3,7 @@
 #include "GlfwWindow.h"
 
 #include "EventSystem/WindowEvent.h"
+#include "EventSystem/MouseEvent.h"
 
 namespace Selene 
 {
@@ -10,6 +11,7 @@ namespace Selene
 	void OnError(int error, const char* description);
 	void OnWindowClose(GLFWwindow * window);
 	void OnWindowResize(GLFWwindow * window, int width, int height);
+	void OnMouseButtonAction(GLFWwindow * window, int button, int action, int mods);
 
 	Window* Window::Create(const WindowSettings& settings)
 	{
@@ -70,6 +72,7 @@ namespace Selene
 		glfwSetErrorCallback(OnError);
 		glfwSetWindowCloseCallback(m_Window, OnWindowClose);
 		glfwSetWindowSizeCallback(m_Window, OnWindowResize);
+		glfwSetMouseButtonCallback(m_Window, OnMouseButtonAction);
 
 		// OpenGl Infos
 		SLN_ENGINE_INFO("OpenGL Vendor : {0}", glGetString(GL_VENDOR));
@@ -113,5 +116,24 @@ namespace Selene
 	{
 		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
 		data.EventCallback(WindowResizeEvent(width, height));
+	}
+
+	void OnMouseButtonAction(GLFWwindow * window, int button, int action, int mods)
+	{
+		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
+
+		switch (action)
+		{
+			case GLFW_PRESS:
+			{
+				data.EventCallback(MouseButtonPressEvent(button));
+				break;
+			}
+			case GLFW_RELEASE:
+			{
+				data.EventCallback(MouseButtonReleaseEvent(button));
+				break;
+			}
+		}
 	}
 }
