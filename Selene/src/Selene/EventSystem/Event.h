@@ -10,7 +10,10 @@ namespace Selene
 		WindowClose,
 		WindowResize,
 		MouseButtonPress,
-		MouseButtonRelease
+		MouseButtonRelease,
+		KeyPress,
+		KeyRelease,
+		KeyType
 	};
 
 #define EVENT_TYPE(type) static EventType GetStaticType() { return EventType::type; } \

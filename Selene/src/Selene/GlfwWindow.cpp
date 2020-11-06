@@ -4,14 +4,17 @@
 
 #include "EventSystem/WindowEvent.h"
 #include "EventSystem/MouseEvent.h"
+#include "EventSystem/KeyEvent.h"
 
 namespace Selene 
 {
 	// Forward declarations for Glfw callbacks
 	void OnError(int error, const char* description);
-	void OnWindowClose(GLFWwindow * window);
-	void OnWindowResize(GLFWwindow * window, int width, int height);
-	void OnMouseButtonAction(GLFWwindow * window, int button, int action, int mods);
+	void OnWindowClose(GLFWwindow* window);
+	void OnWindowResize(GLFWwindow* window, int width, int height);
+	void OnMouseButtonAction(GLFWwindow* window, int button, int action, int mods);
+	void OnKeyAction(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void OnCharType(GLFWwindow* window, unsigned int codepoint);
 
 	Window* Window::Create(const WindowSettings& settings)
 	{
@@ -73,6 +76,8 @@ namespace Selene
 		glfwSetWindowCloseCallback(m_Window, OnWindowClose);
 		glfwSetWindowSizeCallback(m_Window, OnWindowResize);
 		glfwSetMouseButtonCallback(m_Window, OnMouseButtonAction);
+		glfwSetKeyCallback(m_Window, OnKeyAction);
+		glfwSetCharCallback(m_Window, OnCharType);
 
 		// OpenGl Infos
 		SLN_ENGINE_INFO("OpenGL Vendor : {0}", glGetString(GL_VENDOR));
@@ -125,15 +130,35 @@ namespace Selene
 		switch (action)
 		{
 			case GLFW_PRESS:
-			{
 				data.EventCallback(MouseButtonPressEvent(button));
 				break;
-			}
 			case GLFW_RELEASE:
-			{
 				data.EventCallback(MouseButtonReleaseEvent(button));
 				break;
-			}
 		}
+	}
+
+	void OnKeyAction(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
+
+		switch (action)
+		{
+			case GLFW_PRESS:
+				data.EventCallback(KeyPressEvent(key,false));
+				break;
+			case GLFW_RELEASE:
+				data.EventCallback(KeyReleaseEvent(key));
+				break;
+			case GLFW_REPEAT:
+				data.EventCallback(KeyPressEvent(key, true));
+				break;
+		}
+	}
+
+	void OnCharType(GLFWwindow* window, unsigned int codepoint)
+	{
+		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
+		data.EventCallback(KeyTypeEvent(codepoint));
 	}
 }
