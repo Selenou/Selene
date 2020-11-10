@@ -25,8 +25,11 @@ namespace Selene
 	public:
 		using EventCallback = std::function<void(Event&)>;
 		virtual void Update() = 0;
+		virtual unsigned int GetWidth() const = 0;
+		virtual unsigned int GetHeight() const = 0;
 		virtual void SetEventCallback(const EventCallback& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
+		virtual void* GetNativeWindow() const = 0;
 		static Window* Create(const WindowSettings& props = WindowSettings());
 	protected:
 		virtual void Init() = 0;

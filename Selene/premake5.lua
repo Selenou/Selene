@@ -9,6 +9,11 @@ project "Selene"
 	
 	pchheader "slnpch.h"
 	pchsource "src/slnpch.cpp"
+	
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
+	}
 
 	files 
 	{
@@ -23,6 +28,7 @@ project "Selene"
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.glm}",
+		"%{IncludeDir.imgui}",
 		"%{IncludeDir.stb_image}"
 	}
 	
@@ -30,6 +36,7 @@ project "Selene"
 	{ 
 		"Glfw",
 		"Glad",
+		"ImGui",
 		"opengl32.lib"
 	}
 

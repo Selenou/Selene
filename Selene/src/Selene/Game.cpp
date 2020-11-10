@@ -3,21 +3,39 @@
 #include "Macro.h"
 #include "EventSystem/EventDispatcher.h"
 
+//remove this
+#include <glad/glad.h>
+
 namespace Selene 
 {
+	Game* Game::s_Instance = nullptr;
+
 	Game::Game()
 	{
-		m_LayerStack = std::make_unique<LayerStack>();
+		if (s_Instance != nullptr)
+		{
+			SLN_ENGINE_CRITICAL("Application already exists!");
+		}
 
+		s_Instance = this;
+		
 		m_Window = std::unique_ptr<Window>(Window::Create()); 
 		m_Window->SetEventCallback(SLN_BIND_EVENT(Game::OnEvent));
+
+		m_LayerStack = std::make_unique<LayerStack>();
 	}
 
 	void Game::Run()
 	{
 		while (m_IsRunning)
 		{
+			//Clear : remove this
+			glClearColor(0, 0, 0, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			m_LayerStack->Update();
+			m_LayerStack->RenderUI();
+
 			m_Window->Update();
 		}
 	}
@@ -31,9 +49,6 @@ namespace Selene
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(SLN_BIND_EVENT(Game::OnWindowClose));
-
-		// Debug
-		SLN_ENGINE_WARN(e.ToString());
 	}
 
 	bool Game::OnWindowClose(WindowCloseEvent & e)

@@ -1,10 +1,10 @@
 #include "slnpch.h"
-#include <glad/glad.h>
+#include <glad/glad.h> // move this ?
 #include "GlfwWindow.h"
 
-#include "EventSystem/WindowEvent.h"
-#include "EventSystem/MouseEvent.h"
-#include "EventSystem/KeyEvent.h"
+#include "Selene/EventSystem/WindowEvent.h"
+#include "Selene/EventSystem/MouseEvent.h"
+#include "Selene/EventSystem/KeyEvent.h"
 
 namespace Selene 
 {
@@ -79,7 +79,7 @@ namespace Selene
 		glfwSetKeyCallback(m_Window, OnKeyAction);
 		glfwSetCharCallback(m_Window, OnCharType);
 
-		// OpenGl Infos
+		// TODO : move this : OpenGl Infos
 		SLN_ENGINE_INFO("OpenGL Vendor : {0}", glGetString(GL_VENDOR));
 		SLN_ENGINE_INFO("OpenGL Renderer : {0}", glGetString(GL_RENDERER));
 		SLN_ENGINE_INFO("OpenGL Version : {0}", glGetString(GL_VERSION));

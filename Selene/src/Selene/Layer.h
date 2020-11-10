@@ -12,9 +12,10 @@ namespace Selene
 			:m_Name(name) {}
 		virtual ~Layer() = default;
 	public:
-		virtual void Bind() {}
-		virtual void UnBind() {}
+		virtual void Attach() {}
+		virtual void Detach() {}
 		virtual void Update() {}
+		virtual void RenderUI() {}
 		virtual void OnEvent(Event& event) {}
 		inline const std::string& GetName() const { return m_Name; }
 	protected:

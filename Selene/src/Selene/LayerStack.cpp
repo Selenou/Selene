@@ -3,11 +3,17 @@
 
 namespace Selene
 {
+	LayerStack::LayerStack()
+	{
+		m_ImGuiLayer = new ImGuiLayer();
+		PushLayer(m_ImGuiLayer);
+	}
+
 	LayerStack::~LayerStack()
 	{
 		for (Layer* layer : m_Layers)
 		{
-			layer->UnBind();
+			layer->Detach();
 			delete layer;
 		}
 	}
@@ -20,9 +26,21 @@ namespace Selene
 		}
 	}
 
+	void LayerStack::RenderUI()
+	{
+		m_ImGuiLayer->PrepareFrame();
+
+		for (Layer* layer : m_Layers)
+		{
+			layer->RenderUI();
+		}
+
+		m_ImGuiLayer->RenderDrawData();
+	}
+
 	void LayerStack::PushLayer(Layer * layer)
 	{
-		layer->Bind();
+		layer->Attach();
 		m_Layers.emplace_back(layer);
 	}
 
@@ -32,7 +50,7 @@ namespace Selene
 
 		if (it != m_Layers.end())
 		{
-			layer->UnBind();
+			layer->Detach();
 			m_Layers.erase(it);
 		}
 	}

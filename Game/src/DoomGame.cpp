@@ -7,7 +7,7 @@ public:
 
 	void Update() override 
 	{
-		//SLN_INFO("Update");
+
 	}
 };
 

@@ -6,7 +6,7 @@ namespace Selene
 {
 	using KeyCode = uint16_t;
 
-	namespace Mouse
+	namespace MouseButton
 	{
 		enum : KeyCode
 		{
