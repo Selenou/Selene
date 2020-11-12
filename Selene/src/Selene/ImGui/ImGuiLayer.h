@@ -7,7 +7,7 @@ namespace Selene
 	class ImGuiLayer : public Layer
 	{
 	public:
-		ImGuiLayer() : Layer("ImGuiLayer") {};
+		ImGuiLayer() : Layer("ImGuiLayer") {}
 		~ImGuiLayer() = default;
 	public:
 		void Attach() override;

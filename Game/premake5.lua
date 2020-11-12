@@ -16,7 +16,8 @@ project "Game"
 	includedirs 
 	{ 
         "%{wks.location}/Selene/src",
-		"%{IncludeDir.spdlog}"
+		"%{IncludeDir.spdlog}",
+		"%{wks.location}/Selene/vendor",
 	}
 
 	links 
