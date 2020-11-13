@@ -3,9 +3,6 @@
 #include "Macro.h"
 #include "EventSystem/EventDispatcher.h"
 
-//remove this
-#include <glad/glad.h>
-
 namespace Selene 
 {
 	Game* Game::s_Instance = nullptr;
@@ -29,10 +26,6 @@ namespace Selene
 	{
 		while (m_IsRunning)
 		{
-			//Clear : remove this
-			glClearColor(0, 0, 0, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
-
 			m_LayerStack->Update();
 			m_LayerStack->RenderUI();
 
