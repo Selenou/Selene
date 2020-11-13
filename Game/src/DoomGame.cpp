@@ -18,7 +18,8 @@ public:
 class DoomGame : public Selene::Game
 {
 public:
-	DoomGame()
+	DoomGame(Selene::RenderingAPI::API renderingAPI) 
+		: Game(renderingAPI)
 	{
 		PushLayer(new TestLayer());
 	}
@@ -30,5 +31,5 @@ public:
 
 Selene::Game* Selene::CreateGame() 
 {
-	return new DoomGame();
+	return new DoomGame(Selene::RenderingAPI::API::OpenGL);
 }

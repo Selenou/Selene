@@ -2,7 +2,7 @@
 
 namespace Selene 
 {
-	class RendererAPI
+	class RenderingAPI
 	{
 	public:
 		enum class API
@@ -12,13 +12,14 @@ namespace Selene
 			Vulkan
 		};
 	public:
-		virtual ~RendererAPI() = default;
+		virtual ~RenderingAPI() = default;
 	public:
 		virtual void Init() = 0;
 		virtual void Clear() = 0;
 
 		static API GetAPI() { return s_API; }
 		static void SetAPI(API api) { s_API = api; }
+		static std::unique_ptr<RenderingAPI> Create();
 	private:
 		static API s_API;
 	};

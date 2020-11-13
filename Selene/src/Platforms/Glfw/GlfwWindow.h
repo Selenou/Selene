@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Selene/Window.h"
+#include "Selene/Rendering/RenderingContext.h"
 #include <GLFW/glfw3.h>
 
 namespace Selene 
@@ -30,6 +31,7 @@ namespace Selene
 		void Init() override;
 		void Destroy() override;
 	private:
+		std::unique_ptr<RenderingContext> m_RenderingContext;
 		GLFWwindow* m_Window;
 		GlfwWindowData m_Data;
 	};

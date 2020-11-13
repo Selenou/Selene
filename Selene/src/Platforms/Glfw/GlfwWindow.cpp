@@ -1,8 +1,5 @@
 #include "slnpch.h"
-#include <glad/glad.h> // move this ?
-//#define GLFW_INCLUDE_VULKAN
 #include "GlfwWindow.h"
-
 #include "Selene/EventSystem/WindowEvent.h"
 #include "Selene/EventSystem/MouseEvent.h"
 #include "Selene/EventSystem/KeyEvent.h"
@@ -46,9 +43,6 @@ namespace Selene
 		{
 			SLN_ENGINE_CRITICAL("Failed to initialize Glfw");
 		}
-
-		// Vulkan : disable context creation
-		//glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		
 		// Create window
 		SLN_ENGINE_INFO("Creating window [{0} ({1}, {2}])", m_Data.Title, m_Data.Width, m_Data.Height);
@@ -59,17 +53,8 @@ namespace Selene
 			SLN_ENGINE_CRITICAL("Failed to create GLFW window");
 		}
 		
-		// Create OpenGL Context
-		glfwMakeContextCurrent(m_Window);
-
-		// Init Glad
-		SLN_ENGINE_INFO("Initializing Glad");
-		int gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
-		if (!gladInitSuccess)
-		{
-			SLN_ENGINE_CRITICAL("Failed to initialize Glad");
-		}
+		m_RenderingContext = RenderingContext::Create(m_Window);
+		m_RenderingContext->Init();
 
 		// Glfw additional settings
 		SetVSync(true);

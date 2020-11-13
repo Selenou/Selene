@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "LayerStack.h"
 #include "EventSystem/WindowEvent.h"
+#include "Selene/Rendering/RenderingAPI.h"
 
 
 namespace Selene 
@@ -10,7 +11,7 @@ namespace Selene
 	class Game
 	{
 	public:
-		Game();
+		Game(RenderingAPI::API api);
 		virtual ~Game() {};
 	public:
 		void Run();

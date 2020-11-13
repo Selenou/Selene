@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Selene/Rendering/RendererAPI.h"
+#include "Selene/Rendering/RenderingAPI.h"
 
 namespace Selene
 {
-	class OpenGLRendererAPI : public RendererAPI
+	class OpenGLRenderingAPI : public RenderingAPI
 	{
 	public:
 		void Init() override;

@@ -1,13 +1,14 @@
 #include "slnpch.h"
 #include "Game.h"
 #include "Macro.h"
+#include "Selene/Rendering/RenderingEngine.h"
 #include "EventSystem/EventDispatcher.h"
 
 namespace Selene 
 {
 	Game* Game::s_Instance = nullptr;
 
-	Game::Game()
+	Game::Game(RenderingAPI::API api)
 	{
 		if (s_Instance != nullptr)
 		{
@@ -15,9 +16,14 @@ namespace Selene
 		}
 
 		s_Instance = this;
-		
+
+		// Set this first because window creation will need this for creating its rendering contexts
+		RenderingAPI::SetAPI(api);
+
 		m_Window = std::unique_ptr<Window>(Window::Create()); 
 		m_Window->SetEventCallback(SLN_BIND_EVENT(Game::OnEvent));
+
+		RenderingEngine::Init();
 
 		m_LayerStack = std::make_unique<LayerStack>();
 	}
@@ -26,6 +32,8 @@ namespace Selene
 	{
 		while (m_IsRunning)
 		{
+			RenderingEngine::Clear();
+
 			m_LayerStack->Update();
 			m_LayerStack->RenderUI();
 
