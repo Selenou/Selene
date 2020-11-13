@@ -1,5 +1,6 @@
 #include "slnpch.h"
 #include <glad/glad.h> // move this ?
+//#define GLFW_INCLUDE_VULKAN
 #include "GlfwWindow.h"
 
 #include "Selene/EventSystem/WindowEvent.h"
@@ -45,6 +46,9 @@ namespace Selene
 		{
 			SLN_ENGINE_CRITICAL("Failed to initialize Glfw");
 		}
+
+		// Vulkan : disable context creation
+		//glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		
 		// Create window
 		SLN_ENGINE_INFO("Creating window [{0} ({1}, {2}])", m_Data.Title, m_Data.Width, m_Data.Height);

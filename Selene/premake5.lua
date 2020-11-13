@@ -29,7 +29,8 @@ project "Selene"
 		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.vulkan}"
 	}
 	
 	links 
@@ -37,7 +38,7 @@ project "Selene"
 		"Glfw",
 		"Glad",
 		"ImGui",
-		"opengl32.lib"
+		"vendor/vulkan/vulkan-1.lib" -- defined opengl32.lib
 	}
 
 	filter "system:windows"
