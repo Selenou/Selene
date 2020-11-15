@@ -3,6 +3,7 @@
 #include "Selene/EventSystem/WindowEvent.h"
 #include "Selene/EventSystem/MouseEvent.h"
 #include "Selene/EventSystem/KeyEvent.h"
+#include "Selene/Rendering/RenderingAPI.h"
 
 namespace Selene 
 {
@@ -43,6 +44,12 @@ namespace Selene
 		{
 			SLN_ENGINE_CRITICAL("Failed to initialize Glfw");
 		}
+
+
+		//if (RenderingAPI::GetAPI() == RenderingAPI::API::Vulkan)
+		//{
+		//	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		//}
 		
 		// Create window
 		SLN_ENGINE_INFO("Creating window [{0} ({1}, {2}])", m_Data.Title, m_Data.Width, m_Data.Height);
@@ -53,6 +60,7 @@ namespace Selene
 			SLN_ENGINE_CRITICAL("Failed to create GLFW window");
 		}
 		
+		// Create Rendering Context
 		m_RenderingContext = RenderingContext::Create(m_Window);
 		m_RenderingContext->Init();
 

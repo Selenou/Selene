@@ -4,16 +4,16 @@
 
 struct GLFWwindow;
 
-namespace Selene
+namespace Selene 
 {
-	class OpenGLContext : public RenderingContext
+	class VulkanContext : public RenderingContext
 	{
 	public:
-		OpenGLContext(GLFWwindow* windowHandle)
+		VulkanContext(GLFWwindow* windowHandle)
 			: m_WindowHandle(windowHandle) {}
 	public:
 		void Init() override;
 	private:
 		GLFWwindow* m_WindowHandle;
 	};
-} 
+}

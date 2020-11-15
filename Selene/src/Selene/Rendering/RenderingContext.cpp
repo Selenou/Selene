@@ -2,6 +2,7 @@
 #include "RenderingContext.h"
 #include "RenderingEngine.h"
 #include "Renderers/OpenGL/OpenGLContext.h"
+#include "Renderers/Vulkan/VulkanContext.h"
 
 namespace Selene
 {
@@ -17,8 +18,7 @@ namespace Selene
 			case RenderingAPI::API::OpenGL:
 				return std::make_unique<OpenGLContext>(static_cast<GLFWwindow*>(window));
 			case RenderingAPI::API::Vulkan:
-				SLN_ENGINE_CRITICAL("RenderingAPI::Vulkan is currently not available!");
-				return nullptr;
+				return std::make_unique<VulkanContext>(static_cast<GLFWwindow*>(window));
 		}
 
 		SLN_ENGINE_CRITICAL("Unknown RenderingAPI!");

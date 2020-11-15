@@ -31,5 +31,5 @@ public:
 
 Selene::Game* Selene::CreateGame() 
 {
-	return new DoomGame(Selene::RenderingAPI::API::OpenGL);
+	return new DoomGame(Selene::RenderingAPI::API::Vulkan);
 }
