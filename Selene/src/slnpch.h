@@ -8,4 +8,5 @@
 #include <string>
 #include <vector>
 
+#include "Selene/Macro.h"
 #include "Selene/Log.h"

@@ -13,7 +13,7 @@ namespace Selene
 		switch (RenderingEngine::GetAPI())
 		{
 			case RenderingAPI::API::None:
-				SLN_ENGINE_CRITICAL("RenderingAPI::None is currently not supported!");
+				SLN_ENGINE_ASSERT(false, "RenderingAPI::None is currently not supported!");
 				return nullptr;
 			case RenderingAPI::API::OpenGL:
 				return std::make_unique<OpenGLContext>(static_cast<GLFWwindow*>(window));
@@ -21,7 +21,7 @@ namespace Selene
 				return std::make_unique<VulkanContext>(static_cast<GLFWwindow*>(window));
 		}
 
-		SLN_ENGINE_CRITICAL("Unknown RenderingAPI!");
+		SLN_ENGINE_ASSERT(false, "Unknown RenderingAPI!");
 		return nullptr;
 	}
 }

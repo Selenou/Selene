@@ -10,11 +10,8 @@ namespace Selene
 
 	Game::Game(RenderingAPI::API api)
 	{
-		if (s_Instance != nullptr)
-		{
-			SLN_ENGINE_CRITICAL("Application already exists!");
-		}
 
+		SLN_ENGINE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
 		// Set this first because window creation will need this for creating its rendering contexts

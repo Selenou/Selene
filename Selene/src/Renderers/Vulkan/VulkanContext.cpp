@@ -10,10 +10,6 @@ namespace Selene
 		SLN_ENGINE_INFO("Initializing Vulkan");
 
 		int success = glfwVulkanSupported();
-
-		if (!success)
-		{
-			SLN_ENGINE_CRITICAL("Failed to initialize Vulkan");
-		}
+		SLN_ENGINE_ASSERT(success, "Failed to initialize Vulkan");
 	}
 }
