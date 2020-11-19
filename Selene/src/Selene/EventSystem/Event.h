@@ -9,6 +9,7 @@ namespace Selene
 		None = 0,
 		WindowClose,
 		WindowResize,
+		FramebufferResize,
 		MouseButtonPress,
 		MouseButtonRelease,
 		KeyPress,

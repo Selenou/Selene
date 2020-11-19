@@ -12,4 +12,9 @@ namespace Selene
 		int success = glfwVulkanSupported();
 		SLN_ENGINE_ASSERT(success, "Failed to initialize Vulkan");
 	}
+
+	void VulkanContext::Destroy()
+	{
+
+	}
 }

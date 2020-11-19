@@ -15,4 +15,9 @@ namespace Selene
 	{
 		s_RenderingAPI->Clear();
 	}
+
+	void RenderingEngine::SetViewport(uint32_t width, uint32_t height)
+	{
+		s_RenderingAPI->SetViewport(0, 0, width, height);
+	}
 }

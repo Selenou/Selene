@@ -11,6 +11,7 @@ namespace Selene
 	void OnError(int error, const char* description);
 	void OnWindowClose(GLFWwindow* window);
 	void OnWindowResize(GLFWwindow* window, int width, int height);
+	void OnFramebufferResize(GLFWwindow* window, int width, int height);
 	void OnMouseButtonAction(GLFWwindow* window, int button, int action, int mods);
 	void OnKeyAction(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void OnCharType(GLFWwindow* window, unsigned int codepoint);
@@ -63,6 +64,7 @@ namespace Selene
 		glfwSetErrorCallback(OnError);
 		glfwSetWindowCloseCallback(m_Window, OnWindowClose);
 		glfwSetWindowSizeCallback(m_Window, OnWindowResize);
+		glfwSetFramebufferSizeCallback(m_Window, OnFramebufferResize);
 		glfwSetMouseButtonCallback(m_Window, OnMouseButtonAction);
 		glfwSetKeyCallback(m_Window, OnKeyAction);
 		glfwSetCharCallback(m_Window, OnCharType);
@@ -76,6 +78,7 @@ namespace Selene
 
 	void GlfwWindow::Destroy()
 	{
+		m_RenderingContext->Destroy();
 		glfwDestroyWindow(m_Window);
 		glfwTerminate();
 	}
@@ -103,6 +106,12 @@ namespace Selene
 	{
 		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
 		data.EventCallback(WindowResizeEvent(width, height));
+	}
+
+	void OnFramebufferResize(GLFWwindow * window, int width, int height)
+	{
+		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
+		data.EventCallback(FramebufferResizeEvent(width, height));
 	}
 
 	void OnMouseButtonAction(GLFWwindow * window, int button, int action, int mods)

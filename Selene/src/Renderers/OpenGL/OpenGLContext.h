@@ -13,6 +13,7 @@ namespace Selene
 			: m_WindowHandle(windowHandle) {}
 	public:
 		void Init() override;
+		void Destroy() override {};
 	private:
 		GLFWwindow* m_WindowHandle;
 	};

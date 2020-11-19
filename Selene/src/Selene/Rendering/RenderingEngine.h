@@ -9,6 +9,7 @@ namespace Selene
 	public:
 		static void Init();
 		static void Clear();
+		static void SetViewport(uint32_t width, uint32_t height);
 		static RenderingAPI::API GetAPI() { return RenderingAPI::GetAPI(); }
 	private:
 		static std::unique_ptr<RenderingAPI> s_RenderingAPI;

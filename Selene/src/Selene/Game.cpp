@@ -38,7 +38,7 @@ namespace Selene
 		}
 	}
 
-	void Game::PushLayer(Layer * layer)
+	void Game::PushLayer(Layer* layer)
 	{
 		m_LayerStack->PushLayer(layer);
 	}
@@ -47,11 +47,25 @@ namespace Selene
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(SLN_BIND_EVENT(Game::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(SLN_BIND_EVENT(Game::OnWindowResize));
+		dispatcher.Dispatch<FramebufferResizeEvent>(SLN_BIND_EVENT(Game::OnFramebufferResize));
 	}
 
-	bool Game::OnWindowClose(WindowCloseEvent & e)
+	bool Game::OnWindowClose(WindowCloseEvent& e)
 	{
 		m_IsRunning = false;
+		return true;
+	}
+
+	bool Game::OnWindowResize(WindowResizeEvent& e)
+	{
+		// TODO : Manage minimized
+		return false;
+	}
+
+	bool Game::OnFramebufferResize(FramebufferResizeEvent& e)
+	{
+		RenderingEngine::SetViewport(e.GetWidth(), e.GetHeight());
 		return true;
 	}
 }
