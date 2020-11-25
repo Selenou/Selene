@@ -32,26 +32,63 @@ namespace Selene
 	void OpenGLShader::Compile(const ShaderSources& shaderSources)
 	{
 		GLuint program = glCreateProgram();
+		GLint isSuccess = 0;
 
-		// Vertex
+		// Vertex compilation
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		const GLchar* vertexSrc = shaderSources.VertexSrc.c_str();
 		glShaderSource(vertexShader, 1, &vertexSrc, 0);
 		glCompileShader(vertexShader);
+
+		// Check compilation error
+		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isSuccess);
+		if (!isSuccess)
+		{
+			GLint maxLength = 0;
+			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
+			std::vector<GLchar> infoLog(maxLength);
+			glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
+			SLN_ENGINE_ASSERT(false, "Vertex shader compilation failed :\n{0}", &infoLog[0]);
+		}
+
 		glAttachShader(program, vertexShader);
 
-		// Fragment
+		// Fragment compilation
 		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 		const GLchar* fragmentSrc = shaderSources.FragmentSrc.c_str();
 		glShaderSource(fragmentShader, 1, &fragmentSrc, 0);
 		glCompileShader(fragmentShader);
+
+		// Check compilation error
+		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isSuccess);
+		if (!isSuccess)
+		{
+			GLint maxLength = 0;
+			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
+			std::vector<GLchar> infoLog(maxLength);
+			glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &infoLog[0]);
+			SLN_ENGINE_ASSERT(false, "Fragment shader compilation failed :\n{0}", &infoLog[0]);
+		}
+
 		glAttachShader(program, fragmentShader);
 
 		// Link
 		glLinkProgram(program);
+		
+		// Check linking error
+		glGetProgramiv(program, GL_LINK_STATUS, &isSuccess);
+		if (!isSuccess)
+		{
+			GLint maxLength = 0;
+			glGetShaderiv(program, GL_INFO_LOG_LENGTH, &maxLength);
+			std::vector<GLchar> infoLog(maxLength);
+			glGetShaderInfoLog(program, maxLength, &maxLength, &infoLog[0]);
+			SLN_ENGINE_ASSERT(false, "Shader program linking failed :\n{0}", &infoLog[0]);
+		}
+		
 		m_ShaderID = program;
 
-		//Cleanup
+		// Cleanup
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 	}
