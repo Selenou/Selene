@@ -4,6 +4,8 @@
 #include "Selene/Rendering/RenderingEngine.h"
 #include "EventSystem/EventDispatcher.h"
 
+#include <glad/glad.h>
+
 namespace Selene 
 {
 	Game* Game::s_Instance = nullptr;
@@ -23,6 +25,35 @@ namespace Selene
 		RenderingEngine::Init();
 
 		m_LayerStack = std::make_unique<LayerStack>();
+
+
+
+
+		//tmp
+		float vertices[] = {
+			 0.5f,  0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			-0.5f, -0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
+		};
+
+		uint32_t indices[] = {
+			0, 1, 3,
+			1, 2, 3
+		};
+	
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		m_Vbo = VertexBuffer::Create(vertices, sizeof(vertices));
+		m_Vbo->Bind();
+
+		m_Ebo = IndexBuffer::Create(indices, sizeof(indices)); 
+		m_Ebo->Bind();
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		m_Shader = Shader::Create("base.vert", "base.frag");
 	}
 
 	void Game::Run()
@@ -30,6 +61,17 @@ namespace Selene
 		while (m_IsRunning)
 		{
 			RenderingEngine::Clear();
+			
+
+
+
+			//tmp
+			m_Shader->Bind();
+			glBindVertexArray(vao);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+
 
 			m_LayerStack->Update();
 			m_LayerStack->RenderUI();

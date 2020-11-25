@@ -37,11 +37,14 @@ namespace Selene
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		glDebugMessageCallback(OpenGLMessageCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
+
+		//debug
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
 	void OpenGLRenderingAPI::Clear()
 	{
-		glClearColor(0, 0, 0, 1);
+		glClearColor(.8f, .8f, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 

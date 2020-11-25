@@ -5,6 +5,9 @@
 #include "EventSystem/WindowEvent.h"
 #include "Selene/Rendering/RenderingAPI.h"
 
+#include "Selene/Rendering/Shader.h"
+#include "Selene/Rendering/Buffer.h"
+
 
 namespace Selene 
 {
@@ -24,10 +27,18 @@ namespace Selene
 		bool OnWindowResize(WindowResizeEvent& e);
 		bool OnFramebufferResize(FramebufferResizeEvent& e);
 	private:
+
+
+		//tmp
+		unsigned int vao;
+		std::shared_ptr<Shader> m_Shader;
+		std::shared_ptr<VertexBuffer> m_Vbo;
+		std::shared_ptr<IndexBuffer> m_Ebo;
+
+
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<LayerStack> m_LayerStack;
 		bool m_IsRunning = true;
-	private:
 		static Game* s_Instance;
 	};
 
