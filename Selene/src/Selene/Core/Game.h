@@ -2,7 +2,7 @@
 
 #include "Window.h"
 #include "LayerStack.h"
-#include "EventSystem/WindowEvent.h"
+#include "Selene/EventSystem/WindowEvent.h"
 #include "Selene/Rendering/RenderingAPI.h"
 
 #include "Selene/Rendering/Shader.h"
@@ -30,7 +30,7 @@ namespace Selene
 
 
 		//tmp
-		unsigned int vao;
+		unsigned int m_Vao;
 		std::shared_ptr<Shader> m_Shader;
 		std::shared_ptr<VertexBuffer> m_Vbo;
 		std::shared_ptr<IndexBuffer> m_Ebo;

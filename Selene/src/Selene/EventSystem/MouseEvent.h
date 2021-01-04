@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Event.h"
-#include "Selene/KeyCodes.h"
+#include "Selene/Core/KeyCodes.h"
 
 namespace Selene
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Selene/Window.h"
+#include "Selene/Core/Window.h"
 #include "Selene/Rendering/RenderingContext.h"
 #include <GLFW/glfw3.h>
 

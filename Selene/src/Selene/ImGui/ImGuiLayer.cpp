@@ -1,6 +1,6 @@
 #include "slnpch.h"
 #include "ImGuiLayer.h"
-#include "Selene/Game.h"
+#include "Selene/Core/Game.h"
 #include "imgui.h"
 
 #include "backends/imgui_impl_opengl3.h"

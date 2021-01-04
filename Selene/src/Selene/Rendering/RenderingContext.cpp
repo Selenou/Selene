@@ -19,9 +19,9 @@ namespace Selene
 				return std::make_unique<OpenGLContext>(static_cast<GLFWwindow*>(window));
 			case RenderingAPI::API::Vulkan:
 				return std::make_unique<VulkanContext>(static_cast<GLFWwindow*>(window));
+			default:
+				SLN_ENGINE_ASSERT(false, "Unknown RenderingAPI!");
+				return nullptr;
 		}
-
-		SLN_ENGINE_ASSERT(false, "Unknown RenderingAPI!");
-		return nullptr;
 	}
 }

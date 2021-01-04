@@ -2,7 +2,9 @@
 #include "Game.h"
 #include "Macro.h"
 #include "Selene/Rendering/RenderingEngine.h"
-#include "EventSystem/EventDispatcher.h"
+#include "Selene/EventSystem/EventDispatcher.h"
+
+#include "Renderers/OpenGL/OpenGLBuffer.h"
 
 #include <glad/glad.h>
 
@@ -41,18 +43,20 @@ namespace Selene
 			0, 1, 3,
 			1, 2, 3
 		};
-	
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
 
 		m_Vbo = VertexBuffer::Create(vertices, sizeof(vertices));
-		m_Vbo->Bind();
-
 		m_Ebo = IndexBuffer::Create(indices, sizeof(indices)); 
-		m_Ebo->Bind();
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
+		glCreateVertexArrays(1, &m_Vao); // direct state access (GL 4.5) : only creates the VAO but doesn't enable it
+
+		// Set buffers that backs the VAO
+		glVertexArrayVertexBuffer(m_Vao, 0, 1, 0, 3 * sizeof(GLfloat));
+		glVertexArrayElementBuffer(m_Vao, 2); //ib->m_EboID
+
+		glEnableVertexArrayAttrib(m_Vao, 0);
+		glVertexArrayAttribFormat(m_Vao, 0, 3, GL_FLOAT, GL_FALSE, 0);
+		glVertexArrayAttribBinding(m_Vao, 0, 0);
+
 		m_Shader = Shader::Create("base.vert", "base.frag");
 	}
 
@@ -66,8 +70,8 @@ namespace Selene
 
 
 			//tmp
+			glBindVertexArray(m_Vao);
 			m_Shader->Bind();
-			glBindVertexArray(vao);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 

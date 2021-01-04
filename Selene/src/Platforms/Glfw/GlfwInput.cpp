@@ -1,6 +1,6 @@
 #include "slnpch.h"
-#include "Selene/Input.h"
-#include "Selene/Game.h"
+#include "Selene/Core/Input.h"
+#include "Selene/Core/Game.h"
 #include <GLFW/glfw3.h>
 
 namespace Selene

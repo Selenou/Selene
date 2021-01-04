@@ -17,16 +17,6 @@ namespace Selene
 		glDeleteBuffers(1, &m_VboID);
 	}
 
-	void OpenGLVertexBuffer::Bind() const
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_VboID);
-	}
-
-	void OpenGLVertexBuffer::Unbind() const
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-
 	// IndexBuffer
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(void* data, uint32_t size)
@@ -38,10 +28,5 @@ namespace Selene
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
 		glDeleteBuffers(1, &m_EboID);
-	}
-
-	void OpenGLIndexBuffer::Bind() const
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EboID);
 	}
 }

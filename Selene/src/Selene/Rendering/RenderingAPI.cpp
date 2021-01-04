@@ -20,9 +20,9 @@ namespace Selene
 			case RenderingAPI::API::Vulkan:
 				SLN_ENGINE_ASSERT(false, "RenderingAPI::Vulkan is currently not available!");
 				return nullptr;
+			default:
+				SLN_ENGINE_ASSERT(false, "Unknown RenderingAPI!");
+				return nullptr;
 		}
-
-		SLN_ENGINE_ASSERT(false, "Unknown RenderingAPI!");
-		return nullptr;
 	}
 }

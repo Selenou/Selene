@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Layer.h"
-#include "ImGui/ImGuiLayer.h"
+#include "Selene/ImGui/ImGuiLayer.h"
 
 namespace Selene
 {
