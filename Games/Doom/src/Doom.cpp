@@ -6,25 +6,25 @@ class TestLayer : public Selene::Layer
 public:
 	TestLayer() : Layer("Doom") {}
 public:
-	void Update() override {}
-	void RenderUI() override {}
+	virtual void Update() override {}
+	virtual void RenderUI() override {}
 };
 
-class DoomGame : public Selene::Game
+class Doom : public Selene::Game
 {
 public:
-	DoomGame(Selene::RenderingAPI::API renderingAPI) 
+	Doom(Selene::RenderingAPI::API renderingAPI) 
 		: Game(renderingAPI)
 	{
 		PushLayer(new TestLayer());
 	}
 
-	~DoomGame()
+	~Doom()
 	{
 	}
 };
 
 Selene::Game* Selene::CreateGame() 
 {
-	return new DoomGame(Selene::RenderingAPI::API::OpenGL);
+	return new Doom(Selene::RenderingAPI::API::OpenGL);
 }

@@ -10,9 +10,9 @@ namespace Selene
 		ImGuiLayer() : Layer("ImGuiLayer") {}
 		~ImGuiLayer() = default;
 	public:
-		void Attach() override;
-		void Detach() override;
-		void RenderUI() override;
+		virtual void Attach() override;
+		virtual void Detach() override;
+		virtual void RenderUI() override;
 		void PrepareFrame();
 		void RenderDrawData();
 	};

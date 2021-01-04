@@ -10,7 +10,7 @@ namespace Selene
 	public:
 		inline KeyCode GetKeyCode() const { return m_KeyCode; }
 
-		std::string ToString() const override
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << " : " << m_KeyCode;
@@ -33,7 +33,7 @@ namespace Selene
 
 		bool GetIsHeld() const { return m_IsHeld; }
 
-		std::string ToString() const override
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << " : " << m_KeyCode << " (Holding : " << m_IsHeld << ")";

@@ -21,15 +21,15 @@ namespace Selene
 		GlfwWindow(const WindowSettings& settings);
 		virtual ~GlfwWindow();
 	public:
-		void Update() override;
-		inline unsigned int GetWidth() const override { return m_Data.Width; }
-		inline unsigned int GetHeight() const override { return m_Data.Height; }
-		inline void SetEventCallback(const EventCallback& callback) override { m_Data.EventCallback = callback; }
-		inline virtual void* GetNativeWindow() const { return m_Window; }
-		void SetVSync(bool enabled) override;
+		virtual void Update() override;
+		inline virtual unsigned int GetWidth() const override { return m_Data.Width; }
+		inline virtual unsigned int GetHeight() const override { return m_Data.Height; }
+	    inline virtual void SetEventCallback(const EventCallback& callback) override { m_Data.EventCallback = callback; }
+		inline virtual void* GetNativeWindow() const override { return m_Window; }
+		virtual void SetVSync(bool enabled) override;
 	protected:
-		void Init() override;
-		void Destroy() override;
+		virtual void Init() override;
+		virtual void Destroy() override;
 	private:
 		std::unique_ptr<RenderingContext> m_RenderingContext;
 		GLFWwindow* m_Window;

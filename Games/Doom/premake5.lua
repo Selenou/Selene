@@ -1,4 +1,4 @@
-project "Game"
+project "Doom"
 	kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"

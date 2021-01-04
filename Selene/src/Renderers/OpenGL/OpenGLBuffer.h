@@ -8,7 +8,7 @@ namespace Selene
 	{
 	public:
 		OpenGLVertexBuffer(void* data, uint32_t size);
-		~OpenGLVertexBuffer() override;
+		virtual ~OpenGLVertexBuffer() override;
 	private:
 		uint32_t m_VboID = 0;
 	};
@@ -17,7 +17,7 @@ namespace Selene
 	{
 	public:
 		OpenGLIndexBuffer(void* data, uint32_t size);
-		~OpenGLIndexBuffer() override;
+		virtual ~OpenGLIndexBuffer() override;
 	private:
 		uint32_t m_EboID = 0;
 	};

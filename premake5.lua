@@ -1,6 +1,6 @@
 workspace "Selene"
 	architecture "x86_64"
-	startproject "Game"
+	startproject "Sandbox"
 
 	configurations 
 	{ 
@@ -27,4 +27,8 @@ group "Vendors"
 group ""
 
 include "Selene"
-include "Game"
+
+group "Games"
+	include "Games/Doom"
+	include "Games/Sandbox"
+group ""

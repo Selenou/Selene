@@ -22,7 +22,7 @@ namespace Selene
 		inline uint32_t GetWidth() const { return m_Width; }
 		inline uint32_t GetHeight() const { return m_Height; }
 
-		std::string ToString() const override
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << " : (" << m_Width << ", " << m_Height << ")";
@@ -46,7 +46,7 @@ namespace Selene
 		inline uint32_t GetWidth() const { return m_Width; }
 		inline uint32_t GetHeight() const { return m_Height; }
 
-		std::string ToString() const override
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << " : (" << m_Width << ", " << m_Height << ")";

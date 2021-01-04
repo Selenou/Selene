@@ -10,7 +10,7 @@ namespace Selene
 	public:
 		inline KeyCode GetMouseButton() { return m_Button; }
 
-		std::string ToString() const override
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << " : " << m_Button;

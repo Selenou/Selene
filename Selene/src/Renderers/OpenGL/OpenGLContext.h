@@ -12,8 +12,8 @@ namespace Selene
 		OpenGLContext(GLFWwindow* windowHandle)
 			: m_WindowHandle(windowHandle) {}
 	public:
-		void Init() override;
-		void Destroy() override {};
+		virtual void Init() override;
+		virtual void Destroy() override {};
 	private:
 		GLFWwindow* m_WindowHandle;
 	};

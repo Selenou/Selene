@@ -17,8 +17,8 @@ namespace Selene
 		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
 		~OpenGLShader();
 	public:
-		void Bind() const override;
-		void Unbind() const override;
+		virtual void Bind() const override;
+		virtual void Unbind() const override;
 	private:
 		std::string ReadFromFile(const std::string& file);
 		void Compile(const ShaderSources& shaderSources);
