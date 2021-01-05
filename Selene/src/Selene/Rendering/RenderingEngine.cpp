@@ -20,4 +20,9 @@ namespace Selene
 	{
 		s_RenderingAPI->SetViewport(0, 0, width, height);
 	}
+
+	void RenderingEngine::DrawIndexed(uint32_t count)
+	{
+		s_RenderingAPI->DrawIndexed(count);
+	}
 }

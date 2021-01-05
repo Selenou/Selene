@@ -44,12 +44,17 @@ namespace Selene
 
 	void OpenGLRenderingAPI::Clear()
 	{
-		glClearColor(.8f, .8f, 0, 1);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 	void OpenGLRenderingAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 	{
 		glViewport(x, y, width, height);
+	}
+
+	void OpenGLRenderingAPI::DrawIndexed(uint32_t count)
+	{
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 }

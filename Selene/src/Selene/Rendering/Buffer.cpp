@@ -5,6 +5,35 @@
 
 namespace Selene
 {
+	VertexBufferLayout::VertexBufferLayout(const std::initializer_list<VertexBufferElement>& elements)
+		: m_Elements(elements)
+	{
+		ComputeLayoutStride();
+		ComputeElementsOffset();
+	}
+
+	void VertexBufferLayout::ComputeLayoutStride()
+	{
+		for (auto& element : m_Elements)
+		{
+			m_Stride += element.Size;
+		}
+	}
+
+	void VertexBufferLayout::ComputeElementsOffset()
+	{
+		uint32_t offset = 0;
+		for (auto& element : m_Elements)
+		{
+			element.Offset = offset;
+			offset += element.Size;
+		}
+	}
+
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+
 	std::shared_ptr<VertexBuffer> VertexBuffer::Create(void* data, uint32_t size)
 	{
 		switch (RenderingEngine::GetAPI())
@@ -22,6 +51,10 @@ namespace Selene
 				return nullptr;
 		}
 	}
+
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
 
 	std::shared_ptr<IndexBuffer> IndexBuffer::Create(void* data, uint32_t size)
 	{
