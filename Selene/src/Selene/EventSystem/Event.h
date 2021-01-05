@@ -31,6 +31,7 @@ namespace Selene
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
 		virtual std::string ToString() const { return GetName(); }
+		bool IsHandled() { return m_IsHandled; }
 	protected:
 		bool m_IsHandled = false;
 	};

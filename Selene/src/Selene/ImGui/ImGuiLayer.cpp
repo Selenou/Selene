@@ -52,14 +52,14 @@ namespace Selene
 		ImGui::ShowDemoWindow(&show);
 	}
 
-	void ImGuiLayer::PrepareFrame()
+	void ImGuiLayer::StartNewFrame()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 	}
 
-	void ImGuiLayer::RenderDrawData()
+	void ImGuiLayer::EndFrame()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 

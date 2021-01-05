@@ -13,7 +13,7 @@ namespace Selene
 		virtual void Attach() override;
 		virtual void Detach() override;
 		virtual void RenderUI() override;
-		void PrepareFrame();
-		void RenderDrawData();
+		void StartNewFrame();
+		void EndFrame();
 	};
 }

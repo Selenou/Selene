@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-
 namespace Selene
 {
 	class VertexBuffer
@@ -10,6 +8,7 @@ namespace Selene
 		virtual ~VertexBuffer() = default;
 	public:
 		static std::shared_ptr<VertexBuffer> Create(void* data, uint32_t size);
+		virtual uint32_t GetID() = 0;
 	};
 
 	class IndexBuffer
@@ -18,5 +17,6 @@ namespace Selene
 		virtual ~IndexBuffer() = default;
 	public:
 		static std::shared_ptr<IndexBuffer> Create(void* data, uint32_t size);
+		virtual uint32_t GetID() = 0;
 	};
 }

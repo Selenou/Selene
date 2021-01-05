@@ -16,7 +16,7 @@ namespace Selene
 		template<class T, class F>
 		bool Dispatch(const F& func)
 		{
-			if (!m_Event.m_IsHandled && 
+			if (!m_Event.m_IsHandled &&
 				m_Event.GetEventType() == T::GetStaticType())
 			{
 				m_Event.m_IsHandled |= func(static_cast<T&>(m_Event));

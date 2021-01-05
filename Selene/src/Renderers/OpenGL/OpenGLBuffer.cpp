@@ -8,8 +8,8 @@ namespace Selene
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(void* data, uint32_t size)
 	{
-		glCreateBuffers(1, &m_VboID); // generates and initializes a buffer in a single call in GL 4.5 (ARB_direct_state_access_
-		glNamedBufferData(m_VboID, size, data, GL_STATIC_DRAW); //copies data into the buffer's memory
+		glCreateBuffers(1, &m_VboID); // generates and initializes a buffer in a single call in GL 4.5 (Direct state access)
+		glNamedBufferData(m_VboID, size, data, GL_STATIC_DRAW); // copies data into the buffer's memory
 	}
 
 	Selene::OpenGLVertexBuffer::~OpenGLVertexBuffer()
