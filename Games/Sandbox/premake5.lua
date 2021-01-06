@@ -18,7 +18,8 @@ project "Sandbox"
         "%{wks.location}/Selene/src",
 		"%{IncludeDir.spdlog}",
 		"%{wks.location}/Selene/vendor",
-		"%{IncludeDir.glad}"
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.glm}"
 	}
 
 	links 

@@ -5,7 +5,7 @@
 
 namespace Selene
 {
-	std::shared_ptr<RenderingPipeline> RenderingPipeline::Create(VertexBufferLayout& layout)
+	std::shared_ptr<RenderingPipeline> RenderingPipeline::Create(const VertexBufferLayout& layout)
 	{
 		switch (RenderingEngine::GetAPI())
 		{

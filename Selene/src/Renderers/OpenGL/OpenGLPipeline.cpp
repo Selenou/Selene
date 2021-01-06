@@ -25,15 +25,14 @@ namespace Selene
 		return 0;
 	}
 
-	OpenGLPipeline::OpenGLPipeline(VertexBufferLayout& layout)
+	OpenGLPipeline::OpenGLPipeline(const VertexBufferLayout& layout)
+		: m_Layout(layout)
 	{
-		m_Layout = &layout;
-
 		uint32_t attribIndex = 0;
 
 		glCreateVertexArrays(1, &m_VaoID);
 
-		for (const auto& element : *m_Layout)
+		for (const auto& element : m_Layout)
 		{
 			auto glBaseType = DataTypeToOpenGLBaseType(element.Type);
 
@@ -60,7 +59,7 @@ namespace Selene
 
 	void OpenGLPipeline::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vbo)
 	{
-		glVertexArrayVertexBuffer(m_VaoID, 0, vbo->GetID(), 0, m_Layout->GetStride());
+		glVertexArrayVertexBuffer(m_VaoID, 0, vbo->GetID(), 0, m_Layout.GetStride());
 	}
 
 	void OpenGLPipeline::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& ebo)
