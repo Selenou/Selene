@@ -1,4 +1,5 @@
 #include "SandboxLayer.h"
+#include "imgui.h"
 
 SandboxLayer::SandboxLayer() 
 	: Layer("Sandbox"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
@@ -30,7 +31,7 @@ SandboxLayer::SandboxLayer()
 
 	m_Vbo->SetLayout(layout);
 
-	m_Pipeline = Selene::RenderingPipeline::Create(layout);
+	m_Pipeline = Selene::RenderingPipeline::Create();
 	m_Pipeline->SetVertexBuffer(m_Vbo);
 	m_Pipeline->SetIndexBuffer(m_Ebo);
 
@@ -39,10 +40,19 @@ SandboxLayer::SandboxLayer()
 
 void SandboxLayer::Update()
 {
-	m_Pipeline->Bind();
+	Selene::RenderingEngine::PrepareNewFrame(m_Camera);
+	Selene::RenderingEngine::Submit(m_Pipeline, m_Shader);
+}
 
-	m_Shader->Bind();
-	m_Shader->SetUniform("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
+void SandboxLayer::RenderUI()
+{
+	auto info = Selene::RenderingEngine::GetAPIInfo();
 
-	Selene::RenderingEngine::DrawIndexed(m_Ebo->GetCount());
+	ImGui::Begin("Rendering Info");
+		ImGui::Text("API : %s", info.API.c_str());
+		ImGui::Text("Vendor : %s", info.Vendor.c_str());
+		ImGui::Text("Renderer : %s", info.Renderer.c_str());
+		ImGui::Text("Version : %s", info.Version.c_str());
+		ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
+	ImGui::End();
 }

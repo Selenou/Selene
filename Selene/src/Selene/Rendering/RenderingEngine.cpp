@@ -4,6 +4,7 @@
 namespace Selene
 {
 	std::unique_ptr<RenderingAPI> RenderingEngine::s_RenderingAPI = nullptr;
+	glm::mat4 RenderingEngine::s_ViewProjectionMatrix = glm::mat4(1.0);
 
 	void RenderingEngine::Init()
 	{
@@ -21,8 +22,16 @@ namespace Selene
 		s_RenderingAPI->SetViewport(0, 0, width, height);
 	}
 
-	void RenderingEngine::DrawIndexed(uint32_t count)
+	void RenderingEngine::PrepareNewFrame(OrthographicCamera& camera)
 	{
-		s_RenderingAPI->DrawIndexed(count);
+		s_ViewProjectionMatrix = camera.GetViewProjectionMatrix();
+	}
+
+	void RenderingEngine::Submit(std::shared_ptr<RenderingPipeline> pipeline, std::shared_ptr<Shader> shader)
+	{
+		pipeline->Bind();
+		shader->Bind();
+		shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
+		s_RenderingAPI->DrawIndexed(pipeline->GetIndexBuffer()->GetCount());
 	}
 }

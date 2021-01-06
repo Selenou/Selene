@@ -38,8 +38,13 @@ namespace Selene
 		glDebugMessageCallback(OpenGLMessageCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
-		//debug
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		// Fill Rendering Info
+		auto& info = RenderingAPI::GetInfo();
+		info.API = "OpenGL";
+		info.Vendor = (const char*)glGetString(GL_VENDOR);
+		info.Renderer = (const char*)glGetString(GL_RENDERER);
+		info.Version = (const char*)glGetString(GL_VERSION);
+		info.ShadingLanguageVersion = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 	}
 
 	void OpenGLRenderingAPI::Clear()

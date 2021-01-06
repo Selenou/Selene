@@ -11,6 +11,15 @@ namespace Selene
 			OpenGL,
 			Vulkan
 		};
+
+		struct Info
+		{
+			std::string API;
+			std::string Vendor;
+			std::string Renderer;
+			std::string Version;
+			std::string ShadingLanguageVersion;
+		};
 	public:
 		virtual ~RenderingAPI() = default;
 	public:
@@ -21,6 +30,13 @@ namespace Selene
 
 		static API GetAPI() { return s_API; }
 		static void SetAPI(API api) { s_API = api; }
+
+		static Info& GetInfo() 
+		{ 
+			static Info info;
+			return info;
+		}
+
 		static std::unique_ptr<RenderingAPI> Create();
 	private:
 		static API s_API;

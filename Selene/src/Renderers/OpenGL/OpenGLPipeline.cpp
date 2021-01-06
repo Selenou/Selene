@@ -25,14 +25,25 @@ namespace Selene
 		return 0;
 	}
 
-	OpenGLPipeline::OpenGLPipeline(const VertexBufferLayout& layout)
-		: m_Layout(layout)
+	void OpenGLPipeline::Bind() const
 	{
-		uint32_t attribIndex = 0;
+		glBindVertexArray(m_VaoID);
+	}
 
+	void OpenGLPipeline::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vbo)
+	{
+		m_Vbo = vbo;
+		uint32_t attribIndex = 0;
+		auto layout = *(m_Vbo->GetLayout());
+
+		if (m_VaoID)
+		{
+			glDeleteVertexArrays(1, &m_VaoID);
+		}
+			
 		glCreateVertexArrays(1, &m_VaoID);
 
-		for (const auto& element : m_Layout)
+		for (const auto& element : layout)
 		{
 			auto glBaseType = DataTypeToOpenGLBaseType(element.Type);
 
@@ -47,23 +58,16 @@ namespace Selene
 			);
 
 			glVertexArrayAttribBinding(m_VaoID, attribIndex, 0);
-			
+
 			attribIndex++;
 		}
-	}
 
-	void OpenGLPipeline::Bind() const
-	{
-		glBindVertexArray(m_VaoID);
-	}
-
-	void OpenGLPipeline::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vbo)
-	{
-		glVertexArrayVertexBuffer(m_VaoID, 0, vbo->GetID(), 0, m_Layout.GetStride());
+		glVertexArrayVertexBuffer(m_VaoID, 0, vbo->GetID(), 0, layout.GetStride());
 	}
 
 	void OpenGLPipeline::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& ebo)
 	{
+		m_Ebo = ebo;
 		glVertexArrayElementBuffer(m_VaoID, ebo->GetID());
 	}
 }

@@ -19,7 +19,8 @@ project "Sandbox"
 		"%{IncludeDir.spdlog}",
 		"%{wks.location}/Selene/vendor",
 		"%{IncludeDir.glad}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.imgui}"
 	}
 
 	links 
