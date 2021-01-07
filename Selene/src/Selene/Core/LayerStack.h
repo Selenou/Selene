@@ -11,7 +11,7 @@ namespace Selene
 		LayerStack();
 		~LayerStack();
 	public:
-		void Update();
+		void Update(Timestep ts);
 		void RenderUI();
 		void HandleEvent(Event& event);
 		void PushLayer(Layer* layer);

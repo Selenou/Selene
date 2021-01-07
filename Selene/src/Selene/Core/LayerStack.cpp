@@ -18,11 +18,11 @@ namespace Selene
 		}
 	}
 
-	void LayerStack::Update()
+	void LayerStack::Update(Timestep ts)
 	{
 		for (Layer* layer : m_Layers)
 		{
-			layer->Update();
+			layer->Update(ts);
 		}
 	}
 

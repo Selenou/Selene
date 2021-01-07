@@ -2,6 +2,7 @@
 
 #include "slnpch.h"
 #include "Selene/EventSystem/Event.h"
+#include "Time.h"
 
 namespace Selene 
 {
@@ -14,7 +15,7 @@ namespace Selene
 	public:
 		virtual void Attach() {}
 		virtual void Detach() {}
-		virtual void Update() {}
+		virtual void Update(Timestep ts) {}
 		virtual void RenderUI() {}
 		virtual void OnEvent(Event& event) {}
 		inline const std::string& GetName() const { return m_Name; }

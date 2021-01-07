@@ -7,7 +7,7 @@ namespace Selene
 		None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
 	};
 
-	static uint32_t GetDataTypeSize(DataType type)
+	static inline uint32_t GetDataTypeSize(DataType type)
 	{
 		switch (type)
 		{
@@ -43,7 +43,7 @@ namespace Selene
 			: Name(name), Type(type), Size(GetDataTypeSize(type)), Offset(0), Normalized(normalized)
 		{}
 
-		uint32_t GetComponentCount() const
+		inline uint32_t GetComponentCount() const
 		{
 			switch (Type)
 			{
@@ -75,10 +75,10 @@ namespace Selene
 		VertexBufferLayout(const std::initializer_list<VertexBufferElement>& elements);
 		uint32_t GetStride() const { return m_Stride; }
 	public:
-		std::vector<VertexBufferElement>::iterator begin() { return m_Elements.begin(); }
-		std::vector<VertexBufferElement>::iterator end() { return m_Elements.end(); }
-		std::vector<VertexBufferElement>::const_iterator begin() const { return m_Elements.begin(); }
-		std::vector<VertexBufferElement>::const_iterator end() const { return m_Elements.end(); }
+		inline std::vector<VertexBufferElement>::iterator begin() { return m_Elements.begin(); }
+		inline std::vector<VertexBufferElement>::iterator end() { return m_Elements.end(); }
+		inline std::vector<VertexBufferElement>::const_iterator begin() const { return m_Elements.begin(); }
+		inline std::vector<VertexBufferElement>::const_iterator end() const { return m_Elements.end(); }
 	private:
 		void ComputeLayoutStride();
 		void ComputeElementsOffset();
@@ -98,8 +98,8 @@ namespace Selene
 	public:
 		static std::shared_ptr<VertexBuffer> Create(void* data, uint32_t size);
 		virtual uint32_t GetID() = 0;
-		void SetLayout(VertexBufferLayout& layout) { m_Layout = &layout; }
-		VertexBufferLayout* GetLayout() { return m_Layout; }
+		inline void SetLayout(VertexBufferLayout& layout) { m_Layout = &layout; }
+		inline VertexBufferLayout* GetLayout() { return m_Layout; }
 	protected:
 		VertexBufferLayout* m_Layout;
 	};

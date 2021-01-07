@@ -11,11 +11,12 @@ namespace Selene
 	{
 	public:
 		Game(RenderingAPI::API api);
-		virtual ~Game() {};
+		virtual ~Game() = default;
 	public:
 		void Run();
 		void PushLayer(Layer* layer);
 		void OnEvent(Event& event);
+		inline const Timestep& GetTimestep() { return m_TimeStep; }
 		inline Window& GetWindow() { return *m_Window; }
 		inline static Game& GetInstance() { return *s_Instance; }
 	private:
@@ -23,10 +24,12 @@ namespace Selene
 		bool OnWindowResize(WindowResizeEvent& e);
 		bool OnFramebufferResize(FramebufferResizeEvent& e);
 	private:
+		static Game* s_Instance;
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<LayerStack> m_LayerStack;
 		bool m_IsRunning = true;
-		static Game* s_Instance;
+		Timestep m_TimeStep;
+		float m_LastFrameTime = 0.0f;
 	};
 
 	Game* CreateGame();

@@ -10,10 +10,10 @@ namespace Selene
 		OrthographicCamera(float left, float right, float bottom, float top);
 	public:
 		void SetPosition(const glm::vec3& position);
-		const glm::vec3& GetPosition() const { return m_Position; }
-		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
-		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
-		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+		inline const glm::vec3& GetPosition() const { return m_Position; }
+		inline const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
+		inline const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
+		inline const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
 	private:
 		void UpdateViewMatrix();
 	private:

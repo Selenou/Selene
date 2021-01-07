@@ -5,11 +5,13 @@ namespace Selene
 {
 	std::unique_ptr<RenderingAPI> RenderingEngine::s_RenderingAPI = nullptr;
 	glm::mat4 RenderingEngine::s_ViewProjectionMatrix = glm::mat4(1.0);
+	RenderingStats RenderingEngine::s_RenderingStats;
 
 	void RenderingEngine::Init()
 	{
 		s_RenderingAPI = RenderingAPI::Create();
 		s_RenderingAPI->Init();
+		s_RenderingStats = {};
 	}
 
 	void RenderingEngine::Clear()

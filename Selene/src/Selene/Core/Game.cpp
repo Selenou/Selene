@@ -13,7 +13,7 @@ namespace Selene
 		SLN_ENGINE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		// Set this first because window creation will need this for creating its rendering contexts
+		// Set this first because window creation will need this for creating its rendering context
 		RenderingAPI::SetAPI(api);
 
 		m_Window = std::unique_ptr<Window>(Window::Create()); 
@@ -29,10 +29,14 @@ namespace Selene
 		while (m_IsRunning)
 		{
 			RenderingEngine::Clear();
-			m_LayerStack->Update();
+			m_LayerStack->Update(m_TimeStep);
 			m_LayerStack->RenderUI();
 			m_Window->Update();
-		}
+
+			float time = Time::GetTime();
+			m_TimeStep = time - m_LastFrameTime;
+			m_LastFrameTime = time;
+		} 
 	}
 
 	void Game::PushLayer(Layer* layer)

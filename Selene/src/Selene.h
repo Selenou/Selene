@@ -4,6 +4,7 @@
 #include "Selene/Core/Log.h"
 #include "Selene/Core/Layer.h"
 #include "Selene/Core/Input.h"
+#include "Selene/Core/Time.h"
 
 #include "Selene/Rendering/RenderingEngine.h"
 #include "Selene/Rendering/RenderingAPI.h"

@@ -38,7 +38,7 @@ SandboxLayer::SandboxLayer()
 	m_Shader = Selene::Shader::Create("base.vert", "base.frag");
 }
 
-void SandboxLayer::Update()
+void SandboxLayer::Update(Selene::Timestep ts)
 {
 	Selene::RenderingEngine::PrepareNewFrame(m_Camera);
 	Selene::RenderingEngine::Submit(m_Pipeline, m_Shader);
@@ -54,5 +54,12 @@ void SandboxLayer::RenderUI()
 		ImGui::Text("Renderer : %s", info.Renderer.c_str());
 		ImGui::Text("Version : %s", info.Version.c_str());
 		ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
+	ImGui::End();
+
+	auto stats = Selene::RenderingEngine::GetStats();
+
+	ImGui::Begin("Rendering Stats");
+		ImGui::Text("FPS : %i", (int)(1.0f / stats.ts.GetSeconds()));
+		ImGui::Text("Frametime : %f ms", stats.ts.GetMilliseconds());
 	ImGui::End();
 }
