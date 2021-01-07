@@ -2,22 +2,30 @@
 #include "imgui.h"
 
 SandboxLayer::SandboxLayer() 
-	: Layer("Sandbox"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+	: Layer("Sandbox"), m_Camera(-3.2f, 3.2f, -1.8f, 1.8f)
 {
 	m_Camera.SetPosition({ 0.2f, 0.2f, 0.0f });
 
 	float vertices[] =
 	{
-		 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-		-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f
+		-1.0f,	-1.0f,	-1.0f,	0.583f,  0.771f,  0.014f,
+		1.0f,	-1.0f,	-1.0f,	0.609f,  0.115f,  0.436f,
+		1.0f,	1.0f,	-1.0f,	0.327f,  0.483f,  0.844f,
+		-1.0f,	1.0f,	-1.0f,	0.822f,  0.569f,  0.201f,
+		-1.0f,	-1.0f,	 1.0f,	0.435f,  0.602f,  0.223f,
+		1.0f,	-1.0f,	 1.0f,	0.714f,  0.505f,  0.345f,
+		1.0f,	1.0f,	1.0f,	0.225f,  0.587f,  0.040f,
+		-1.0f,	1.0f,	1.0f,	0.982f,  0.099f,  0.879f
 	};
 
 	uint32_t indices[] =
 	{
-		0, 1, 3,
-		1, 2, 3
+		0, 1, 3, 3, 1, 2,
+		1, 5, 2, 2, 5, 6,
+		5, 4, 6, 6, 4, 7,
+		4, 0, 7, 7, 0, 3,
+		3, 2, 7, 7, 2, 6,
+		4, 5, 0, 0, 5, 1
 	};
 
 	m_Vbo = Selene::VertexBuffer::Create(vertices, sizeof(vertices));
