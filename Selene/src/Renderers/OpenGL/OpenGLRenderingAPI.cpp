@@ -38,6 +38,9 @@ namespace Selene
 		glDebugMessageCallback(OpenGLMessageCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
+		// Use Z Buffer
+		glEnable(GL_DEPTH_TEST);
+
 		// Fill Rendering Info
 		auto& info = RenderingAPI::GetInfo();
 		info.API = "OpenGL";
@@ -50,7 +53,7 @@ namespace Selene
 	void OpenGLRenderingAPI::Clear()
 	{
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void OpenGLRenderingAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)

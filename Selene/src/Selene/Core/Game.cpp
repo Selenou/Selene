@@ -28,15 +28,18 @@ namespace Selene
 	{
 		while (m_IsRunning)
 		{
-			RenderingEngine::Clear();
-			m_LayerStack->Update(m_TimeStep);
-			m_LayerStack->RenderUI();
-			m_Window->Update();
-
-			float time = Time::GetTime();
-			m_TimeStep = time - m_LastFrameTime;
-			m_LastFrameTime = time;
+			UpdateTimeStep();
+			m_Window->PollEvents();
+			Render();
 		} 
+	}
+
+	void Game::Render()
+	{
+		RenderingEngine::Clear();
+		m_LayerStack->Update(m_TimeStep);
+		m_LayerStack->RenderUI();
+		m_Window->SwapBuffers();
 	}
 
 	void Game::PushLayer(Layer* layer)
@@ -48,7 +51,6 @@ namespace Selene
 	{
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(SLN_BIND_EVENT(Game::OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(SLN_BIND_EVENT(Game::OnWindowResize));
 		dispatcher.Dispatch<FramebufferResizeEvent>(SLN_BIND_EVENT(Game::OnFramebufferResize));
 
 		m_LayerStack->HandleEvent(event);
@@ -60,15 +62,17 @@ namespace Selene
 		return true;
 	}
 
-	bool Game::OnWindowResize(WindowResizeEvent& e)
-	{
-		// TODO : Manage minimized
-		return false;
-	}
-
 	bool Game::OnFramebufferResize(FramebufferResizeEvent& e)
 	{
 		RenderingEngine::SetViewport(e.GetWidth(), e.GetHeight());
-		return true;
+		Render(); //TODO : use a dedicated thread for rendering and get rid of this line
+		return false;
+	}
+
+	void Game::UpdateTimeStep()
+	{
+		float time = Time::GetTime();
+		m_TimeStep = time - m_LastFrameTime;
+		m_LastFrameTime = time;
 	}
 }

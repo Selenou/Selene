@@ -11,7 +11,6 @@ namespace Selene
 		std::string Title;
 		uint32_t Width, Height;
 		bool VSync;
-
 		Window::EventCallback EventCallback;
 	};
 
@@ -21,7 +20,8 @@ namespace Selene
 		GlfwWindow(const WindowSettings& settings);
 		virtual ~GlfwWindow();
 	public:
-		virtual void Update() override;
+		virtual void SwapBuffers() override;
+		virtual void PollEvents() override;
 		inline virtual unsigned int GetWidth() const override { return m_Data.Width; }
 		inline virtual unsigned int GetHeight() const override { return m_Data.Height; }
 	    inline virtual void SetEventCallback(const EventCallback& callback) override { m_Data.EventCallback = callback; }

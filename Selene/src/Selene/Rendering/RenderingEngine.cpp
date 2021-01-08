@@ -24,7 +24,7 @@ namespace Selene
 		s_RenderingAPI->SetViewport(0, 0, width, height);
 	}
 
-	void RenderingEngine::PrepareNewFrame(OrthographicCamera& camera)
+	void RenderingEngine::PrepareNewFrame(Camera& camera)
 	{
 		s_ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}

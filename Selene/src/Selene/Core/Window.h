@@ -24,7 +24,8 @@ namespace Selene
 		virtual ~Window() {};
 	public:
 		using EventCallback = std::function<void(Event&)>;
-		virtual void Update() = 0;
+		virtual void SwapBuffers() = 0;
+		virtual void PollEvents() = 0;
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
 		virtual void SetEventCallback(const EventCallback& callback) = 0;

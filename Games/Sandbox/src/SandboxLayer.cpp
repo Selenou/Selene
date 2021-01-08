@@ -2,9 +2,16 @@
 #include "imgui.h"
 
 SandboxLayer::SandboxLayer() 
-	: Layer("Sandbox"), m_Camera(-3.2f, 3.2f, -1.8f, 1.8f)
+	: Layer("Sandbox")
 {
-	m_Camera.SetPosition({ 0.2f, 0.2f, 0.0f });
+	m_Camera = std::make_unique<Selene::Camera>();
+	m_Camera->SetPerspective(45.0f);
+	m_Camera->SetPosition({ 0.0f, 0.0f, 10.0f });
+	m_Camera->SetRotation({ 0.0f, 0.0f, 0.0f });
+
+	// Could be better here
+	auto& window = Selene::Game::GetInstance().GetWindow();
+	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
 	float vertices[] =
 	{
@@ -48,7 +55,7 @@ SandboxLayer::SandboxLayer()
 
 void SandboxLayer::Update(Selene::Timestep ts)
 {
-	Selene::RenderingEngine::PrepareNewFrame(m_Camera);
+	Selene::RenderingEngine::PrepareNewFrame(*m_Camera);
 	Selene::RenderingEngine::Submit(m_Pipeline, m_Shader);
 }
 
@@ -70,4 +77,46 @@ void SandboxLayer::RenderUI()
 		ImGui::Text("FPS : %i", (int)(1.0f / stats.ts.GetSeconds()));
 		ImGui::Text("Frametime : %f ms", stats.ts.GetMilliseconds());
 	ImGui::End();
+
+
+	// Debug
+	ImGui::Begin("Camera Settings");
+		if (ImGui::SliderAngle("RotationX", &m_Camera->GetRotation()[0]))
+		{
+			m_Camera->SetRotation(m_Camera->GetRotation());
+		}
+		if (ImGui::SliderAngle("RotationY", &m_Camera->GetRotation()[1]))
+		{
+			m_Camera->SetRotation(m_Camera->GetRotation());
+		}
+		if (ImGui::SliderAngle("RotationZ", &m_Camera->GetRotation()[2]))
+		{
+			m_Camera->SetRotation(m_Camera->GetRotation());
+		}
+
+		if (ImGui::Checkbox("UsePerspective", &usePerspective))
+		{
+			if (usePerspective)
+			{
+				m_Camera->SetPerspective(45.0f);
+				m_Camera->SetPosition({ 0.0f, 0.0f, 10.0f });
+			}
+			else
+			{
+				m_Camera->SetOrthographic(5.0f);
+				m_Camera->SetPosition({ 0.0f, 0.0f, 0.0f });
+			}
+		}
+	ImGui::End();
+}
+
+void SandboxLayer::OnEvent(Selene::Event& event)
+{
+	Selene::EventDispatcher dispatcher(event);
+	dispatcher.Dispatch<Selene::FramebufferResizeEvent>([=](Selene::FramebufferResizeEvent& e)
+	{
+		SLN_WARN(e);
+		m_Camera->SetViewportSize(e.GetWidth(), e.GetHeight());
+		return false;
+	});
 }
