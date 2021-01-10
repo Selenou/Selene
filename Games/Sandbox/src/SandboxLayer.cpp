@@ -115,7 +115,6 @@ void SandboxLayer::OnEvent(Selene::Event& event)
 	Selene::EventDispatcher dispatcher(event);
 	dispatcher.Dispatch<Selene::FramebufferResizeEvent>([=](Selene::FramebufferResizeEvent& e)
 	{
-		SLN_WARN(e);
 		m_Camera->SetViewportSize(e.GetWidth(), e.GetHeight());
 		return false;
 	});

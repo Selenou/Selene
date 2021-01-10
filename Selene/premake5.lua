@@ -18,7 +18,8 @@ project "Selene"
 	files 
 	{
 		"src/**.h", 
-		"src/**.cpp"
+		"src/**.cpp",
+		"vendor/stb_image/**.cpp"
 	}
 
 	includedirs 

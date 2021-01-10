@@ -4,6 +4,7 @@
 #include "Selene/EventSystem/MouseEvent.h"
 #include "Selene/EventSystem/KeyEvent.h"
 #include "Selene/Rendering/RenderingAPI.h"
+#include <stb_image.h>
 
 namespace Selene 
 {
@@ -57,8 +58,9 @@ namespace Selene
 
 		// Glfw additional settings
 		SetVSync(true);
+		SetWindowIcon();
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-		
+
 		// Set callbacks
 		glfwSetErrorCallback(OnError);
 		glfwSetWindowCloseCallback(m_Window, OnWindowClose);
@@ -71,7 +73,6 @@ namespace Selene
 	void GlfwWindow::SwapBuffers()
 	{
 		glfwSwapBuffers(m_Window);
-		
 	}
 
 	void GlfwWindow::PollEvents()
@@ -90,6 +91,18 @@ namespace Selene
 	{
 		glfwSwapInterval(enabled);
 		m_Data.VSync = enabled;
+	}
+
+	void GlfwWindow::SetWindowIcon()
+	{
+		GLFWimage icon;
+		int width, height, channels;
+		stbi_uc* iconImage = stbi_load("assets/icons/moon.png", &width, &height, &channels, 0);
+		icon.height = height;
+		icon.width = width;
+		icon.pixels = iconImage;
+		glfwSetWindowIcon(m_Window, 1, &icon);
+		stbi_image_free(iconImage);
 	}
 
 	// Glfw callbacks implementation

@@ -31,6 +31,8 @@ namespace Selene
 		virtual void Init() override;
 		virtual void Destroy() override;
 	private:
+		void SetWindowIcon();
+	private:
 		std::unique_ptr<RenderingContext> m_RenderingContext;
 		GLFWwindow* m_Window;
 		GlfwWindowData m_Data;

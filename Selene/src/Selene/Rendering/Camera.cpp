@@ -46,7 +46,7 @@ namespace Selene
 
 	void Camera::SetViewportSize(uint32_t width, uint32_t height)
 	{ 
-		m_AspectRatio = (float)width / (float)height;
+		m_AspectRatio = (width > 0 && height > 0) ? (float)width / (float)height : 0.0f;
 		UpdateProjection(); 
 	}
 

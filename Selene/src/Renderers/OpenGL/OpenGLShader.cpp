@@ -103,7 +103,7 @@ namespace Selene
 	std::string OpenGLShader::ReadFromFile(const std::string& file)
 	{
 		std::string fileStr;
-		std::ifstream in("res/shaders/" + file);
+		std::ifstream in("assets/shaders/" + file);
 
 		if (in)
 		{

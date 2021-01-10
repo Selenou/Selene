@@ -1,5 +1,5 @@
 project "Sandbox"
-	kind "ConsoleApp"
+	kind "ConsoleApp" --WindowedApp
     language "C++"
     cppdialect "C++17"
 	staticruntime "on"
@@ -17,7 +17,6 @@ project "Sandbox"
 	{ 
         "%{wks.location}/Selene/src",
 		"%{IncludeDir.spdlog}",
-		"%{wks.location}/Selene/vendor",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}"
@@ -30,6 +29,10 @@ project "Sandbox"
 
 	filter "system:windows"
 		systemversion "latest"
+		linkoptions 
+		{ 
+			--"/ENTRY:mainCRTStartup" -- if WindowedApp
+		}
 
 	filter "configurations:Debug"
 		defines "SLN_DEBUG"

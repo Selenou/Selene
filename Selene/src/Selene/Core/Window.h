@@ -21,7 +21,7 @@ namespace Selene
 	class Window
 	{
 	public:
-		virtual ~Window() {};
+		virtual ~Window() = default;
 	public:
 		using EventCallback = std::function<void(Event&)>;
 		virtual void SwapBuffers() = 0;

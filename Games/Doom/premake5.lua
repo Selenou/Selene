@@ -17,7 +17,9 @@ project "Doom"
 	{ 
         "%{wks.location}/Selene/src",
 		"%{IncludeDir.spdlog}",
-		"%{wks.location}/Selene/vendor",
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.imgui}"
 	}
 
 	links 
