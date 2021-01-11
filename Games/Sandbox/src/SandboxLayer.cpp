@@ -12,27 +12,61 @@ SandboxLayer::SandboxLayer()
 	// Could be better here
 	auto& window = Selene::Game::GetInstance().GetWindow();
 	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
-
+	
 	float vertices[] =
 	{
-		-1.0f,	-1.0f,	-1.0f,	0.583f,  0.771f,  0.014f,
-		1.0f,	-1.0f,	-1.0f,	0.609f,  0.115f,  0.436f,
-		1.0f,	1.0f,	-1.0f,	0.327f,  0.483f,  0.844f,
-		-1.0f,	1.0f,	-1.0f,	0.822f,  0.569f,  0.201f,
-		-1.0f,	-1.0f,	 1.0f,	0.435f,  0.602f,  0.223f,
-		1.0f,	-1.0f,	 1.0f,	0.714f,  0.505f,  0.345f,
-		1.0f,	1.0f,	1.0f,	0.225f,  0.587f,  0.040f,
-		-1.0f,	1.0f,	1.0f,	0.982f,  0.099f,  0.879f
+		// front
+		-1.0, -1.0,  1.0, 0.0, 0.0,
+		1.0, -1.0,  1.0, 1.0, 0.0,
+		1.0,  1.0,  1.0, 1.0, 1.0,
+		-1.0,  1.0,  1.0, 0.0, 1.0,
+		// top
+		-1.0,  1.0,  1.0, 0.0, 0.0,
+		1.0,  1.0,  1.0, 1.0, 0.0,
+		1.0,  1.0, -1.0, 1.0, 1.0,
+		-1.0,  1.0, -1.0, 0.0, 1.0,
+		// back
+		1.0, -1.0, -1.0, 0.0, 0.0,
+		-1.0, -1.0, -1.0, 1.0, 0.0,
+		-1.0,  1.0, -1.0, 1.0, 1.0,
+		1.0,  1.0, -1.0, 0.0, 1.0,
+		// bottom
+		-1.0, -1.0, -1.0, 0.0, 0.0,
+		1.0, -1.0, -1.0, 1.0, 0.0,
+		1.0, -1.0,  1.0, 1.0, 1.0,
+		-1.0, -1.0,  1.0, 0.0, 1.0,
+		// left
+		-1.0, -1.0, -1.0, 0.0, 0.0,
+		-1.0, -1.0,  1.0, 1.0, 0.0,
+		-1.0,  1.0,  1.0, 1.0, 1.0,
+		-1.0,  1.0, -1.0,0.0, 1.0,
+		// right
+		1.0, -1.0,  1.0, 0.0, 0.0,
+		1.0, -1.0, -1.0, 1.0, 0.0,
+		1.0,  1.0, -1.0, 1.0, 1.0,
+		1.0,  1.0,  1.0, 0.0, 1.0
 	};
 
 	uint32_t indices[] =
 	{
-		0, 1, 3, 3, 1, 2,
-		1, 5, 2, 2, 5, 6,
-		5, 4, 6, 6, 4, 7,
-		4, 0, 7, 7, 0, 3,
-		3, 2, 7, 7, 2, 6,
-		4, 5, 0, 0, 5, 1
+		// front
+		0, 1, 2,
+		2, 3, 0, 
+		// top
+		4,  5, 6,
+		6,  7, 4,
+		// back
+		8,  9, 10,
+		10, 11, 8,
+		// bottom
+		12, 13, 14,
+		14, 15, 12,
+		// left
+		16, 17, 18,
+		18, 19, 16,
+		// right
+		20, 21, 22,
+		22, 23, 20 
 	};
 
 	m_Vbo = Selene::VertexBuffer::Create(vertices, sizeof(vertices));
@@ -41,7 +75,7 @@ SandboxLayer::SandboxLayer()
 	Selene::VertexBufferLayout layout =
 	{
 		{ "a_Position", Selene::DataType::Float3 },
-		{ "a_Color", Selene::DataType::Float3 },
+		{ "a_TexCoord", Selene::DataType::Float2 }
 	};
 
 	m_Vbo->SetLayout(layout);
@@ -51,11 +85,17 @@ SandboxLayer::SandboxLayer()
 	m_Pipeline->SetIndexBuffer(m_Ebo);
 
 	m_Shader = Selene::Shader::Create("base.vert", "base.frag");
+	m_Texture = Selene::Texture::Create("corgi.jpg");
+
+	m_Shader->Bind();
+	m_Shader->SetUniform("u_Texture", 0);
+	m_Shader->Unbind();
 }
 
 void SandboxLayer::Update(Selene::Timestep ts)
 {
 	Selene::RenderingEngine::PrepareNewFrame(*m_Camera);
+	m_Texture->Bind();
 	Selene::RenderingEngine::Submit(m_Pipeline, m_Shader);
 }
 

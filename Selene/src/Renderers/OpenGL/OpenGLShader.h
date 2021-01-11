@@ -20,6 +20,7 @@ namespace Selene
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 	public:
+		virtual void SetUniform(const std::string& name, const int value) override;
 		virtual void SetUniform(const std::string& name, const glm::mat4& matrix) override;
 	private:
 		std::string ReadFromFile(const std::string& file);

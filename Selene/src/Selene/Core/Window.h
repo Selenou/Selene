@@ -3,6 +3,7 @@
 #include "slnpch.h"
 
 #include "Selene/EventSystem/Event.h"
+#include "Selene/Config.h"
 
 namespace Selene 
 {
@@ -12,9 +13,9 @@ namespace Selene
 		uint32_t Width;
 		uint32_t Height;
 
-		WindowSettings(const std::string& title = "Selene Engine",
-				   uint32_t width = 1280,
-				   uint32_t height = 720) 
+		WindowSettings(const std::string& title = Config::DEFAULT_WINDOW_NAME,
+				   uint32_t width = Config::DEFAULT_WINDOW_WIDTH,
+				   uint32_t height = Config::DEFAULT_WINDOW_HEIGHT)
 			: Title(title), Width(width), Height(height){}
 	};
 

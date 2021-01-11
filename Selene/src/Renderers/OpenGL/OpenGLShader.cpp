@@ -30,6 +30,12 @@ namespace Selene
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetUniform(const std::string& name, int value)
+	{
+		GLint location = glGetUniformLocation(m_ShaderID, name.c_str());
+		glUniform1i(location, value);
+	}
+
 	void OpenGLShader::SetUniform(const std::string & name, const glm::mat4 & matrix)
 	{
 		GLint location = glGetUniformLocation(m_ShaderID, name.c_str());

@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 #include "Selene/Core/Macro.h"
 #include "Selene/Core/Log.h"

@@ -35,5 +35,6 @@ namespace Selene
 		shader->Bind();
 		shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
 		s_RenderingAPI->DrawIndexed(pipeline->GetIndexBuffer()->GetCount());
+		shader->Unbind();
 	}
 }
