@@ -13,6 +13,8 @@ namespace Selene
 	void ImGuiLayer::Attach()
 	{
 		IMGUI_CHECKVERSION();
+
+		SLN_ENGINE_INFO("Initializing ImGui");
 		ImGui::CreateContext();
 
 		ImGuiIO& io = ImGui::GetIO(); (void)io;

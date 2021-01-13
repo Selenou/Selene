@@ -31,10 +31,12 @@ namespace Selene
 
 	void RenderingEngine::Submit(std::shared_ptr<RenderingPipeline> pipeline, std::shared_ptr<Shader> shader)
 	{
-		pipeline->Bind();
-		shader->Bind();
-		shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
-		s_RenderingAPI->DrawIndexed(pipeline->GetIndexBuffer()->GetCount());
+		//pipeline->Bind();
+		//shader->Bind();
+			//glm::mat4 model = glm::mat4(1.0f);
+			//shader->SetUniform("u_Model", model);
+			//shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
+			s_RenderingAPI->DrawIndexed(pipeline->GetIndexBuffer()->GetCount());
 		shader->Unbind();
 	}
 }

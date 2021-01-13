@@ -5,8 +5,8 @@
 
 namespace Selene
 {
-	OpenGLTexture::OpenGLTexture(const std::string& fullpath)
-		: Texture(fullpath)
+	OpenGLTexture2D::OpenGLTexture2D(const std::string& fullpath)
+		: Texture2D(fullpath)
 	{
 		// Load image
 		int width, height, channels;
@@ -59,16 +59,65 @@ namespace Selene
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 		}
 
+		stbi_set_flip_vertically_on_load(0);
+
 		// Release resource
 		stbi_image_free(data);
 	}
 
-	OpenGLTexture::~OpenGLTexture()
+	OpenGLTexture2D::~OpenGLTexture2D()
 	{
 		glDeleteTextures(1, &m_TextureID);
 	}
 
-	void OpenGLTexture::Bind(uint32_t slot) const
+	void OpenGLTexture2D::Bind(uint32_t slot) const
+	{
+		glBindTextureUnit(slot, m_TextureID);
+	}
+
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+
+	OpenGLTextureCubeMap::OpenGLTextureCubeMap(const std::string& fullpath) 
+		: TextureCubeMap(fullpath)
+	{
+		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_TextureID);
+		int width, height, channels;
+		stbi_uc* data;
+		for (int faceIndex = 0; faceIndex < 6; faceIndex++)
+		{
+			std::string path = fullpath;
+			path += std::to_string(faceIndex);
+			path += ".jpg";
+
+			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+			SLN_ENGINE_INFO("Loading image from [{0}] : width:{1}, height:{2}, channels:{3}", path, width, height, channels);
+
+			// Use first face index to set texture storage parameters
+			if (!faceIndex) 
+			{
+				glTextureStorage2D(m_TextureID, 1, GL_RGBA8, width, height);
+			}
+
+			glTextureSubImage3D(m_TextureID, 0, 0, 0, faceIndex, width, height, 1, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+			stbi_image_free(data);
+		}
+
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	}
+
+	OpenGLTextureCubeMap::~OpenGLTextureCubeMap()
+	{
+		glDeleteTextures(1, &m_TextureID);
+	}
+
+	void OpenGLTextureCubeMap::Bind(uint32_t slot) const
 	{
 		glBindTextureUnit(slot, m_TextureID);
 	}

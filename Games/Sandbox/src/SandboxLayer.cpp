@@ -1,6 +1,11 @@
 #include "SandboxLayer.h"
 #include "imgui.h"
 
+//tmp
+#include  <glad/glad.h>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 SandboxLayer::SandboxLayer() 
 	: Layer("Sandbox")
 {
@@ -39,12 +44,46 @@ SandboxLayer::SandboxLayer()
 		-1.0, -1.0, -1.0, 0.0, 0.0,
 		-1.0, -1.0,  1.0, 1.0, 0.0,
 		-1.0,  1.0,  1.0, 1.0, 1.0,
-		-1.0,  1.0, -1.0,0.0, 1.0,
+		-1.0,  1.0, -1.0, 0.0, 1.0,
 		// right
 		1.0, -1.0,  1.0, 0.0, 0.0,
 		1.0, -1.0, -1.0, 1.0, 0.0,
 		1.0,  1.0, -1.0, 1.0, 1.0,
 		1.0,  1.0,  1.0, 0.0, 1.0
+	};
+
+	float skyboxVertices[] =
+	{
+		// front
+		-1.0, -1.0,  1.0,
+		1.0, -1.0,  1.0,
+		1.0,  1.0,  1.0,
+		-1.0,  1.0,  1.0,
+		// top
+		-1.0,  1.0,  1.0,
+		1.0,  1.0,  1.0,
+		1.0,  1.0, -1.0,
+		-1.0,  1.0, -1.0,
+		// back
+		1.0, -1.0, -1.0,
+		-1.0, -1.0, -1.0,
+		-1.0,  1.0, -1.0,
+		1.0,  1.0, -1.0,
+		// bottom
+		-1.0, -1.0, -1.0,
+		1.0, -1.0, -1.0,
+		1.0, -1.0,  1.0,
+		-1.0, -1.0,  1.0,
+		// left
+		-1.0, -1.0, -1.0,
+		-1.0, -1.0,  1.0,
+		-1.0,  1.0,  1.0,
+		-1.0,  1.0, -1.0,
+		// right
+		1.0, -1.0,  1.0,
+		1.0, -1.0, -1.0,
+		1.0,  1.0, -1.0,
+		1.0,  1.0,  1.0
 	};
 
 	uint32_t indices[] =
@@ -72,6 +111,8 @@ SandboxLayer::SandboxLayer()
 	m_Vbo = Selene::VertexBuffer::Create(vertices, sizeof(vertices));
 	m_Ebo = Selene::IndexBuffer::Create(indices, sizeof(indices));
 
+	m_SkyboxVbo = Selene::VertexBuffer::Create(skyboxVertices, sizeof(skyboxVertices));
+
 	Selene::VertexBufferLayout layout =
 	{
 		{ "a_Position", Selene::DataType::Float3 },
@@ -80,22 +121,49 @@ SandboxLayer::SandboxLayer()
 
 	m_Vbo->SetLayout(layout);
 
+	Selene::VertexBufferLayout skyboxLayout =
+	{
+		{ "a_Position", Selene::DataType::Float3 }
+	};
+
+	m_SkyboxVbo->SetLayout(skyboxLayout);
+
 	m_Pipeline = Selene::RenderingPipeline::Create();
 	m_Pipeline->SetVertexBuffer(m_Vbo);
 	m_Pipeline->SetIndexBuffer(m_Ebo);
 
-	m_Shader = Selene::Shader::Create("base.vert", "base.frag");
-	m_Texture = Selene::Texture::Create("corgi.jpg");
+	m_SkyboxPipeline = Selene::RenderingPipeline::Create();
+	m_SkyboxPipeline->SetVertexBuffer(m_SkyboxVbo);
+	m_SkyboxPipeline->SetIndexBuffer(m_Ebo);
 
-	m_Shader->Bind();
-	m_Shader->SetUniform("u_Texture", 0);
-	m_Shader->Unbind();
+	m_Shader = Selene::Shader::Create("base.vert", "base.frag");
+	m_Texture = Selene::Texture2D::Create("corgi.jpg");
+
+	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
+	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/skybox");
+	
 }
 
 void SandboxLayer::Update(Selene::Timestep ts)
 {
 	Selene::RenderingEngine::PrepareNewFrame(*m_Camera);
+
+	glDepthMask(GL_FALSE);
+	m_TextureCubeMap->Bind();
+	m_SkyboxPipeline->Bind();
+	m_SkyboxShader->Bind();
+	glm::mat4 v = glm::mat4(glm::mat3(m_Camera->GetViewMatrix())); // from mat3 to mat4 : removes any translation, but keeps all rotation transformations so the user can still look around the scene
+	glm::mat4 vp = m_Camera->GetProjectionMatrix() * v;
+	m_SkyboxShader->SetUniform("u_ViewProjection", vp);
+	Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxShader);
+	glDepthMask(GL_TRUE);
+
 	m_Texture->Bind();
+	m_Pipeline->Bind();
+	m_Shader->Bind();
+	glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(0,1,0));
+	m_Shader->SetUniform("u_Model", model);
+	m_Shader->SetUniform("u_ViewProjection", m_Camera->GetViewProjectionMatrix());
 	Selene::RenderingEngine::Submit(m_Pipeline, m_Shader);
 }
 
