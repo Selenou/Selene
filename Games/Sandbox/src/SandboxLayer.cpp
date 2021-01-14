@@ -140,7 +140,7 @@ SandboxLayer::SandboxLayer()
 	m_Texture = Selene::Texture2D::Create("corgi.jpg");
 
 	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
-	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/debug.png");
+	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/blue2048.png");
 }
 
 void SandboxLayer::Update(Selene::Timestep ts)
