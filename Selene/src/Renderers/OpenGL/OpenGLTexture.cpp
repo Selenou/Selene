@@ -11,9 +11,10 @@ namespace Selene
 		// Load image
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
+
 		SLN_ENGINE_INFO("Loading image from [{0}]", fullpath);
 		stbi_uc* data = stbi_load(fullpath.c_str(), &width, &height, &channels, 0);
-		SLN_ENGINE_INFO("Loaded ! : width:{0}, height:{1}, channels:{2}", width, height, channels);
+
 		m_Width = width;
 		m_Height = height;
 
@@ -86,9 +87,10 @@ namespace Selene
 		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_TextureID);
 
 		int width, height, channels;
+
 		SLN_ENGINE_INFO("Loading image from [{0}]", fullpath);
 		stbi_uc* data = data = stbi_load(fullpath.c_str(), &width, &height, &channels, 0);
-		SLN_ENGINE_INFO("Loaded ! : width:{0}, height:{1}, channels:{2}", width, height, channels);
+
 
 		m_Width = width;
 		m_Height = height;

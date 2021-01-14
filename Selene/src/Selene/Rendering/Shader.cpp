@@ -7,8 +7,6 @@ namespace Selene
 {
 	std::shared_ptr<Shader> Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
-		SLN_ENGINE_INFO("Creating Shader from [{0}, {1}]", vertexSrc, fragmentSrc);
-
 		switch (RenderingEngine::GetAPI())
 		{
 			case RenderingAPI::API::None:

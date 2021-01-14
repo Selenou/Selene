@@ -14,6 +14,9 @@ SandboxLayer::SandboxLayer()
 	m_Camera->SetPosition({ 0.0f, 0.0f, 10.0f });
 	m_Camera->SetRotation({ 0.0f, 0.0f, 0.0f });
 
+	Selene::Mesh* moonMesh = new Selene::Mesh("assets/meshes/moon/moon.obj");
+
+
 	// Could be better here
 	auto& window = Selene::Game::GetInstance().GetWindow();
 	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());

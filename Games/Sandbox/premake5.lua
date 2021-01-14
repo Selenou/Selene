@@ -24,7 +24,8 @@ project "Sandbox"
 
 	links 
 	{ 
-		"Selene" 
+		"Selene",
+		"%{wks.location}/Selene/vendor/assimp/assimp-vc141-mt.lib"
 	}
 
 	filter "system:windows"
@@ -32,6 +33,12 @@ project "Sandbox"
 		linkoptions 
 		{ 
 			--"/ENTRY:mainCRTStartup" -- if WindowedApp
+		}
+		
+		postbuildcommands 
+		{
+			'{COPY} "./assets" "%{cfg.targetdir}/assets"',
+			'{COPY} "%{wks.location}/Selene/vendor/assimp/assimp-vc141-mt.dll" "%{cfg.targetdir}"'
 		}
 
 	filter "configurations:Debug"

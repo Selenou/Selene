@@ -9,6 +9,8 @@ namespace Selene
 	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
 		ShaderSources shaderSources;
+
+		SLN_ENGINE_INFO("Loading shader from [{0}, {1}]", vertexSrc, fragmentSrc);
 		shaderSources.VertexSrc = ReadFromFile(vertexSrc);
 		shaderSources.FragmentSrc = ReadFromFile(fragmentSrc);
 
