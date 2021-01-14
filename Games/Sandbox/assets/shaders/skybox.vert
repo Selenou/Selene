@@ -8,6 +8,6 @@ out vec3 v_TexCoord;
 
 void main()
 {
-	v_TexCoord = a_Position;
+	v_TexCoord = vec3(a_Position.xy, -a_Position.z); // flip z because cubermap in  opengl uses RenderMap LH coordinates
 	gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 }
