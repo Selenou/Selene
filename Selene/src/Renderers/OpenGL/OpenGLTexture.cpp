@@ -14,6 +14,7 @@ namespace Selene
 
 		SLN_ENGINE_INFO("Loading image from [{0}]", fullpath);
 		stbi_uc* data = stbi_load(fullpath.c_str(), &width, &height, &channels, 0);
+		SLN_ENGINE_ASSERT(data, "Failed to load image");
 
 		m_Width = width;
 		m_Height = height;
@@ -90,7 +91,7 @@ namespace Selene
 
 		SLN_ENGINE_INFO("Loading image from [{0}]", fullpath);
 		stbi_uc* data = data = stbi_load(fullpath.c_str(), &width, &height, &channels, 0);
-
+		SLN_ENGINE_ASSERT(data, "Failed to load image");
 
 		m_Width = width;
 		m_Height = height;

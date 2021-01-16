@@ -29,7 +29,7 @@ namespace Selene
 		s_ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
 
-	void RenderingEngine::Submit(std::shared_ptr<RenderingPipeline> pipeline, std::shared_ptr<Shader> shader)
+	void RenderingEngine::Submit(std::shared_ptr<Pipeline> pipeline, std::shared_ptr<Shader> shader)
 	{
 		//pipeline->Bind();
 		//shader->Bind();

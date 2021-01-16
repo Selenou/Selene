@@ -17,7 +17,7 @@ namespace Selene
 		Camera();
 	public:
 		void SetPerspective(float verticalFOV, float zNear = 0.01f, float zFar = 1000.0f);
-		void SetOrthographic(float size, float zNear = -1.0f, float zFar = 1.0f);
+		void SetOrthographic(float size, float zNear = -5.0f, float zFar = 5.0f);
 		void SetPosition(const glm::vec3& position);
 		void SetRotation(const glm::vec3& rotation);
 		void SetViewportSize(uint32_t width, uint32_t height);

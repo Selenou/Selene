@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Selene/Rendering/RenderingPipeline.h"
+#include "Selene/Rendering/Pipeline.h"
 
 namespace Selene
 {
-	class OpenGLPipeline : public RenderingPipeline
+	class OpenGLPipeline : public Pipeline
 	{
 	public:
 		virtual void Bind() const override;

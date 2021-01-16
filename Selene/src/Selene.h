@@ -14,7 +14,7 @@
 
 #include "Selene/Rendering/RenderingEngine.h"
 #include "Selene/Rendering/RenderingAPI.h"
-#include "Selene/Rendering/RenderingPipeline.h"
+#include "Selene/Rendering/Pipeline.h"
 #include "Selene/Rendering/Mesh.h"
 #include "Selene/Rendering/Shader.h"
 #include "Selene/Rendering/Texture.h"

@@ -14,46 +14,8 @@ SandboxLayer::SandboxLayer()
 	m_Camera->SetPosition({ 0.0f, 0.0f, 10.0f });
 	m_Camera->SetRotation({ 0.0f, 0.0f, 0.0f });
 
-	Selene::Mesh* moonMesh = new Selene::Mesh("assets/meshes/moon/moon.obj");
-
-
-	// Could be better here
 	auto& window = Selene::Game::GetInstance().GetWindow();
 	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
-	
-	float vertices[] =
-	{
-		// front
-		-1.0, -1.0,  1.0, 0.0, 0.0,
-		1.0, -1.0,  1.0, 1.0, 0.0,
-		1.0,  1.0,  1.0, 1.0, 1.0,
-		-1.0,  1.0,  1.0, 0.0, 1.0,
-		// top
-		-1.0,  1.0,  1.0, 0.0, 0.0,
-		1.0,  1.0,  1.0, 1.0, 0.0,
-		1.0,  1.0, -1.0, 1.0, 1.0,
-		-1.0,  1.0, -1.0, 0.0, 1.0,
-		// back
-		1.0, -1.0, -1.0, 0.0, 0.0,
-		-1.0, -1.0, -1.0, 1.0, 0.0,
-		-1.0,  1.0, -1.0, 1.0, 1.0,
-		1.0,  1.0, -1.0, 0.0, 1.0,
-		// bottom
-		-1.0, -1.0, -1.0, 0.0, 0.0,
-		1.0, -1.0, -1.0, 1.0, 0.0,
-		1.0, -1.0,  1.0, 1.0, 1.0,
-		-1.0, -1.0,  1.0, 0.0, 1.0,
-		// left
-		-1.0, -1.0, -1.0, 0.0, 0.0,
-		-1.0, -1.0,  1.0, 1.0, 0.0,
-		-1.0,  1.0,  1.0, 1.0, 1.0,
-		-1.0,  1.0, -1.0, 0.0, 1.0,
-		// right
-		1.0, -1.0,  1.0, 0.0, 0.0,
-		1.0, -1.0, -1.0, 1.0, 0.0,
-		1.0,  1.0, -1.0, 1.0, 1.0,
-		1.0,  1.0,  1.0, 0.0, 1.0
-	};
 
 	float skyboxVertices[] =
 	{
@@ -111,45 +73,27 @@ SandboxLayer::SandboxLayer()
 		22, 23, 20 
 	};
 
-	m_Vbo = Selene::VertexBuffer::Create(vertices, sizeof(vertices));
-	m_Ebo = Selene::IndexBuffer::Create(indices, sizeof(indices));
+	m_SkyboxPipeline = Selene::Pipeline::Create();
+	Selene::VertexBufferLayout skyboxLayout = { { "a_Position", Selene::DataType::Float3 } };
 
 	m_SkyboxVbo = Selene::VertexBuffer::Create(skyboxVertices, sizeof(skyboxVertices));
-
-	Selene::VertexBufferLayout layout =
-	{
-		{ "a_Position", Selene::DataType::Float3 },
-		{ "a_TexCoord", Selene::DataType::Float2 }
-	};
-
-	m_Vbo->SetLayout(layout);
-
-	Selene::VertexBufferLayout skyboxLayout =
-	{
-		{ "a_Position", Selene::DataType::Float3 }
-	};
-
 	m_SkyboxVbo->SetLayout(skyboxLayout);
-
-	m_Pipeline = Selene::RenderingPipeline::Create();
-	m_Pipeline->SetVertexBuffer(m_Vbo);
-	m_Pipeline->SetIndexBuffer(m_Ebo);
-
-	m_SkyboxPipeline = Selene::RenderingPipeline::Create();
 	m_SkyboxPipeline->SetVertexBuffer(m_SkyboxVbo);
-	m_SkyboxPipeline->SetIndexBuffer(m_Ebo);
 
-	m_Shader = Selene::Shader::Create("base.vert", "base.frag");
-	m_Texture = Selene::Texture2D::Create("corgi.jpg");
+	m_SkyboxEbo = Selene::IndexBuffer::Create(indices, sizeof(indices));
+	m_SkyboxPipeline->SetIndexBuffer(m_SkyboxEbo);
 
 	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
-	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/blue2048.png");
+	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/debug.png");
+
+	m_Mesh = std::make_shared<Selene::Mesh>("assets/meshes/backpack/backpack.obj");
+	m_Shader = Selene::Shader::Create("baseDebugColor.vert", "baseDebugColor.frag");
 }
 
 void SandboxLayer::Update(Selene::Timestep ts)
 {
 	Selene::RenderingEngine::PrepareNewFrame(*m_Camera);
-
+	
 	glDepthMask(GL_FALSE);
 	m_TextureCubeMap->Bind();
 	m_SkyboxPipeline->Bind();
@@ -159,14 +103,14 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	m_SkyboxShader->SetUniform("u_ViewProjection", vp);
 	Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxShader);
 	glDepthMask(GL_TRUE);
-
-	m_Texture->Bind();
-	m_Pipeline->Bind();
-	m_Shader->Bind();
-	glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(0,1,0));
-	m_Shader->SetUniform("u_Model", model);
-	m_Shader->SetUniform("u_ViewProjection", m_Camera->GetViewProjectionMatrix());
-	Selene::RenderingEngine::Submit(m_Pipeline, m_Shader);
+	
+	for (Selene::Submesh sub : m_Mesh->GetSubmeshes())
+	{
+		sub.Pipeline->Bind();
+		m_Shader->Bind();
+		m_Shader->SetUniform("u_ViewProjection", m_Camera->GetViewProjectionMatrix());
+		Selene::RenderingEngine::Submit(sub.Pipeline, m_Shader);
+	}
 }
 
 void SandboxLayer::RenderUI()
@@ -188,6 +132,12 @@ void SandboxLayer::RenderUI()
 		ImGui::Text("Frametime : %f ms", stats.ts.GetMilliseconds());
 	ImGui::End();
 
+	ImGui::Begin("Debug");
+		if (ImGui::Checkbox("Wireframe", &useWireframeMode))
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, useWireframeMode ? GL_LINE : GL_FILL);
+		}
+	ImGui::End();
 
 	// Debug
 	ImGui::Begin("Camera Settings");
