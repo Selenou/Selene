@@ -79,10 +79,10 @@ SandboxLayer::SandboxLayer()
 
 	m_SkyboxVbo = Selene::VertexBuffer::Create(skyboxVertices, sizeof(skyboxVertices));
 	m_SkyboxVbo->SetLayout(skyboxLayout);
-	m_SkyboxPipeline->SetVertexBuffer(m_SkyboxVbo);
+	m_SkyboxPipeline->BindVertexBuffer(m_SkyboxVbo);
 
 	m_SkyboxEbo = Selene::IndexBuffer::Create(indices, sizeof(indices));
-	m_SkyboxPipeline->SetIndexBuffer(m_SkyboxEbo);
+	m_SkyboxPipeline->BindIndexBuffer(m_SkyboxEbo);
 
 	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
 	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/debug.png");
@@ -99,12 +99,11 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	// Skybox
 	glDepthMask(GL_FALSE);
 	m_TextureCubeMap->Bind();
-	m_SkyboxPipeline->Bind();
 	m_SkyboxShader->Bind();
 	glm::mat4 v = glm::mat4(glm::mat3(m_Camera->GetViewMatrix())); // from mat3 to mat4 : removes any translation, but keeps all rotation transformations so the user can still look around the scene
 	glm::mat4 vp = m_Camera->GetProjectionMatrix() * v;
 	m_SkyboxShader->SetUniform("u_ViewProjection", vp);
-	Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxShader);
+	Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxEbo->GetCount());
 	glDepthMask(GL_TRUE);
 	
 	// Mesh

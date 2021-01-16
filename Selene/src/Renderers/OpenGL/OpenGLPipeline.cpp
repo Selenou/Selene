@@ -30,11 +30,10 @@ namespace Selene
 		glBindVertexArray(m_VaoID);
 	}
 
-	void OpenGLPipeline::SetVertexBuffer(const std::shared_ptr<VertexBuffer>& vbo)
+	void OpenGLPipeline::BindVertexBuffer(const std::shared_ptr<VertexBuffer>& vbo)
 	{
-		m_Vbo = vbo;
 		uint32_t attribIndex = 0;
-		auto const& layout = *(m_Vbo->GetLayout());
+		auto const& layout = *(vbo->GetLayout());
 
 		if (m_VaoID)
 		{
@@ -65,9 +64,8 @@ namespace Selene
 		glVertexArrayVertexBuffer(m_VaoID, 0, vbo->GetID(), 0, layout.GetStride());
 	}
 
-	void OpenGLPipeline::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& ebo)
+	void OpenGLPipeline::BindIndexBuffer(const std::shared_ptr<IndexBuffer>& ebo)
 	{
-		m_Ebo = ebo;
 		glVertexArrayElementBuffer(m_VaoID, ebo->GetID());
 	}
 }

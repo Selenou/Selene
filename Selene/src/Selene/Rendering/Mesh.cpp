@@ -19,8 +19,8 @@ namespace Selene
 		m_Vbo->SetLayout(layout);
 
 		m_Pipeline = Pipeline::Create();
-		m_Pipeline->SetVertexBuffer(m_Vbo);
-		m_Pipeline->SetIndexBuffer(m_Ebo);
+		m_Pipeline->BindVertexBuffer(m_Vbo);
+		m_Pipeline->BindIndexBuffer(m_Ebo);
 
 		m_Shader = m_Shader = Shader::Create("baseDebugColor.vert", "baseDebugColor.frag");
 	}

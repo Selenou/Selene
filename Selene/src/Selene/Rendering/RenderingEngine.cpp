@@ -29,10 +29,10 @@ namespace Selene
 		s_ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
 
-	void RenderingEngine::Submit(std::shared_ptr<Pipeline> pipeline, std::shared_ptr<Shader> shader)
+	void RenderingEngine::Submit(std::shared_ptr<Pipeline> pipeline, uint32_t count)
 	{
-		s_RenderingAPI->DrawIndexed(pipeline->GetIndexBuffer()->GetCount());
-		shader->Unbind();
+		pipeline->Bind();
+		s_RenderingAPI->DrawIndexed(count);
 	}
 
 	void RenderingEngine::SubmitMesh(std::shared_ptr<Mesh> mesh)
@@ -46,7 +46,5 @@ namespace Selene
 		{
 			s_RenderingAPI->DrawIndexedBaseVertex(submesh.IndexCount, submesh.BaseVertex);
 		}
-
-		mesh->m_Shader->Unbind();
 	}
 }
