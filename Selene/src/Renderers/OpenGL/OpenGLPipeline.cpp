@@ -34,7 +34,7 @@ namespace Selene
 	{
 		m_Vbo = vbo;
 		uint32_t attribIndex = 0;
-		auto layout = *(m_Vbo->GetLayout());
+		auto const& layout = *(m_Vbo->GetLayout());
 
 		if (m_VaoID)
 		{

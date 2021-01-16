@@ -31,12 +31,22 @@ namespace Selene
 
 	void RenderingEngine::Submit(std::shared_ptr<Pipeline> pipeline, std::shared_ptr<Shader> shader)
 	{
-		//pipeline->Bind();
-		//shader->Bind();
-			//glm::mat4 model = glm::mat4(1.0f);
-			//shader->SetUniform("u_Model", model);
-			//shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
-			s_RenderingAPI->DrawIndexed(pipeline->GetIndexBuffer()->GetCount());
+		s_RenderingAPI->DrawIndexed(pipeline->GetIndexBuffer()->GetCount());
 		shader->Unbind();
+	}
+
+	void RenderingEngine::SubmitMesh(std::shared_ptr<Mesh> mesh)
+	{
+		mesh->m_Pipeline->Bind();
+
+		mesh->m_Shader->Bind();
+		mesh->m_Shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
+
+		for (Submesh& submesh : mesh->m_Submeshes)
+		{
+			s_RenderingAPI->DrawIndexedBaseVertex(submesh.IndexCount, submesh.BaseVertex);
+		}
+
+		mesh->m_Shader->Unbind();
 	}
 }

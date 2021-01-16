@@ -11,8 +11,19 @@ namespace Selene
 		m_FilePath(path)
 	{
 		Load();
-	}
 
+		m_Vbo = VertexBuffer::Create(m_Vertices.data(), (uint32_t)(m_Vertices.size() * sizeof(Vertex)));
+		m_Ebo = IndexBuffer::Create(m_Indices.data(), (uint32_t)(m_Indices.size() * sizeof(uint32_t)));
+
+		VertexBufferLayout layout = VertexBufferLayout({ { "a_Position", DataType::Float3 } });
+		m_Vbo->SetLayout(layout);
+
+		m_Pipeline = Pipeline::Create();
+		m_Pipeline->SetVertexBuffer(m_Vbo);
+		m_Pipeline->SetIndexBuffer(m_Ebo);
+
+		m_Shader = m_Shader = Shader::Create("baseDebugColor.vert", "baseDebugColor.frag");
+	}
 
 	void Mesh::Load()
 	{
@@ -26,20 +37,25 @@ namespace Selene
 		// m_Submeshes : emplace_back() with pre-allocation is the fastest
 		m_Submeshes.reserve(scene->mNumMeshes);
 
+		uint32_t vertexCount = 0;
+		uint32_t indexCount = 0;
+
 		for (size_t meshIndex = 0; meshIndex < scene->mNumMeshes; meshIndex++)
 		{
 			aiMesh* mesh = scene->mMeshes[meshIndex];
 
 			Submesh& submesh = m_Submeshes.emplace_back();
-			submesh.Name = mesh->mName.C_Str(); 
-			
+			submesh.Name = mesh->mName.C_Str();
+			submesh.IndexCount = mesh->mNumFaces * 3;
+			submesh.BaseVertex = vertexCount;
+
 			// Vertices
 			for (size_t i = 0; i < mesh->mNumVertices; i++)
 			{
 				Vertex vertex;
 				vertex.Position = { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z };
 
-				submesh.Vertices.push_back(vertex);
+				m_Vertices.push_back(vertex);
 			}
 
 			// Indices
@@ -48,21 +64,15 @@ namespace Selene
 				aiFace face = mesh->mFaces[i];
 
 				SLN_ENGINE_ASSERT((mesh->mFaces[i].mNumIndices == 3), "Face must have 3 indices");
+
 				for (size_t j = 0; j < face.mNumIndices; j++)
 				{
-					submesh.Indices.push_back(face.mIndices[j]);
+					m_Indices.push_back(face.mIndices[j]);
 				}
 			}
 
-			submesh.Vbo = VertexBuffer::Create(submesh.Vertices.data(), (uint32_t)(submesh.Vertices.size() * sizeof(Vertex)));
-			submesh.Ebo = IndexBuffer::Create(submesh.Indices.data(), (uint32_t)(submesh.Indices.size() * sizeof(uint32_t)));
-
-			VertexBufferLayout layout = VertexBufferLayout({ { "a_Position", DataType::Float3 } });
-			submesh.Vbo->SetLayout(layout);
-
-			submesh.Pipeline = Pipeline::Create();
-			submesh.Pipeline->SetVertexBuffer(submesh.Vbo);
-			submesh.Pipeline->SetIndexBuffer(submesh.Ebo);
+			vertexCount += mesh->mNumVertices;
+			indexCount += submesh.IndexCount;
 		}
 	}
 }

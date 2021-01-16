@@ -4,6 +4,7 @@
 
 #include "Buffer.h"
 #include "Pipeline.h"
+#include "Shader.h"
 
 namespace Selene
 {
@@ -20,12 +21,8 @@ namespace Selene
 	struct Submesh
 	{
 		std::string Name;
-		std::vector<Vertex> Vertices;
-		std::vector<uint32_t> Indices;
-
-		std::shared_ptr<VertexBuffer> Vbo;
-		std::shared_ptr<IndexBuffer> Ebo;
-		std::shared_ptr<Pipeline> Pipeline;
+		uint32_t IndexCount;
+		uint32_t BaseVertex;
 	};
 
 	/////////////////////////////////////////////////////////
@@ -37,12 +34,21 @@ namespace Selene
 	public:
 		Mesh(const std::string& path);
 		~Mesh() = default;
-	public:
-		std::vector<Submesh>& GetSubmeshes () { return m_Submeshes; }
 	private:
 		void Load();
 	private:
 		std::string m_FilePath;
 		std::vector<Submesh> m_Submeshes;
+
+		std::shared_ptr<VertexBuffer> m_Vbo;
+		std::shared_ptr<IndexBuffer> m_Ebo;
+		std::shared_ptr<Pipeline> m_Pipeline;
+
+		std::vector<Vertex> m_Vertices;
+		std::vector<uint32_t> m_Indices;
+
+		std::shared_ptr<Shader> m_Shader; // TODO : material
+
+		friend class RenderingEngine;
 	};
 }

@@ -2,6 +2,7 @@
 
 #include "RenderingAPI.h"
 #include "Pipeline.h"
+#include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "Selene/Core/Game.h"
@@ -22,6 +23,8 @@ namespace Selene
 		static void SetViewport(uint32_t width, uint32_t height);
 		static void PrepareNewFrame(Camera& camera);
 		static void Submit(std::shared_ptr<Pipeline> pipeline, std::shared_ptr<Shader> shader);
+		static void SubmitMesh(std::shared_ptr<Mesh> mesh);
+	public:
 		static inline RenderingAPI::API GetAPI() { return RenderingAPI::GetAPI(); }
 		static inline RenderingAPI::Info GetAPIInfo() { return RenderingAPI::GetInfo(); }
 		static inline RenderingStats GetStats()

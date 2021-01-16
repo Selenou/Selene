@@ -65,4 +65,9 @@ namespace Selene
 	{
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
+
+	void OpenGLRenderingAPI::DrawIndexedBaseVertex(uint32_t count, uint32_t offset)
+	{
+		glDrawElementsBaseVertex(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr, offset);
+	}
 }

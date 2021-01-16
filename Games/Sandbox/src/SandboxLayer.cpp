@@ -73,6 +73,7 @@ SandboxLayer::SandboxLayer()
 		22, 23, 20 
 	};
 
+	// Skybox
 	m_SkyboxPipeline = Selene::Pipeline::Create();
 	Selene::VertexBufferLayout skyboxLayout = { { "a_Position", Selene::DataType::Float3 } };
 
@@ -86,14 +87,16 @@ SandboxLayer::SandboxLayer()
 	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
 	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/debug.png");
 
+	// Mesh
 	m_Mesh = std::make_shared<Selene::Mesh>("assets/meshes/backpack/backpack.obj");
-	m_Shader = Selene::Shader::Create("baseDebugColor.vert", "baseDebugColor.frag");
+	m_MeshTest = std::make_shared<Selene::Mesh>("assets/meshes/cube/cube.obj");
 }
 
 void SandboxLayer::Update(Selene::Timestep ts)
 {
 	Selene::RenderingEngine::PrepareNewFrame(*m_Camera);
 	
+	// Skybox
 	glDepthMask(GL_FALSE);
 	m_TextureCubeMap->Bind();
 	m_SkyboxPipeline->Bind();
@@ -104,13 +107,9 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxShader);
 	glDepthMask(GL_TRUE);
 	
-	for (Selene::Submesh sub : m_Mesh->GetSubmeshes())
-	{
-		sub.Pipeline->Bind();
-		m_Shader->Bind();
-		m_Shader->SetUniform("u_ViewProjection", m_Camera->GetViewProjectionMatrix());
-		Selene::RenderingEngine::Submit(sub.Pipeline, m_Shader);
-	}
+	// Mesh
+	Selene::RenderingEngine::SubmitMesh(m_Mesh);
+	Selene::RenderingEngine::SubmitMesh(m_MeshTest);
 }
 
 void SandboxLayer::RenderUI()
