@@ -31,13 +31,24 @@ namespace Selene
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
 
+	enum MeshImportFlags
+	{
+		FlipUVs = 0x01,					// Flips all UV coordinates along the y-axis and adjusts material settings and bitangents accordingly
+		JoinIdenticalVertices = 0x02,	// Identifies and joins identical vertex data / Seems to cause issue with some meshes if aiProcess_PreTransformVertices is not used
+		PreTransformVertices = 0x04		// Removes the node graph, useful if there is no animation and if you don't care about local transforms
+	};
+
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+
 	class Mesh
 	{
 	public:
-		Mesh(const std::string& path);
+		Mesh(const std::string& path, uint32_t importFlags = 0);
 		~Mesh() = default;
 	private:
-		void Load();
+		void Load(uint32_t importFlags);
 	private:
 		std::string m_FilePath;
 		std::vector<Submesh> m_Submeshes;

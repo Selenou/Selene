@@ -11,7 +11,7 @@ SandboxLayer::SandboxLayer()
 {
 	m_Camera = std::make_unique<Selene::Camera>();
 	m_Camera->SetPerspective(45.0f);
-	m_Camera->SetPosition({ 0.0f, 0.0f, 100.0f });
+	m_Camera->SetPosition({ 0.0f, 0.0f,10.0f });
 	m_Camera->SetRotation({ 0.0f, 0.0f, 0.0f });
 
 	auto& window = Selene::Game::GetInstance().GetWindow();
@@ -88,7 +88,7 @@ SandboxLayer::SandboxLayer()
 	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/purple1024.png");
 
 	// Mesh
-	m_Mesh = std::make_shared<Selene::Mesh>("corgi/corgi.obj");
+	m_Mesh = std::make_shared<Selene::Mesh>("backpack/backpack.obj", Selene::MeshImportFlags::FlipUVs);
 	//m_MeshTest = std::make_shared<Selene::Mesh>("assets/meshes/cube/cube.obj");
 }
 
