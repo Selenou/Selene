@@ -41,6 +41,9 @@ namespace Selene
 
 		mesh->m_Shader->Bind();
 		mesh->m_Shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
+		mesh->m_Shader->SetUniform("u_Model", mesh->m_Transform);
+
+		mesh->m_Texture->Bind();
 
 		for (Submesh& submesh : mesh->m_Submeshes)
 		{

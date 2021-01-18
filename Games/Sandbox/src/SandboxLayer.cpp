@@ -11,7 +11,7 @@ SandboxLayer::SandboxLayer()
 {
 	m_Camera = std::make_unique<Selene::Camera>();
 	m_Camera->SetPerspective(45.0f);
-	m_Camera->SetPosition({ 0.0f, 0.0f, 10.0f });
+	m_Camera->SetPosition({ 0.0f, 0.0f, 100.0f });
 	m_Camera->SetRotation({ 0.0f, 0.0f, 0.0f });
 
 	auto& window = Selene::Game::GetInstance().GetWindow();
@@ -85,11 +85,11 @@ SandboxLayer::SandboxLayer()
 	m_SkyboxPipeline->BindIndexBuffer(m_SkyboxEbo);
 
 	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
-	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/debug.png");
+	m_TextureCubeMap = Selene::TextureCubeMap::Create("skybox/purple1024.png");
 
 	// Mesh
-	m_Mesh = std::make_shared<Selene::Mesh>("assets/meshes/backpack/backpack.obj");
-	m_MeshTest = std::make_shared<Selene::Mesh>("assets/meshes/cube/cube.obj");
+	m_Mesh = std::make_shared<Selene::Mesh>("corgi/corgi.obj");
+	//m_MeshTest = std::make_shared<Selene::Mesh>("assets/meshes/cube/cube.obj");
 }
 
 void SandboxLayer::Update(Selene::Timestep ts)
@@ -108,7 +108,7 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	
 	// Mesh
 	Selene::RenderingEngine::SubmitMesh(m_Mesh);
-	Selene::RenderingEngine::SubmitMesh(m_MeshTest);
+	//Selene::RenderingEngine::SubmitMesh(m_MeshTest);
 }
 
 void SandboxLayer::RenderUI()
