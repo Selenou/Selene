@@ -12,8 +12,6 @@ public:
 	virtual void OnEvent(Selene::Event& event) override;
 private:
 	std::shared_ptr<Selene::Mesh> m_Mesh;
-	std::shared_ptr<Selene::Mesh> m_MeshTest;
-
 	std::shared_ptr<Selene::Shader> m_SkyboxShader;
 	std::shared_ptr<Selene::TextureCubeMap> m_TextureCubeMap;
 	std::shared_ptr<Selene::VertexBuffer> m_SkyboxVbo;

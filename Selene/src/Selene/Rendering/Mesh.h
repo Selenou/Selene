@@ -4,8 +4,9 @@
 
 #include "Buffer.h"
 #include "Pipeline.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "Material.h"
+
+struct aiScene;
 
 namespace Selene
 {
@@ -24,7 +25,7 @@ namespace Selene
 		std::string Name;
 		uint32_t IndexCount;
 		uint32_t BaseVertex;
-		//uint32_t MaterialIndex;
+		uint32_t MaterialIndex;
 	};
 
 	/////////////////////////////////////////////////////////
@@ -33,9 +34,9 @@ namespace Selene
 
 	enum MeshImportFlags
 	{
-		FlipUVs = 0x01,					// Flips all UV coordinates along the y-axis and adjusts material settings and bitangents accordingly
-		JoinIdenticalVertices = 0x02,	// Identifies and joins identical vertex data / Seems to cause issue with some meshes if aiProcess_PreTransformVertices is not used
-		PreTransformVertices = 0x04		// Removes the node graph, useful if there is no animation and if you don't care about local transforms
+		JoinIdenticalVertices = 0x2,		// Identifies and joins identical vertex data / Seems to cause issue with some meshes if aiProcess_PreTransformVertices is not used
+		PreTransformVertices = 0x100,		// Removes the node graph, useful if there is no animation and if you don't care about local transforms
+		FlipUVs = 0x800000					// Flips all UV coordinates along the y-axis and adjusts material settings and bitangents accordingly
 	};
 
 	/////////////////////////////////////////////////////////
@@ -49,6 +50,9 @@ namespace Selene
 		~Mesh() = default;
 	private:
 		void Load(uint32_t importFlags);
+		void SetupPipeline();
+		void ProcessMeshes(const aiScene* scene);
+		void ProcessMaterials(const aiScene* scene);
 	private:
 		std::string m_FilePath;
 		std::vector<Submesh> m_Submeshes;
@@ -60,9 +64,7 @@ namespace Selene
 		std::vector<Vertex> m_Vertices;
 		std::vector<uint32_t> m_Indices;
 
-		// TODO : material
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<Texture2D> m_Texture;
+		std::vector<std::shared_ptr<Material>> m_Materials;
 
 		glm::mat4 m_Transform = glm::mat4(1.0f);
 

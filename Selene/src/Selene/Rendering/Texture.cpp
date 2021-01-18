@@ -7,16 +7,13 @@ namespace Selene
 {
 	std::shared_ptr<Texture2D> Texture2D::Create(const std::string& path)
 	{
-		std::string fullPath = "assets/textures/";
-		fullPath += path;
-
 		switch (RenderingEngine::GetAPI())
 		{
 			case RenderingAPI::API::None:
 				SLN_ENGINE_ASSERT(false, "RenderingAPI::None is currently not supported!");
 				return nullptr;
 			case RenderingAPI::API::OpenGL:
-				return std::make_shared<OpenGLTexture2D>(fullPath);
+				return std::make_shared<OpenGLTexture2D>(path);
 			case RenderingAPI::API::Vulkan:
 				SLN_ENGINE_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
 				return nullptr;
@@ -45,16 +42,13 @@ namespace Selene
 
 	std::shared_ptr<TextureCubeMap> TextureCubeMap::Create(const std::string& path)
 	{
-		std::string fullPath = "assets/textures/";
-		fullPath += path;
-
 		switch (RenderingEngine::GetAPI())
 		{
 		case RenderingAPI::API::None:
 			SLN_ENGINE_ASSERT(false, "RenderingAPI::None is currently not supported!");
 			return nullptr;
 		case RenderingAPI::API::OpenGL:
-			return std::make_shared<OpenGLTextureCubeMap>(fullPath);
+			return std::make_shared<OpenGLTextureCubeMap>(path);
 		case RenderingAPI::API::Vulkan:
 			SLN_ENGINE_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
 			return nullptr;

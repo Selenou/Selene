@@ -39,14 +39,15 @@ namespace Selene
 	{
 		mesh->m_Pipeline->Bind();
 
-		mesh->m_Shader->Bind();
-		mesh->m_Shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
-		mesh->m_Shader->SetUniform("u_Model", mesh->m_Transform);
-
-		mesh->m_Texture->Bind();
-
 		for (Submesh& submesh : mesh->m_Submeshes)
 		{
+			auto& material = mesh->m_Materials[submesh.MaterialIndex];
+			auto& shader = material->GetShader();
+
+			material->Bind();
+			shader->SetUniform("u_ViewProjection", s_ViewProjectionMatrix);
+			shader->SetUniform("u_Model", mesh->m_Transform);
+
 			s_RenderingAPI->DrawIndexedBaseVertex(submesh.IndexCount, submesh.BaseVertex);
 		}
 	}

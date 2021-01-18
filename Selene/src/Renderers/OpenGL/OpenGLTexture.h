@@ -7,7 +7,7 @@ namespace Selene
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
-		OpenGLTexture2D(const std::string& fullpath);
+		OpenGLTexture2D(const std::string& path);
 		virtual ~OpenGLTexture2D();
 	public:
 		virtual void Bind(uint32_t slot = 0) const override;
@@ -22,7 +22,7 @@ namespace Selene
 	class OpenGLTextureCubeMap : public TextureCubeMap
 	{
 	public:
-		OpenGLTextureCubeMap(const std::string& fullpath);
+		OpenGLTextureCubeMap(const std::string& path);
 		virtual ~OpenGLTextureCubeMap();
 	public:
 		virtual void Bind(uint32_t slot = 0) const override;

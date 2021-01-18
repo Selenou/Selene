@@ -5,15 +5,15 @@
 
 namespace Selene
 {
-	OpenGLTexture2D::OpenGLTexture2D(const std::string& fullpath)
-		: Texture2D(fullpath)
+	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
+		: Texture2D(path)
 	{
 		// Load image
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
 
-		SLN_ENGINE_INFO("Loading image from [{0}]", fullpath);
-		stbi_uc* data = stbi_load(fullpath.c_str(), &width, &height, &channels, 0);
+		SLN_ENGINE_INFO("Loading image from [{0}]", path);
+		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		SLN_ENGINE_ASSERT(data, "Failed to load image");
 
 		m_Width = width;
@@ -82,15 +82,15 @@ namespace Selene
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
 
-	OpenGLTextureCubeMap::OpenGLTextureCubeMap(const std::string& fullpath) 
-		: TextureCubeMap(fullpath)
+	OpenGLTextureCubeMap::OpenGLTextureCubeMap(const std::string& path) 
+		: TextureCubeMap(path)
 	{
 		glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_TextureID);
 
 		int width, height, channels;
 
-		SLN_ENGINE_INFO("Loading image from [{0}]", fullpath);
-		stbi_uc* data = data = stbi_load(fullpath.c_str(), &width, &height, &channels, 0);
+		SLN_ENGINE_INFO("Loading image from [{0}]", path);
+		stbi_uc* data = data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		SLN_ENGINE_ASSERT(data, "Failed to load image");
 
 		m_Width = width;
