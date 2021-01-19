@@ -24,15 +24,25 @@ namespace Selene
 		s_RenderingAPI->SetViewport(0, 0, width, height);
 	}
 
-	void RenderingEngine::PrepareNewFrame(Camera& camera)
+	void RenderingEngine::BeginFrame(Camera& camera)
 	{
 		s_ViewProjectionMatrix = camera.GetViewProjectionMatrix();
+		ResetStats();
 	}
 
-	void RenderingEngine::Submit(std::shared_ptr<Pipeline> pipeline, uint32_t count)
+	void RenderingEngine::EndFrame() 
+	{ 
+		s_RenderingStats.Ts = Game::GetInstance().GetTimestep(); 
+	}
+
+	void RenderingEngine::Submit(std::shared_ptr<Pipeline> pipeline, uint32_t count, uint32_t vboCountTmp)
 	{
 		pipeline->Bind();
 		s_RenderingAPI->DrawIndexed(count);
+
+		s_RenderingStats.DrawCalls++;
+		s_RenderingStats.TotalVertexCount += vboCountTmp;
+		s_RenderingStats.TotalIndexCount += count;
 	}
 
 	void RenderingEngine::SubmitMesh(std::shared_ptr<Mesh> mesh)
@@ -49,6 +59,16 @@ namespace Selene
 			shader->SetUniform("u_Model", mesh->m_Transform);
 
 			s_RenderingAPI->DrawIndexedBaseVertex(submesh.IndexCount, submesh.BaseVertex);
+
+			s_RenderingStats.DrawCalls++;
 		}
+
+		s_RenderingStats.TotalVertexCount += mesh->m_Vbo->GetCount();
+		s_RenderingStats.TotalIndexCount += mesh->m_Ebo->GetCount();
+	}
+
+	void RenderingEngine::ResetStats()
+	{
+		memset(&s_RenderingStats, 0, sizeof(RenderingStats));
 	}
 }

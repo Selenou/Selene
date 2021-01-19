@@ -9,9 +9,11 @@ namespace Selene
 	public:
 		OpenGLVertexBuffer(void* data, uint32_t size);
 		virtual ~OpenGLVertexBuffer() override;
-		virtual uint32_t GetID() override { return m_VboID; }
+		virtual uint32_t GetCount() const override { return m_Size / m_Layout->GetStride(); }
+		virtual uint32_t GetID() const override { return m_VboID; }
 	private:
 		uint32_t m_VboID = 0;
+		uint32_t m_Size;
 	};
 
 	/////////////////////////////////////////////////////////
@@ -24,7 +26,7 @@ namespace Selene
 		OpenGLIndexBuffer(void* data, uint32_t size);
 		virtual ~OpenGLIndexBuffer() override;
 		virtual uint32_t GetCount() const override { return m_Size / sizeof(uint32_t); }
-		virtual uint32_t GetID() override { return m_EboID; }
+		virtual uint32_t GetID() const override { return m_EboID; }
 	private:
 		uint32_t m_EboID = 0;
 		uint32_t m_Size;

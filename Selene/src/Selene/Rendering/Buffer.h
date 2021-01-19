@@ -97,11 +97,12 @@ namespace Selene
 		virtual ~VertexBuffer() = default;
 	public:
 		static std::shared_ptr<VertexBuffer> Create(void* data, uint32_t size);
-		virtual uint32_t GetID() = 0;
-		inline void SetLayout(VertexBufferLayout& layout) { m_Layout = &layout; }
-		inline VertexBufferLayout* GetLayout() { return m_Layout; }
+		virtual uint32_t GetCount() const = 0;
+		virtual uint32_t GetID() const = 0;
+		inline void SetLayout(VertexBufferLayout& layout) { m_Layout = std::make_unique<VertexBufferLayout>(layout); }
+		inline VertexBufferLayout* GetLayout() { return m_Layout.get(); }
 	protected:
-		VertexBufferLayout* m_Layout;
+		std::unique_ptr<VertexBufferLayout> m_Layout;
 	};
 
 	/////////////////////////////////////////////////////////
@@ -115,6 +116,6 @@ namespace Selene
 	public:
 		static std::shared_ptr<IndexBuffer> Create(void* data, uint32_t size);
 		virtual uint32_t GetCount() const = 0;
-		virtual uint32_t GetID() = 0;
+		virtual uint32_t GetID() const = 0;
 	};
 }

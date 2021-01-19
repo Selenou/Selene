@@ -50,7 +50,7 @@ namespace Selene
 
 	void ImGuiLayer::RenderUI()
 	{
-		//static bool show = true;
+		static bool show = true;
 		//ImGui::ShowDemoWindow(&show);
 	}
 

@@ -88,12 +88,12 @@ SandboxLayer::SandboxLayer()
 	m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
 
 	// Mesh
-	m_Mesh = std::make_shared<Selene::Mesh>("moon/moon.obj");// , Selene::MeshImportFlags::FlipUVs);
+	m_Mesh = std::make_shared<Selene::Mesh>("moon/moon.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
 }
 
 void SandboxLayer::Update(Selene::Timestep ts)
 {
-	Selene::RenderingEngine::PrepareNewFrame(*m_Camera);
+	Selene::RenderingEngine::BeginFrame(*m_Camera);
 	
 	// Skybox
 	glDepthMask(GL_FALSE);
@@ -102,18 +102,51 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	glm::mat4 v = glm::mat4(glm::mat3(m_Camera->GetViewMatrix())); // from mat3 to mat4 : removes any translation, but keeps all rotation transformations so the user can still look around the scene
 	glm::mat4 vp = m_Camera->GetProjectionMatrix() * v;
 	m_SkyboxShader->SetUniform("u_ViewProjection", vp);
-	Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxEbo->GetCount());
+	Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxEbo->GetCount(), m_SkyboxVbo->GetCount());
 	glDepthMask(GL_TRUE);
 	
 	// Mesh
 	Selene::RenderingEngine::SubmitMesh(m_Mesh);
+
+	Selene::RenderingEngine::EndFrame();
 }
 
 void SandboxLayer::RenderUI()
 {
-	auto info = Selene::RenderingEngine::GetAPIInfo();
+	static bool usePerspective = true;
+	static bool useWireframeMode = false;
 
-	ImGui::Begin("Rendering Info");
+
+
+
+	auto info = Selene::RenderingEngine::GetAPIInfo();
+	auto stats = Selene::RenderingEngine::GetStats();
+
+	static bool openRenderingStats = true;
+
+	ImGuiWindowFlags windowFlags = 
+		ImGuiWindowFlags_NoDecoration | 
+		ImGuiWindowFlags_NoDocking | 
+		ImGuiWindowFlags_AlwaysAutoResize | 
+		ImGuiWindowFlags_NoSavedSettings | 
+		ImGuiWindowFlags_NoFocusOnAppearing | 
+		ImGuiWindowFlags_NoNav |
+		ImGuiWindowFlags_NoMove;
+
+	ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImVec2 workAreaPos = viewport->GetWorkPos();
+	ImVec2 windowPos = ImVec2(workAreaPos.x + viewport->GetWorkSize().x - 10.0f, workAreaPos.y + 10.0f);
+	ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always, ImVec2(1.0f, 0.0f));
+	ImGui::SetNextWindowViewport(viewport->ID);
+	ImGui::SetNextWindowBgAlpha(0.15f);
+
+	ImGui::Begin("Rendering", &openRenderingStats, windowFlags);
+		ImGui::Text("FPS : %i", (int)(1.0f / stats.Ts.GetSeconds()));
+		ImGui::Text("Frametime : %f ms", stats.Ts.GetMilliseconds());
+		ImGui::Text("Draw calls : %i", stats.DrawCalls);
+		ImGui::Text("Vertex Count : %i", stats.TotalVertexCount);
+		ImGui::Text("Index Count : %i", stats.TotalIndexCount);
+		ImGui::Separator();
 		ImGui::Text("API : %s", info.API.c_str());
 		ImGui::Text("Vendor : %s", info.Vendor.c_str());
 		ImGui::Text("Renderer : %s", info.Renderer.c_str());
@@ -121,13 +154,7 @@ void SandboxLayer::RenderUI()
 		ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
 	ImGui::End();
 
-	auto stats = Selene::RenderingEngine::GetStats();
-
-	ImGui::Begin("Rendering Stats");
-		ImGui::Text("FPS : %i", (int)(1.0f / stats.ts.GetSeconds()));
-		ImGui::Text("Frametime : %f ms", stats.ts.GetMilliseconds());
-	ImGui::End();
-
+	/*
 	ImGui::Begin("Debug");
 		if (ImGui::Checkbox("Wireframe", &useWireframeMode))
 		{
@@ -149,7 +176,6 @@ void SandboxLayer::RenderUI()
 		{
 			m_Camera->SetRotation(m_Camera->GetRotation());
 		}
-
 		if (ImGui::Checkbox("UsePerspective", &usePerspective))
 		{
 			if (usePerspective)
@@ -163,7 +189,7 @@ void SandboxLayer::RenderUI()
 				m_Camera->SetPosition({ 0.0f, 0.0f, 0.0f });
 			}
 		}
-	ImGui::End();
+	ImGui::End();*/
 }
 
 void SandboxLayer::OnEvent(Selene::Event& event)

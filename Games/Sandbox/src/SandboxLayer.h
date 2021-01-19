@@ -17,9 +17,5 @@ private:
 	std::shared_ptr<Selene::VertexBuffer> m_SkyboxVbo;
 	std::shared_ptr<Selene::IndexBuffer> m_SkyboxEbo;
 	std::shared_ptr<Selene::Pipeline> m_SkyboxPipeline;
-
 	std::unique_ptr<Selene::Camera> m_Camera;
-
-	bool usePerspective = true;
-	bool useWireframeMode = false;
 };
