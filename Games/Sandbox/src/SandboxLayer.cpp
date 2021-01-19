@@ -113,12 +113,6 @@ void SandboxLayer::Update(Selene::Timestep ts)
 
 void SandboxLayer::RenderUI()
 {
-	static bool usePerspective = true;
-	static bool useWireframeMode = false;
-
-
-
-
 	auto info = Selene::RenderingEngine::GetAPIInfo();
 	auto stats = Selene::RenderingEngine::GetStats();
 
@@ -154,15 +148,16 @@ void SandboxLayer::RenderUI()
 		ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
 	ImGui::End();
 
-	/*
 	ImGui::Begin("Debug");
+		static bool useWireframeMode = false;
 		if (ImGui::Checkbox("Wireframe", &useWireframeMode))
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, useWireframeMode ? GL_LINE : GL_FILL);
 		}
 	ImGui::End();
-
-	// Debug
+	
+	/*
+	static bool usePerspective = true;
 	ImGui::Begin("Camera Settings");
 		if (ImGui::SliderAngle("RotationX", &m_Camera->GetRotation()[0]))
 		{
@@ -189,7 +184,8 @@ void SandboxLayer::RenderUI()
 				m_Camera->SetPosition({ 0.0f, 0.0f, 0.0f });
 			}
 		}
-	ImGui::End();*/
+	ImGui::End();
+	*/
 }
 
 void SandboxLayer::OnEvent(Selene::Event& event)
