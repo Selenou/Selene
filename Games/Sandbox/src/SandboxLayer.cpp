@@ -12,7 +12,6 @@ SandboxLayer::SandboxLayer()
 	m_Camera = std::make_unique<Selene::Camera>();
 	m_Camera->SetPerspective(45.0f);
 	m_Camera->SetPosition({ 0.0f, 0.0f, 10.0f });
-	m_Camera->SetRotation({ 0.0f, 0.0f, 0.0f });
 
 	auto& window = Selene::Game::GetInstance().GetWindow();
 	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
@@ -85,7 +84,7 @@ SandboxLayer::SandboxLayer()
 	m_SkyboxPipeline->BindIndexBuffer(m_SkyboxEbo);
 
 	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
-	m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
+	m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/black2048.jpg");
 
 	// Mesh
 	m_Mesh = std::make_shared<Selene::Mesh>("moon/moon.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
@@ -93,8 +92,9 @@ SandboxLayer::SandboxLayer()
 
 void SandboxLayer::Update(Selene::Timestep ts)
 {
+	m_Camera->Update(ts);
 	Selene::RenderingEngine::BeginFrame(*m_Camera);
-	
+	SLN_TRACE(Selene::Input::GetMousePosition().X);
 	// Skybox
 	glDepthMask(GL_FALSE);
 	m_TextureCubeMap->Bind();
@@ -155,37 +155,6 @@ void SandboxLayer::RenderUI()
 			glPolygonMode(GL_FRONT_AND_BACK, useWireframeMode ? GL_LINE : GL_FILL);
 		}
 	ImGui::End();
-	
-	/*
-	static bool usePerspective = true;
-	ImGui::Begin("Camera Settings");
-		if (ImGui::SliderAngle("RotationX", &m_Camera->GetRotation()[0]))
-		{
-			m_Camera->SetRotation(m_Camera->GetRotation());
-		}
-		if (ImGui::SliderAngle("RotationY", &m_Camera->GetRotation()[1]))
-		{
-			m_Camera->SetRotation(m_Camera->GetRotation());
-		}
-		if (ImGui::SliderAngle("RotationZ", &m_Camera->GetRotation()[2]))
-		{
-			m_Camera->SetRotation(m_Camera->GetRotation());
-		}
-		if (ImGui::Checkbox("UsePerspective", &usePerspective))
-		{
-			if (usePerspective)
-			{
-				m_Camera->SetPerspective(45.0f);
-				m_Camera->SetPosition({ 0.0f, 0.0f, 10.0f });
-			}
-			else
-			{
-				m_Camera->SetOrthographic(5.0f);
-				m_Camera->SetPosition({ 0.0f, 0.0f, 0.0f });
-			}
-		}
-	ImGui::End();
-	*/
 }
 
 void SandboxLayer::OnEvent(Selene::Event& event)
@@ -194,6 +163,11 @@ void SandboxLayer::OnEvent(Selene::Event& event)
 	dispatcher.Dispatch<Selene::FramebufferResizeEvent>([=](Selene::FramebufferResizeEvent& e)
 	{
 		m_Camera->SetViewportSize(e.GetWidth(), e.GetHeight());
+		return false;
+	});
+	dispatcher.Dispatch<Selene::MousePositionMoveEvent>([=](Selene::MousePositionMoveEvent& e)
+	{
+		m_Camera->UpdateMousePosition(e.GetX(), e.GetY());
 		return false;
 	});
 }

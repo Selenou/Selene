@@ -14,6 +14,7 @@ namespace Selene
 	void OnWindowClose(GLFWwindow* window);
 	void OnFramebufferResize(GLFWwindow* window, int width, int height);
 	void OnMouseButtonAction(GLFWwindow* window, int button, int action, int mods);
+	void OnMouseCursorMove(GLFWwindow* window, double x, double y);
 	void OnKeyAction(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void OnCharType(GLFWwindow* window, unsigned int codepoint);
 
@@ -59,6 +60,7 @@ namespace Selene
 
 		// Glfw additional settings
 		SetVSync(Config::VSYNC_ENABLED);
+		//glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		SetWindowIcon();
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 
@@ -67,6 +69,7 @@ namespace Selene
 		glfwSetWindowCloseCallback(m_Window, OnWindowClose);
 		glfwSetFramebufferSizeCallback(m_Window, OnFramebufferResize);
 		glfwSetMouseButtonCallback(m_Window, OnMouseButtonAction);
+		glfwSetCursorPosCallback(m_Window, OnMouseCursorMove);
 		glfwSetKeyCallback(m_Window, OnKeyAction);
 		glfwSetCharCallback(m_Window, OnCharType);
 	}
@@ -140,6 +143,12 @@ namespace Selene
 				data.EventCallback(MouseButtonReleaseEvent(button));
 				break;
 		}
+	}
+
+	void OnMouseCursorMove(GLFWwindow* window, double x, double y)
+	{
+		GlfwWindowData& data = *(static_cast<GlfwWindowData*>(glfwGetWindowUserPointer(window)));
+		data.EventCallback(MousePositionMoveEvent((float)x, (float)y));
 	}
 
 	void OnKeyAction(GLFWwindow* window, int key, int scancode, int action, int mods)

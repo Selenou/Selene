@@ -40,4 +40,25 @@ namespace Selene
 	public:
 		EVENT_TYPE(MouseButtonRelease)
 	};
+
+	class MousePositionMoveEvent : public Event
+	{
+	public:
+		MousePositionMoveEvent(const float x, const float y)
+			: m_MouseX(x), m_MouseY(y) {}
+	public:
+		float GetX() const { return m_MouseX; }
+		float GetY() const { return m_MouseY; }
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << GetName() << " : " << m_MouseX << ", " << m_MouseY;
+			return ss.str();
+		}
+	public:
+		EVENT_TYPE(MousePositionMove)
+	private:
+		float m_MouseX, m_MouseY;
+	};
 }

@@ -12,6 +12,7 @@ namespace Selene
 		FramebufferResize,
 		MouseButtonPress,
 		MouseButtonRelease,
+		MousePositionMove,
 		KeyPress,
 		KeyRelease,
 		KeyType

@@ -1,13 +1,48 @@
 #include "slnpch.h"
 #include "Camera.h"
 
+#include "Selene/Core/KeyCodes.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Selene
 {
-	Camera::Camera()
+	void Camera::Update(Timestep ts)
 	{
-		//todo: / viewport update 
+		// Position
+		if (Input::IsKeyPressed(Key::A))
+		{
+			m_Position -= GetRightDirection() * m_Speed * (float)ts;
+		}
+		else if (Input::IsKeyPressed(Key::D))
+		{
+			m_Position += GetRightDirection() * m_Speed * (float)ts;
+		}
+
+		if (Input::IsKeyPressed(Key::W))
+		{
+			m_Position += GetForwardDirection() * m_Speed * (float)ts;
+		}
+		else if (Input::IsKeyPressed(Key::S))
+		{
+			m_Position -= GetForwardDirection() * m_Speed * (float)ts;
+		}
+
+		// Orientation
+		if (Input::IsMouseButtonPressed(MouseButton::Button0))
+		{
+			float yaw = glm::radians((m_LastMousePosition.X - m_NextMousePosition.X) * m_RotationSpeed * (float)ts);
+			float pitch = glm::radians((m_LastMousePosition.Y - m_NextMousePosition.Y) * m_RotationSpeed * (float)ts);
+
+			glm::quat qPitch = glm::normalize(glm::angleAxis(pitch, m_RightVector));
+			glm::quat qYaw = glm::normalize(glm::angleAxis(yaw, m_UpVector));
+
+			m_Orientation = qYaw * m_Orientation * qPitch; // gimbal locked on purpose, fps style, no roll
+		}
+
+		m_LastMousePosition = m_NextMousePosition;
+
+		UpdateView();
 	}
 
 	void Camera::SetPerspective(float verticalFOV, float zNear, float zFar)
@@ -40,7 +75,7 @@ namespace Selene
 
 	void Camera::SetRotation(const glm::vec3& rotation)
 	{
-		m_Rotation = rotation;
+		m_Orientation = glm::quat(glm::radians(rotation));
 		UpdateView();
 	}
 

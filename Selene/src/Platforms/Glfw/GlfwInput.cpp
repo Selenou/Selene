@@ -21,6 +21,9 @@ namespace Selene
 
 	Input::MousePosition Input::GetMousePosition()
 	{
-		return MousePosition();
+		auto* window = static_cast<GLFWwindow*>(Game::GetInstance().GetWindow().GetNativeWindow());
+		double x, y;
+		glfwGetCursorPos(window, &x, &y);
+		return MousePosition({ (float)x, (float)y });
 	}
 }
