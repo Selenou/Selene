@@ -40,6 +40,22 @@ namespace Selene
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
 
+	class TextureCache // TODO : Make a Resource Manager instead
+	{
+	public:
+		static const std::shared_ptr<Texture2D>& Load(const std::string& name);
+		static const std::shared_ptr<Texture2D>& Get(const std::string& name);
+		static bool IsInCache(const std::string& name);
+		static void Add(const std::string& name, const std::shared_ptr<Texture2D>& texture);
+		static void Remove(const std::string& name);
+	private:
+		static std::unordered_map<std::string, std::shared_ptr<Texture2D>> s_TextureCache;
+	};
+
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+
 	class TextureCubeMap : public Texture
 	{
 	public:

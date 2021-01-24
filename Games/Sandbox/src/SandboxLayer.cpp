@@ -84,17 +84,28 @@ SandboxLayer::SandboxLayer()
 	m_SkyboxPipeline->BindIndexBuffer(m_SkyboxEbo);
 
 	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
-	m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/black2048.jpg");
+	m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
 
 	// Mesh
-	m_Mesh = std::make_shared<Selene::Mesh>("moon/moon.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			for (int k = 0; k < 4; k++)
+			{
+				//int idx = i*4*4 + j*4 + k;
+				//m_Mesh[idx] = std::make_shared<Selene::Mesh>("cube/cube.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
+				//m_Mesh[idx]->SetPosition({ i, k, j });
+			}
+		}
+	}
 }
 
 void SandboxLayer::Update(Selene::Timestep ts)
 {
 	m_Camera->Update(ts);
 	Selene::RenderingEngine::BeginFrame(*m_Camera);
-	SLN_TRACE(Selene::Input::GetMousePosition().X);
+
 	// Skybox
 	glDepthMask(GL_FALSE);
 	m_TextureCubeMap->Bind();
@@ -106,7 +117,10 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	glDepthMask(GL_TRUE);
 	
 	// Mesh
-	Selene::RenderingEngine::SubmitMesh(m_Mesh);
+	//for (int i = 0; i < 64; i++)
+	//{
+		//Selene::RenderingEngine::SubmitMesh(m_Mesh[i]);
+	//}
 
 	Selene::RenderingEngine::EndFrame();
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "glm/gtc/matrix_transform.hpp"
 
 #include "Buffer.h"
 #include "Pipeline.h"
@@ -48,6 +49,8 @@ namespace Selene
 	public:
 		Mesh(const std::string& path, uint32_t importFlags = 0);
 		~Mesh() = default;
+	public: 
+		void SetPosition(const glm::vec3& position) { m_Transform = glm::translate(m_Transform, position); } //tmp
 	private:
 		void Load(uint32_t importFlags);
 		void SetupPipeline();

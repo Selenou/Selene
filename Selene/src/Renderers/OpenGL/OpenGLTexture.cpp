@@ -44,7 +44,7 @@ namespace Selene
 		glTextureStorage2D(m_TextureID, m_MipmapLevels, internalFormat, m_Width, m_Height);
 
 		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
-		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -70,6 +70,7 @@ namespace Selene
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
+		TextureCache::Remove(m_Path);
 		glDeleteTextures(1, &m_TextureID);
 	}
 

@@ -131,7 +131,7 @@ namespace Selene
 					auto parentPath = path.parent_path();
 					parentPath /= std::string(aiTexPath.data); // concatenation for path
 
-					mat->Set(0, Texture2D::Create(parentPath.string()));
+					mat->Set(0, TextureCache::Load(parentPath.string()));
 				}
 
 				m_Materials[i] = mat;

@@ -21,8 +21,10 @@ namespace Selene
 	void Material::Set(const uint32_t slot, const std::shared_ptr<Texture>& texture)
 	{
 		if (m_Textures.size() <= slot)
+		{
 			m_Textures.resize((size_t)slot + 1);
-
+		}
+			
 		m_Textures[slot] = texture;
 	}
 }
