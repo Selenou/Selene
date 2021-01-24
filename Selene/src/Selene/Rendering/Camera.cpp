@@ -31,8 +31,8 @@ namespace Selene
 		// Orientation
 		if (Input::IsMouseButtonPressed(MouseButton::Button0))
 		{
-			float yaw = glm::radians((m_LastMousePosition.X - m_NextMousePosition.X) * m_RotationSpeed * (float)ts); // TODO : should be the same speed whatever the framerate is
-			float pitch = glm::radians((m_LastMousePosition.Y - m_NextMousePosition.Y) * m_RotationSpeed * (float)ts); // TODO : should be the same speed whatever the framerate is
+			float yaw = glm::radians((m_LastMousePosition.X - m_NextMousePosition.X) * m_RotationSpeed); 
+			float pitch = glm::radians((m_LastMousePosition.Y - m_NextMousePosition.Y) * m_RotationSpeed);
 
 			glm::quat qPitch = glm::normalize(glm::angleAxis(pitch, m_RightVector));
 			glm::quat qYaw = glm::normalize(glm::angleAxis(yaw, m_UpVector));

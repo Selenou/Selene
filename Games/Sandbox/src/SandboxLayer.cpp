@@ -93,9 +93,9 @@ SandboxLayer::SandboxLayer()
 		{
 			for (int k = 0; k < 4; k++)
 			{
-				//int idx = i*4*4 + j*4 + k;
-				//m_Mesh[idx] = std::make_shared<Selene::Mesh>("cube/cube.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
-				//m_Mesh[idx]->SetPosition({ i, k, j });
+				int idx = i*4*4 + j*4 + k;
+				m_Mesh[idx] = std::make_shared<Selene::Mesh>("cube/cube.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
+				m_Mesh[idx]->SetPosition({ i, k, j });
 			}
 		}
 	}
@@ -117,10 +117,10 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	glDepthMask(GL_TRUE);
 	
 	// Mesh
-	//for (int i = 0; i < 64; i++)
-	//{
-		//Selene::RenderingEngine::SubmitMesh(m_Mesh[i]);
-	//}
+	for (int i = 0; i < 64; i++)
+	{
+		Selene::RenderingEngine::SubmitMesh(m_Mesh[i]);
+	}
 
 	Selene::RenderingEngine::EndFrame();
 }

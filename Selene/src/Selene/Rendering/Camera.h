@@ -65,7 +65,7 @@ namespace Selene
 		glm::vec3 m_UpVector = glm::vec3({ 0.0f, 1.0f, 0.0f });
 
 		float m_Speed = 10.0f;
-		float m_RotationSpeed = 10.0f;
+		float m_RotationSpeed = 0.1f;
 		Input::MousePosition m_LastMousePosition;
 		Input::MousePosition m_NextMousePosition;
 	};
