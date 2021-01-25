@@ -49,7 +49,7 @@ namespace Selene
 		static void Add(const std::string& name, const std::shared_ptr<Texture2D>& texture);
 		static void Remove(const std::string& name);
 	private:
-		static std::unordered_map<std::string, std::shared_ptr<Texture2D>> s_TextureCache;
+		static inline std::unordered_map<std::string, std::shared_ptr<Texture2D>> s_TextureCache;
 	};
 
 	/////////////////////////////////////////////////////////

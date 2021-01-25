@@ -40,8 +40,6 @@ namespace Selene
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
 
-	std::unordered_map<std::string, std::shared_ptr<Texture2D>> TextureCache::s_TextureCache;
-
 	const std::shared_ptr<Texture2D>& TextureCache::Load(const std::string& name)
 	{
 		if (!TextureCache::IsInCache(name))
@@ -65,6 +63,7 @@ namespace Selene
 	void TextureCache::Add(const std::string& name, const std::shared_ptr<Texture2D>& texture)
 	{
 		s_TextureCache.emplace(name, texture); // TODO : we may not want to use strong ref here, std::unordered_map<std::string, const std::shared_ptr<Texture2D>&> or weak_ptr ? Need to investigate
+		SLN_ENGINE_INFO("Texture [{0}] is added in texture cache", name);
 	}
 
 	void TextureCache::Remove(const std::string& name)

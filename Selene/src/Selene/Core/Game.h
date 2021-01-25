@@ -25,7 +25,7 @@ namespace Selene
 		void Render();
 		void UpdateTimeStep();
 	private:
-		static Game* s_Instance;
+		static inline Game* s_Instance = nullptr;
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<LayerStack> m_LayerStack;
 		bool m_IsRunning = true;

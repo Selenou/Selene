@@ -22,4 +22,21 @@ namespace Selene
 				return nullptr;
 		}
 	}
+
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+
+	void ShaderLibrary::Load(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+	{
+		SLN_ENGINE_ASSERT((m_Shaders.find(name) == m_Shaders.end()), "Shader {0} is already loaded", name);
+		m_Shaders[name] = Shader::Create(vertexSrc, fragmentSrc);
+		SLN_ENGINE_INFO("Shader [{0}] is loaded and cached", name);
+	}
+
+	const std::shared_ptr<Shader>& ShaderLibrary::Get(const std::string& name) const
+	{
+		SLN_ENGINE_ASSERT((m_Shaders.find(name) != m_Shaders.end()), "Shader {0} is not loaded", name);
+		return m_Shaders.at(name);
+	}
 }

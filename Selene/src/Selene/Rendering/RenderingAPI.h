@@ -29,17 +29,12 @@ namespace Selene
 		virtual void DrawIndexed(uint32_t count) = 0;
 		virtual void DrawIndexedBaseVertex(uint32_t count, uint32_t offset) = 0;
 	public:
+		static std::unique_ptr<RenderingAPI> Create();
 		static inline API GetAPI() { return s_API; }
 		static inline void SetAPI(API api) { s_API = api; }
-
-		static inline Info& GetInfo()
-		{ 
-			static Info info;
-			return info;
-		}
-
-		static std::unique_ptr<RenderingAPI> Create();
+		static inline Info& GetInfo(){ return info; }
 	private:
-		static API s_API;
+		static inline API s_API = RenderingAPI::API::None;
+		static inline Info info = {};
 	};
 }

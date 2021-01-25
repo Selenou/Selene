@@ -4,8 +4,6 @@
 
 namespace Selene
 {
-	RenderingAPI::API RenderingAPI::s_API = RenderingAPI::API::None;
-
 	std::unique_ptr<RenderingAPI> RenderingAPI::Create()
 	{
 		SLN_ENGINE_INFO("Creating RenderingAPI");

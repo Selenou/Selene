@@ -83,17 +83,17 @@ SandboxLayer::SandboxLayer()
 	m_SkyboxEbo = Selene::IndexBuffer::Create(indices, sizeof(indices));
 	m_SkyboxPipeline->BindIndexBuffer(m_SkyboxEbo);
 
-	m_SkyboxShader = Selene::Shader::Create("skybox.vert", "skybox.frag");
+	m_SkyboxShader = Selene::RenderingEngine::GetShaderLibrary()->Get("skybox");
 	m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
 
 	// Mesh
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 16; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < 16; j++)
 		{
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < 16; k++)
 			{
-				int idx = i*4*4 + j*4 + k;
+				int idx = i*16*16 + j*16 + k;
 				m_Mesh[idx] = std::make_shared<Selene::Mesh>("cube/cube.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
 				m_Mesh[idx]->SetPosition({ i, k, j });
 			}
@@ -117,7 +117,7 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	glDepthMask(GL_TRUE);
 	
 	// Mesh
-	for (int i = 0; i < 64; i++)
+	for (int i = 0; i < 4096; i++)
 	{
 		Selene::RenderingEngine::SubmitMesh(m_Mesh[i]);
 	}

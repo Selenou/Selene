@@ -4,9 +4,6 @@
 
 namespace Selene 
 {
-	std::shared_ptr<spdlog::logger> Log::s_EngineLogger;
-	std::shared_ptr<spdlog::logger> Log::s_GameLogger;
-
 	void Log::Init()
 	{
 		spdlog::set_pattern("[%T:%e] [%n] [%^%l%$] %v");

@@ -1,6 +1,8 @@
 #include "slnpch.h"
 #include "Mesh.h"
 
+#include "RenderingEngine.h"
+
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
@@ -117,10 +119,10 @@ namespace Selene
 			{
 				auto aiMaterial = scene->mMaterials[i];
 				auto aiMaterialName = aiMaterial->GetName();
-				SLN_ENGINE_TRACE("Processing material [{0}]", aiMaterialName.data);
+				//SLN_ENGINE_TRACE("Processing material [{0}]", aiMaterialName.data);
 
-				auto& mat = Material::Create(Shader::Create("unlit/unlitTexture.vert", "unlit/unlitTexture.frag"));
-
+				auto& mat = Material::Create(RenderingEngine::GetShaderLibrary()->Get("unlit/unlitTexture"));
+				
 				aiString aiTexPath;
 
 				bool hasAlbedoMap = aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &aiTexPath) == AI_SUCCESS;

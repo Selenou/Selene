@@ -6,8 +6,6 @@
 
 namespace Selene 
 {
-	Game* Game::s_Instance = nullptr;
-
 	Game::Game(RenderingAPI::API api)
 	{
 		SLN_ENGINE_ASSERT(!s_Instance, "Application already exists!");
