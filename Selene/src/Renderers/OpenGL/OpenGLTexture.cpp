@@ -70,7 +70,6 @@ namespace Selene
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
-		TextureCache::Remove(m_Path);
 		glDeleteTextures(1, &m_TextureID);
 	}
 

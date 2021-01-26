@@ -19,6 +19,20 @@ namespace Selene
 		aiProcess_RemoveRedundantMaterials;	// Remove useless materials  			
 
 
+	Mesh::Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::shared_ptr<Material>& material)
+		: m_Vertices(vertices), m_Indices(indices)
+	{
+		Submesh& submesh = m_Submeshes.emplace_back();
+		submesh.Name = name;
+		submesh.IndexCount = (uint32_t)indices.size();
+		submesh.BaseVertex = 0;
+		submesh.MaterialIndex = 0;
+
+		m_Materials.emplace_back(material);
+
+		SetupPipeline();
+	}
+
 	Mesh::Mesh(const std::string& path, uint32_t flags) :
 		m_FilePath("assets/meshes/" + path)
 	{

@@ -6,6 +6,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "World/Cube.h"
+
 SandboxLayer::SandboxLayer() 
 	: Layer("Sandbox")
 {
@@ -73,18 +75,41 @@ SandboxLayer::SandboxLayer()
 	};
 
 	// Skybox
-	m_SkyboxPipeline = Selene::Pipeline::Create();
-	Selene::VertexBufferLayout skyboxLayout = { { "a_Position", Selene::DataType::Float3 } };
+	{
+		//m_SkyboxPipeline = Selene::Pipeline::Create();
+		//Selene::VertexBufferLayout skyboxLayout = { { "a_Position", Selene::DataType::Float3 } };
 
-	m_SkyboxVbo = Selene::VertexBuffer::Create(skyboxVertices, sizeof(skyboxVertices));
-	m_SkyboxVbo->SetLayout(skyboxLayout);
-	m_SkyboxPipeline->BindVertexBuffer(m_SkyboxVbo);
+		//m_SkyboxVbo = Selene::VertexBuffer::Create(skyboxVertices, sizeof(skyboxVertices));
+		//m_SkyboxVbo->SetLayout(skyboxLayout);
+		//m_SkyboxPipeline->BindVertexBuffer(m_SkyboxVbo);
 
-	m_SkyboxEbo = Selene::IndexBuffer::Create(indices, sizeof(indices));
-	m_SkyboxPipeline->BindIndexBuffer(m_SkyboxEbo);
+		//m_SkyboxEbo = Selene::IndexBuffer::Create(indices, sizeof(indices));
+		//m_SkyboxPipeline->BindIndexBuffer(m_SkyboxEbo);
 
-	m_SkyboxShader = Selene::RenderingEngine::GetShaderLibrary()->Get("skybox");
-	m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
+		//m_SkyboxShader = Selene::RenderingEngine::GetShaderLibrary()->Get("skybox");
+		//m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
+	}
+
+	///////////////////////////////////////
+	
+	std::vector<Selene::Vertex> vert;
+
+	for (int i = 0; i < Cube::vertices.size(); i += 5)
+	{
+		Selene::Vertex vertex;
+		vertex.Position = { Cube::vertices[i], Cube::vertices[i+1] , Cube::vertices[i+2] };
+		vertex.TexCoord = { Cube::vertices[i+3], Cube::vertices[i+4] };
+		vert.emplace_back(vertex);
+	}
+
+	std::vector<uint32_t> ind;
+	ind.assign(indices, indices+36);
+
+
+	auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("unlit/unlitTexture"));
+	mat->Set(0, Selene::TextureCache::Load("assets/meshes/cube/dirt.png"));
+
+	///////////////////////////////////////
 
 	// Mesh
 	for (int i = 0; i < 16; i++)
@@ -94,7 +119,8 @@ SandboxLayer::SandboxLayer()
 			for (int k = 0; k < 16; k++)
 			{
 				int idx = i*16*16 + j*16 + k;
-				m_Mesh[idx] = std::make_shared<Selene::Mesh>("cube/cube.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
+				//m_Mesh[idx] = std::make_shared<Selene::Mesh>("cube/cube.obj", Selene::MeshImportFlags::JoinIdenticalVertices);
+				m_Mesh[idx] = std::make_shared<Selene::Mesh>("cube", vert, ind, mat);
 				m_Mesh[idx]->SetPosition({ i, k, j });
 			}
 		}
@@ -107,14 +133,14 @@ void SandboxLayer::Update(Selene::Timestep ts)
 	Selene::RenderingEngine::BeginFrame(*m_Camera);
 
 	// Skybox
-	glDepthMask(GL_FALSE);
+	/*glDepthMask(GL_FALSE);
 	m_TextureCubeMap->Bind();
 	m_SkyboxShader->Bind();
 	glm::mat4 v = glm::mat4(glm::mat3(m_Camera->GetViewMatrix())); // from mat3 to mat4 : removes any translation, but keeps all rotation transformations so the user can still look around the scene
 	glm::mat4 vp = m_Camera->GetProjectionMatrix() * v;
 	m_SkyboxShader->SetUniform("u_ViewProjection", vp);
 	Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxEbo->GetCount(), m_SkyboxVbo->GetCount());
-	glDepthMask(GL_TRUE);
+	glDepthMask(GL_TRUE);*/
 	
 	// Mesh
 	for (int i = 0; i < 4096; i++)

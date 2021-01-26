@@ -66,13 +66,10 @@ namespace Selene
 		SLN_ENGINE_INFO("Texture [{0}] is added in texture cache", name);
 	}
 
-	void TextureCache::Remove(const std::string& name)
-	{
-		if (s_TextureCache.size() > 0) // tmp for program exit, s_TextureCache's memory is freed before the call of the texture destructor (and therefore the cache removal call)
-		{
-			s_TextureCache.erase(name);
-		}
-	}
+	//void TextureCache::Remove(const std::string& name)
+	//{
+		//s_TextureCache.erase(name);	
+	//}
 
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////

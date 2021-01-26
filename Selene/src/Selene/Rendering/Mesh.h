@@ -48,6 +48,7 @@ namespace Selene
 	{
 	public:
 		Mesh(const std::string& path, uint32_t importFlags = 0);
+		Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::shared_ptr<Material>& material);
 		~Mesh() = default;
 	public: 
 		void SetPosition(const glm::vec3& position) { m_Transform = glm::translate(m_Transform, position); } //tmp
