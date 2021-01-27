@@ -1,9 +1,20 @@
 #pragma once
 
-class Cube
+namespace Sandbox
 {
-public:
-	static inline std::array<float, 180> vertices =
+
+	enum class BlockType
+	{
+		Air = 0,
+		Dirt
+	};
+
+	struct Block
+	{
+		BlockType BlockType;
+	};
+
+	static inline std::array<float, 180> Vertices =
 	{
 		// front
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -49,7 +60,7 @@ public:
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
-	static inline std::array<uint32_t, 36> indices =
+	static inline std::array<uint32_t, 36> Indices =
 	{
 		// front
 		0, 1, 2,

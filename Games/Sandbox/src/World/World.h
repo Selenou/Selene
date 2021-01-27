@@ -3,13 +3,16 @@
 #include "Selene.h"
 #include "Chunk.h"
 
-class World
+namespace Sandbox
 {
-public:
-	World() = default;
-public:
-	void Generate();
-	void Render();
-private:
-	std::unique_ptr<Chunk> m_Chunk;
-};
+	class World
+	{
+	public:
+		World() = default;
+	public:
+		void Generate();
+		void Render();
+	private:
+		std::unique_ptr<Chunk> m_Chunk;
+	};
+}

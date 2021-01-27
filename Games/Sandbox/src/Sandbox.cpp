@@ -2,21 +2,24 @@
 #include "Selene/Main.h"
 #include "SandboxLayer.h"
 
-class Sandbox : public Selene::Game
+namespace Sandbox
 {
-public:
-	Sandbox(Selene::RenderingAPI::API renderingAPI)
-		: Game(renderingAPI)
+	class Sandbox : public Selene::Game
 	{
-		PushLayer(new SandboxLayer());
-	}
+	public:
+		Sandbox(Selene::RenderingAPI::API renderingAPI)
+			: Game(renderingAPI)
+		{
+			PushLayer(new SandboxLayer());
+		}
 
-	~Sandbox()
-	{
-	}
-};
+		~Sandbox()
+		{
+		}
+	};
+}
 
-Selene::Game* Selene::CreateGame() 
+Selene::Game* Selene::CreateGame()
 {
-	return new Sandbox(Selene::RenderingAPI::API::OpenGL);
+	return new Sandbox::Sandbox(Selene::RenderingAPI::API::OpenGL);
 }

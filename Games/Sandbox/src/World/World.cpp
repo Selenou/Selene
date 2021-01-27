@@ -1,12 +1,15 @@
 #include "World.h"
 
-void World::Generate()
+namespace Sandbox
 {
-	m_Chunk = std::make_unique<Chunk>();
-	m_Chunk->Generate();
-}
+	void World::Generate()
+	{
+		m_Chunk = std::make_unique<Chunk>();
+		m_Chunk->GenerateMesh();
+	}
 
-void World::Render()
-{
-	m_Chunk->Render();
+	void World::Render()
+	{
+		m_Chunk->Render();
+	}
 }
