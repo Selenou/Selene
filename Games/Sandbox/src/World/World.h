@@ -10,9 +10,11 @@ namespace Sandbox
 	public:
 		World() = default;
 	public:
-		void Generate();
+		void GenerateChunks();
 		void Render();
 	private:
-		std::unique_ptr<Chunk> m_Chunk;
+		void SetChunksNeighbors();
+	private:
+		std::array<std::array<std::shared_ptr<Chunk>, WorldConfig::WORLD_SIZE>, WorldConfig::WORLD_SIZE> m_Chunks;
 	};
 }

@@ -12,7 +12,7 @@ namespace Sandbox
 		: Layer("Sandbox")
 	{
 		m_Camera = std::make_unique<Selene::Camera>();
-		m_Camera->SetPerspective(45.0f);
+		m_Camera->SetPerspective(45.0f, 0.01f, 10000.0f);
 		m_Camera->SetPosition({ 0.0f, 10.0f, 10.0f });
 
 		auto& window = Selene::Game::GetInstance().GetWindow();
@@ -92,7 +92,7 @@ namespace Sandbox
 
 		// World
 		m_World = std::make_unique<World>();
-		m_World->Generate();
+		m_World->GenerateChunks();
 	}
 
 	void SandboxLayer::Update(Selene::Timestep ts)
