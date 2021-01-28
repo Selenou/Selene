@@ -6,16 +6,6 @@
 
 namespace Sandbox
 {
-	enum Direction
-	{
-		Front,
-		Back,
-		Left,
-		Right,
-		Top,
-		Bottom
-	};
-
 	class Chunk
 	{
 	public:
@@ -34,6 +24,6 @@ namespace Sandbox
 		int m_ChunkOffsetX, m_ChunkOffsetY;
 		std::shared_ptr<Selene::Mesh> m_Mesh;
 		std::array<std::weak_ptr<Chunk>, 4> m_ChunkNeighbors;
-		Block m_Blocks[WorldConfig::CHUNK_SIZE][WorldConfig::CHUNK_SIZE][WorldConfig::CHUNK_HEIGHT];
+		Block m_Blocks[WorldConfig::CHUNK_SIZE][WorldConfig::CHUNK_HEIGHT][WorldConfig::CHUNK_SIZE];
 	};
 }

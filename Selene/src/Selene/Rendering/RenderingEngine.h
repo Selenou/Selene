@@ -36,6 +36,7 @@ namespace Selene
 		static void EndFrame();
 		static void Submit(std::shared_ptr<Pipeline> pipeline, uint32_t count, uint32_t vboCountTmp); // TODO : remove vboCountTmp 
 		static void SubmitMesh(std::shared_ptr<Mesh> mesh);
+		static void SubmitInstanced(uint32_t indiceCount, uint32_t instanceCount);
 	public:
 		static inline RenderingAPI::API GetAPI() { return RenderingAPI::GetAPI(); }
 		static inline RenderingAPI::Info GetAPIInfo() { return RenderingAPI::GetInfo(); }

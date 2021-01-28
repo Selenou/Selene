@@ -18,9 +18,9 @@ namespace Sandbox
 
 		for (int x = 0; x < WorldConfig::CHUNK_SIZE; x++)
 		{
-			for (int y = 0; y < WorldConfig::CHUNK_SIZE; y++)
+			for (int y = 0; y < WorldConfig::CHUNK_HEIGHT; y++)
 			{
-				for (int z = 0; z < WorldConfig::CHUNK_HEIGHT; z++)
+				for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
 				{
 					Block block = m_Blocks[x][y][z];
 
@@ -28,11 +28,11 @@ namespace Sandbox
 					{
 						if (IsBlockVisible(x, y, z))
 						{
-							for (int i = 0; i < Vertices.size(); i+=5)
+							for (int i = 0; i < BlockFaces::FrontFaceVertices.size(); i+=5)
 							{
 								Selene::Vertex vertex;
-								vertex.Position = { Vertices[i] + x + m_ChunkOffsetX, Vertices[i + 1] - z , Vertices[i + 2] + y + m_ChunkOffsetY };
-								vertex.TexCoord = { Vertices[i + 3], Vertices[i + 4] };
+								vertex.Position = { BlockFaces::FrontFaceVertices[i] + x, BlockFaces::FrontFaceVertices[i + 1] - y , BlockFaces::FrontFaceVertices[i + 2] + z};
+								vertex.TexCoord = { BlockFaces::FrontFaceVertices[i + 3], BlockFaces::FrontFaceVertices[i + 4] };
 								vertices.emplace_back(vertex);
 							}
 
@@ -47,10 +47,11 @@ namespace Sandbox
 			}
 		}
 
-		auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("unlit/unlitTexture"));
+		auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
 		mat->Set(0, Selene::TextureCache::Load("assets/meshes/cube/dirt.png"));
 
 		m_Mesh = std::make_shared<Selene::Mesh>("block", vertices, indices, mat);
+		m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
 	}
 
 	void Chunk::Render()
@@ -70,9 +71,9 @@ namespace Sandbox
 	{
 		for (int x = 0; x < WorldConfig::CHUNK_SIZE; x++)
 		{
-			for (int y = 0; y < WorldConfig::CHUNK_SIZE; y++)
+			for (int y = 0; y < WorldConfig::CHUNK_HEIGHT; y++)
 			{
-				for (int z = 0; z < WorldConfig::CHUNK_HEIGHT; z++)
+				for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
 				{
 					m_Blocks[x][y][z] = { type };
 				}
@@ -86,41 +87,13 @@ namespace Sandbox
 		const int maxSize = WorldConfig::CHUNK_SIZE - 1;
 		const int maxHeight = WorldConfig::CHUNK_HEIGHT - 1;
 
-		if (x == 15 && y == 1)
-			int t = 2;
-
 		std::array<Block*, 6> blockNeighbors;
 		blockNeighbors[Direction::Left]		= x > min		? &m_Blocks[x-1][y][z] : m_ChunkNeighbors[Direction::Left].lock().get() ? m_ChunkNeighbors[Direction::Left].lock().get()->GetBlock(maxSize, y, z) : nullptr;
-
-
-
-		//blockNeighbors[Direction::Right]	= x < maxSize	? &m_Blocks[x+1][y][z] : m_ChunkNeighbors[Direction::Right].lock().get() ? m_ChunkNeighbors[Direction::Right].lock().get()->GetBlock(min, y, z) : nullptr;
-
-
-		//DEBUG
-		if (x < maxSize)
-		{
-			blockNeighbors[Direction::Right] = &m_Blocks[x + 1][y][z];
-		}
-		else
-		{
-			if(m_ChunkNeighbors[Direction::Right].lock().get())
-			{
-				blockNeighbors[Direction::Right] = m_ChunkNeighbors[Direction::Right].lock().get()->GetBlock(min, y, z);
-			}
-			else
-			{
-				blockNeighbors[Direction::Right] = nullptr;
-			}
-		}
-
-
-
-
-		blockNeighbors[Direction::Front]	= y < maxSize	? &m_Blocks[x][y+1][z] : m_ChunkNeighbors[Direction::Front].lock().get() ? m_ChunkNeighbors[Direction::Front].lock().get()->GetBlock(x, min, z) : nullptr;
-		blockNeighbors[Direction::Back]		= y > min		? &m_Blocks[x][y-1][z] : m_ChunkNeighbors[Direction::Back].lock().get() ? m_ChunkNeighbors[Direction::Back].lock().get()->GetBlock(x, maxSize, z) : nullptr;
-		blockNeighbors[Direction::Top]		= z < maxHeight ? &m_Blocks[x][y][z+1] : nullptr;
-		blockNeighbors[Direction::Bottom]	= z > min		? &m_Blocks[x][y][z-1] : nullptr;
+		blockNeighbors[Direction::Right]	= x < maxSize	? &m_Blocks[x+1][y][z] : m_ChunkNeighbors[Direction::Right].lock().get() ? m_ChunkNeighbors[Direction::Right].lock().get()->GetBlock(min, y, z) : nullptr;
+		blockNeighbors[Direction::Front]	= z < maxSize	? &m_Blocks[x][y][z+1] : m_ChunkNeighbors[Direction::Front].lock().get() ? m_ChunkNeighbors[Direction::Front].lock().get()->GetBlock(x, y, min) : nullptr;
+		blockNeighbors[Direction::Back]		= z > min		? &m_Blocks[x][y][z-1] : m_ChunkNeighbors[Direction::Back].lock().get() ? m_ChunkNeighbors[Direction::Back].lock().get()->GetBlock(x, y, maxSize) : nullptr;
+		blockNeighbors[Direction::Top]		= y < maxHeight ? &m_Blocks[x][y+1][z] : nullptr;
+		blockNeighbors[Direction::Bottom]	= y > min		? &m_Blocks[x][y-1][z] : nullptr;
 
 		return blockNeighbors;
 	}

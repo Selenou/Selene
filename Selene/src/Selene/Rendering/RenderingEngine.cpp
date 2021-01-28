@@ -51,7 +51,7 @@ namespace Selene
 
 		for (Submesh& submesh : mesh->m_Submeshes)
 		{
-			auto& material = mesh->m_Materials[submesh.MaterialIndex];
+			auto& material = mesh->m_Materials[submesh.MaterialIndex];			
 			auto& shader = material->GetShader();
 
 			material->Bind();
@@ -65,6 +65,11 @@ namespace Selene
 
 		s_RenderingEngineData.m_RenderingStats.TotalVertexCount += mesh->m_Vbo->GetCount();
 		s_RenderingEngineData.m_RenderingStats.TotalIndexCount += mesh->m_Ebo->GetCount();
+	}
+
+	void RenderingEngine::SubmitInstanced(uint32_t indiceCount, uint32_t instanceCount)
+	{
+		s_RenderingEngineData.m_RenderingAPI->DrawInstanced(indiceCount, instanceCount);
 	}
 
 	void RenderingEngine::ResetStats()

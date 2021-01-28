@@ -12,5 +12,6 @@ namespace Selene
 		virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
 		virtual void DrawIndexed(uint32_t count) override;
 		virtual void DrawIndexedBaseVertex(uint32_t count, uint32_t offset) override;
+		virtual void DrawInstanced(uint32_t indiceCount, uint32_t instanceCount) override;
 	};
 }

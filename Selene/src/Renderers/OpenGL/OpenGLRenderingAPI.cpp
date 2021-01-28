@@ -1,5 +1,6 @@
 #include "slnpch.h"
 #include "OpenGLRenderingAPI.h"
+#include "Selene/Config.h"
 #include <glad/glad.h>
 
 namespace Selene 
@@ -38,8 +39,15 @@ namespace Selene
 		glDebugMessageCallback(OpenGLMessageCallback, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
-		// Use Z Buffer
-		glEnable(GL_DEPTH_TEST);
+		if (Config::DEPTH_BUFER_ENABLED)
+		{
+			glEnable(GL_DEPTH_TEST);
+		}
+		
+		if (Config::FACE_CULLING_ENABLED)
+		{
+			glEnable(GL_CULL_FACE);
+		}
 
 		// Fill Rendering Info
 		auto& info = RenderingAPI::GetInfo();
@@ -69,5 +77,10 @@ namespace Selene
 	void OpenGLRenderingAPI::DrawIndexedBaseVertex(uint32_t count, uint32_t offset)
 	{
 		glDrawElementsBaseVertex(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr, offset);
+	}
+
+	void OpenGLRenderingAPI::DrawInstanced(uint32_t indiceCount, uint32_t instanceCount)
+	{
+		glDrawArraysInstanced(GL_TRIANGLES, 0, indiceCount, instanceCount);
 	}
 }

@@ -91,6 +91,7 @@ namespace Sandbox
 		}
 
 		// World
+		Selene::RenderingEngine::GetShaderLibrary()->Load("chunk", "chunk.vert", "chunk.frag");
 		m_World = std::make_unique<World>();
 		m_World->GenerateChunks();
 	}
@@ -102,12 +103,14 @@ namespace Sandbox
 
 		// Skybox
 		glDepthMask(GL_FALSE);
+		glCullFace(GL_FRONT);
 		m_TextureCubeMap->Bind();
 		m_SkyboxShader->Bind();
 		glm::mat4 v = glm::mat4(glm::mat3(m_Camera->GetViewMatrix())); // from mat3 to mat4 : removes any translation, but keeps all rotation transformations so the user can still look around the scene
 		glm::mat4 vp = m_Camera->GetProjectionMatrix() * v;
 		m_SkyboxShader->SetUniform("u_ViewProjection", vp);
 		Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxEbo->GetCount(), m_SkyboxVbo->GetCount());
+		glCullFace(GL_BACK);
 		glDepthMask(GL_TRUE);
 
 		m_World->Render();
