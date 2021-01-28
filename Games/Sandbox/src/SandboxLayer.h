@@ -20,7 +20,6 @@ namespace Sandbox
 		std::shared_ptr<Selene::IndexBuffer> m_SkyboxEbo;
 		std::shared_ptr<Selene::Pipeline> m_SkyboxPipeline;
 		std::unique_ptr<Selene::Camera> m_Camera;
-
 		std::unique_ptr<World> m_World;
 	};
 }

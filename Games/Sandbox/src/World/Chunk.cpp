@@ -7,6 +7,7 @@ namespace Sandbox
 		: m_ChunkOffsetX(x * WorldConfig::CHUNK_SIZE), m_ChunkOffsetY(y * WorldConfig::CHUNK_SIZE)
 	{
 		FillChunk(BlockType::Dirt);
+		m_Blocks[2][1][0] = { BlockType::Air };
 	}
 
 	void Chunk::GenerateMesh()
@@ -14,7 +15,6 @@ namespace Sandbox
 
 		Greedy();
 		return;
-		
 		std::vector<Selene::Vertex> vertices;
 		std::vector<uint32_t> indices;
 
@@ -53,11 +53,10 @@ namespace Sandbox
 		}
 
 		auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
-		mat->Set(0, Selene::TextureCache::Load("assets/meshes/cube/dirt.png"));
+		mat->Set(0, Selene::TextureCache::Load("assets/textures/box.png"));
 
 		m_Mesh = std::make_shared<Selene::Mesh>("block", vertices, indices, mat);
 		m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
-		
 	}
 
 	void Chunk::Render()
@@ -159,7 +158,7 @@ namespace Sandbox
 									{
 										Selene::Vertex vertex;
 										vertex.Position = { BlockFaces::Faces[Direction::Left][q++] + x, BlockFaces::Faces[Direction::Left][q++]* height + y + WorldConfig::CHUNK_HEIGHT/2 - 0.5, BlockFaces::Faces[Direction::Left][q++] * width + z + WorldConfig::CHUNK_SIZE / 2 - 0.5 };
-										vertex.TexCoord = { BlockFaces::Faces[Direction::Left][q++], BlockFaces::Faces[Direction::Left][q++] };
+										vertex.TexCoord = { BlockFaces::Faces[Direction::Left][q++]*height, BlockFaces::Faces[Direction::Left][q++]* width };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
 									}
@@ -170,7 +169,7 @@ namespace Sandbox
 									{
 										Selene::Vertex vertex;
 										vertex.Position = { BlockFaces::Faces[Direction::Right][q++] + x, BlockFaces::Faces[Direction::Right][q++] * height + y + WorldConfig::CHUNK_HEIGHT / 2 - 0.5, BlockFaces::Faces[Direction::Right][q++] * width + z + WorldConfig::CHUNK_SIZE / 2 - 0.5 };
-										vertex.TexCoord = { BlockFaces::Faces[Direction::Right][q++], BlockFaces::Faces[Direction::Right][q++] };
+										vertex.TexCoord = { BlockFaces::Faces[Direction::Right][q++] * height, BlockFaces::Faces[Direction::Right][q++] * width };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
 									}
@@ -228,7 +227,7 @@ namespace Sandbox
 									{
 										Selene::Vertex vertex;
 										vertex.Position = { BlockFaces::Faces[Direction::Front][q++] * width + x + WorldConfig::CHUNK_SIZE / 2 - 0.5, BlockFaces::Faces[Direction::Front][q++] * height + y + WorldConfig::CHUNK_HEIGHT / 2 - 0.5 , BlockFaces::Faces[Direction::Front][q++] + z };
-										vertex.TexCoord = { BlockFaces::Faces[Direction::Front][q++], BlockFaces::Faces[Direction::Front][q++] };
+										vertex.TexCoord = { BlockFaces::Faces[Direction::Front][q++] * width , BlockFaces::Faces[Direction::Front][q++] * height };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
 									}
@@ -239,7 +238,7 @@ namespace Sandbox
 									{
 										Selene::Vertex vertex;
 										vertex.Position = { BlockFaces::Faces[Direction::Back][q++] * width + x + WorldConfig::CHUNK_SIZE / 2 - 0.5, BlockFaces::Faces[Direction::Back][q++] * height + y + WorldConfig::CHUNK_HEIGHT / 2 - 0.5, BlockFaces::Faces[Direction::Back][q++] + z };
-										vertex.TexCoord = { BlockFaces::Faces[Direction::Back][q++], BlockFaces::Faces[Direction::Back][q++] };
+										vertex.TexCoord = { BlockFaces::Faces[Direction::Back][q++] * width, BlockFaces::Faces[Direction::Back][q++] * height };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
 									}
@@ -298,7 +297,7 @@ namespace Sandbox
 									{
 										Selene::Vertex vertex;
 										vertex.Position = { BlockFaces::Faces[Direction::Top][q++] * width + x + WorldConfig::CHUNK_SIZE / 2 - 0.5, BlockFaces::Faces[Direction::Top][q++] + y , BlockFaces::Faces[Direction::Top][q++] * height + z + WorldConfig::CHUNK_SIZE / 2 - 0.5 };
-										vertex.TexCoord = { BlockFaces::Faces[Direction::Top][q++], BlockFaces::Faces[Direction::Top][q++] };
+										vertex.TexCoord = { BlockFaces::Faces[Direction::Top][q++] * height, BlockFaces::Faces[Direction::Top][q++] * width };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
 									}
@@ -309,7 +308,7 @@ namespace Sandbox
 									{
 										Selene::Vertex vertex;
 										vertex.Position = { BlockFaces::Faces[Direction::Bottom][q++] * width + x + WorldConfig::CHUNK_SIZE / 2 - 0.5, BlockFaces::Faces[Direction::Bottom][q++] + y, BlockFaces::Faces[Direction::Bottom][q++] * height + z + WorldConfig::CHUNK_SIZE / 2 - 0.5 };
-										vertex.TexCoord = { BlockFaces::Faces[Direction::Bottom][q++], BlockFaces::Faces[Direction::Bottom][q++] };
+										vertex.TexCoord = { BlockFaces::Faces[Direction::Bottom][q++] * height, BlockFaces::Faces[Direction::Bottom][q++] * width };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
 									}
@@ -322,7 +321,7 @@ namespace Sandbox
 		}
 
 		auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
-		mat->Set(0, Selene::TextureCache::Load("assets/meshes/cube/dirt.png"));
+		mat->Set(0, Selene::TextureCache::Load("assets/textures/box.png"));
 
 		m_GreedyMesh = std::make_shared<Selene::Mesh>("block", vertices, indices, mat);
 		m_GreedyMesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
