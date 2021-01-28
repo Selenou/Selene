@@ -20,6 +20,7 @@ namespace Sandbox
 		void FillChunk(BlockType type = BlockType::Air);
 		std::array<Block*, 6> GetBlockNeighbors(int x, int y, int z);
 		bool IsBlockVisible(int x, int y, int z);
+		bool IsBlockFaceVisible(int x, int y, int z, Direction faceDirection);
 	private:
 		int m_ChunkOffsetX, m_ChunkOffsetY;
 		std::shared_ptr<Selene::Mesh> m_Mesh;

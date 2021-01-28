@@ -14,7 +14,7 @@ namespace Sandbox
 		std::vector<Selene::Vertex> vertices;
 		std::vector<uint32_t> indices;
 
-		int tmpCount = 0;
+		int indicesCount = 0;
 
 		for (int x = 0; x < WorldConfig::CHUNK_SIZE; x++)
 		{
@@ -24,22 +24,23 @@ namespace Sandbox
 				{
 					Block block = m_Blocks[x][y][z];
 
-					if (block.BlockType != BlockType::Air)
+					// If this block is visible 
+					if (block.BlockType != BlockType::Air && IsBlockVisible(x, y, z))
 					{
-						if (IsBlockVisible(x, y, z))
+						for (int faceIndex = 0; faceIndex < 6; faceIndex++)
 						{
-							for (int i = 0; i < BlockFaces::FrontFaceVertices.size(); i+=5)
+							// Add visible faces only
+							if (IsBlockFaceVisible(x, y, z, (Direction)faceIndex))
 							{
-								Selene::Vertex vertex;
-								vertex.Position = { BlockFaces::FrontFaceVertices[i] + x, BlockFaces::FrontFaceVertices[i + 1] - y , BlockFaces::FrontFaceVertices[i + 2] + z};
-								vertex.TexCoord = { BlockFaces::FrontFaceVertices[i + 3], BlockFaces::FrontFaceVertices[i + 4] };
-								vertices.emplace_back(vertex);
-							}
+								for (int i = 0; i < 30;)
+								{
+									Selene::Vertex vertex;
+									vertex.Position = { BlockFaces::Faces[faceIndex][i++] + x, BlockFaces::Faces[faceIndex][i++] + y , BlockFaces::Faces[faceIndex][i++] + z };
+									vertex.TexCoord = { BlockFaces::Faces[faceIndex][i++], BlockFaces::Faces[faceIndex][i++] };
+									vertices.emplace_back(vertex);
 
-							for (int i = 0; i < 36; i++)
-							{
-								indices.push_back(tmpCount);
-								tmpCount++;
+									indices.push_back(indicesCount++);
+								}
 							}
 						}
 					}
@@ -108,6 +109,18 @@ namespace Sandbox
 			{
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	bool Chunk::IsBlockFaceVisible(int x, int y, int z, Direction faceDirection)
+	{
+		auto& blockNeighbor = GetBlockNeighbors(x, y, z)[faceDirection];
+
+		if (!blockNeighbor || blockNeighbor->BlockType == BlockType::Air)
+		{
+			return true;
 		}
 
 		return false;

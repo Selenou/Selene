@@ -13,7 +13,7 @@ namespace Sandbox
 	{
 		m_Camera = std::make_unique<Selene::Camera>();
 		m_Camera->SetPerspective(45.0f, 0.01f, 10000.0f);
-		m_Camera->SetPosition({ 0.0f, 10.0f, 10.0f });
+		m_Camera->SetPosition({ 0.0f, 70.0f, 10.0f });
 
 		auto& window = Selene::Game::GetInstance().GetWindow();
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
