@@ -16,7 +16,7 @@ namespace Sandbox
 	void Chunk::GenerateMesh()
 	{
 		auto t= Selene::Time::GetTime();
-		Greedy();
+		GreedyMeshify();
 		SLN_WARN("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
 	}
 
@@ -27,7 +27,7 @@ namespace Sandbox
 
 	void Chunk::SetNeighbors(std::array<std::shared_ptr<Chunk>, 4> neighbors)
 	{
-		std::copy(std::begin(neighbors), std::end(neighbors), std::begin(m_ChunkNeighbors));
+		std::copy(std::begin(neighbors), std::end(neighbors), std::begin(m_ChunkNeighbors)); // Neighbors uses Direction enum as index
 	}
 
 	void Chunk::FillChunk(BlockType type)
@@ -44,13 +44,16 @@ namespace Sandbox
 		}
 	}
 
-	void Chunk::Greedy()
+	void Chunk::GreedyMeshify()
 	{
 		std::vector<Selene::Vertex> vertices;
 		std::vector<uint32_t> indices;
 		int indicesCount = 0;
  
+		bool runGreedyAlgorithm = false;
 		auto greedyMask = new bool[WorldConfig::CHUNK_SIZE][WorldConfig::CHUNK_HEIGHT][WorldConfig::CHUNK_SIZE][6] { false };
+		int greedyWidth = 0;
+		int greedyHeight = 0;
 
 		for (int face = 0; face < 6; face++)
 		{
@@ -60,229 +63,151 @@ namespace Sandbox
 				{
 					for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
 					{
-						
-							if (m_Blocks[x][y][z].BlockType != BlockType::Air && !greedyMask[x][y][z][face] && IsBlockFaceVisible(x, y, z, (Direction)face))
+						if (m_Blocks[x][y][z].BlockType != BlockType::Air && !greedyMask[x][y][z][face] && IsBlockFaceVisible(x, y, z, (Direction)face))
+						{
+							greedyWidth = 0;
+							greedyHeight = 0;
+							runGreedyAlgorithm = true;
+
+							if (face == Direction::Left || face == Direction::Right)
 							{
-								if (face == Direction::Left || face == Direction::Right)
+								do
 								{
-									int width = 0;
-									int height = 0;
-									bool run = true;
-
-									while (run)
+									for (int i = y; i < WorldConfig::CHUNK_HEIGHT; i++)
 									{
-										for (int i = y; i < WorldConfig::CHUNK_HEIGHT; i++)
+										if (i == y)
 										{
-											if (i == y)
+											for (int j = z; j < WorldConfig::CHUNK_SIZE; j++)
 											{
-												for (int j = z; j < WorldConfig::CHUNK_SIZE; j++)
-												{
-													if (!greedyMask[x][i][j][face] && m_Blocks[x][i][j].BlockType == m_Blocks[x][y][z].BlockType && IsBlockFaceVisible(x, i, j, (Direction)face))
-													{
-														width++;
-													}
-													else
-													{
-														break;
-													}
-												}
+												if (!greedyMask[x][i][j][face] && m_Blocks[x][i][j].BlockType == m_Blocks[x][y][z].BlockType && IsBlockFaceVisible(x, i, j, (Direction)face))
+													greedyWidth++;
+												else
+													break;
 											}
-											else
+										}
+										else
+										{
+											for (int j = 0; j < greedyWidth; j++)
 											{
-												for (int j = 0; j < width; j++)
-												{
-													if (greedyMask[x][i][z + j][face] || m_Blocks[x][i][z + j].BlockType != m_Blocks[x][y][z].BlockType || !IsBlockFaceVisible(x, i, z + j, (Direction)face))
-													{
-														run = false;
-													}
-												}
+												if (greedyMask[x][i][z + j][face] || m_Blocks[x][i][z + j].BlockType != m_Blocks[x][y][z].BlockType || !IsBlockFaceVisible(x, i, z + j, (Direction)face))
+													runGreedyAlgorithm = false;
 											}
-											if (run)
-												height++;
 										}
-										run = false;
+
+										if (runGreedyAlgorithm)
+											greedyHeight++;
 									}
 
+									runGreedyAlgorithm = false;
 
-									for (int i = 0; i < height; i++)
-									{
-										for (int j = 0; j < width; j++)
-										{
-											greedyMask[x][y + i][z + j][face] = true;
-										}
-									}
+								} while (runGreedyAlgorithm);
 
-									if (face == Direction::Left)
-									{
-										for (int q = 0; q < 30;)
-										{
-											Selene::Vertex vertex;
-											vertex.Position = { BlockFaces::Faces[Direction::Left][q++] + x, BlockFaces::Faces[Direction::Left][q++] * height + y + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Left][q++] * width + z + width / 2.0f - 0.5 };
-											vertex.TexCoord = { BlockFaces::Faces[Direction::Left][q++] * height, BlockFaces::Faces[Direction::Left][q++] * width };
-											vertices.emplace_back(vertex);
-											indices.push_back(indicesCount++);
-										}
-									}
-									else
-									{
-										for (int q = 0; q < 30;)
-										{
-											Selene::Vertex vertex;
-											vertex.Position = { BlockFaces::Faces[Direction::Right][q++] + x, BlockFaces::Faces[Direction::Right][q++] * height + y + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Right][q++] * width + z + width / 2.0f - 0.5 };
-											vertex.TexCoord = { BlockFaces::Faces[Direction::Right][q++] * height, BlockFaces::Faces[Direction::Right][q++] * width };
-											vertices.emplace_back(vertex);
-											indices.push_back(indicesCount++);
-										}
-									}
-								}
-								else if (face == Direction::Front || face == Direction::Back)
+								for (int i = 0; i < greedyHeight; i++)
+									for (int j = 0; j < greedyWidth; j++)
+										greedyMask[x][y + i][z + j][face] = true;
+
+								for (int vertexData = 0; vertexData < 30;)
 								{
-									int width = 0;
-									int height = 0;
-									bool run = true;
-
-									while (run)
-									{
-										for (int i = y; i < WorldConfig::CHUNK_HEIGHT; i++)
-										{
-											if (i == y)
-											{
-												for (int j = x; j < WorldConfig::CHUNK_SIZE; j++)
-												{
-													if (!greedyMask[j][i][z][face] && m_Blocks[j][i][z].BlockType == m_Blocks[x][y][z].BlockType && IsBlockFaceVisible(j, i, z, (Direction)face))
-													{
-														width++;
-													}
-													else
-													{
-														break;
-													}
-												}
-											}
-											else
-											{
-												for (int j = 0; j < width; j++)
-												{
-													if (greedyMask[x + j][i][z][face] || m_Blocks[x + j][i][z].BlockType != m_Blocks[x][y][z].BlockType || !IsBlockFaceVisible(x + j, i, z, (Direction)face))
-													{
-														run = false;
-													}
-												}
-											}
-											if (run)
-												height++;
-										}
-										run = false;
-									}
-
-
-									for (int i = 0; i < height; i++)
-									{
-										for (int j = 0; j < width; j++)
-										{
-											greedyMask[x + j][y + i][z][face] = true;
-										}
-									}
-
-									if (face == Direction::Front)
-									{
-										for (int q = 0; q < 30;)
-										{
-											Selene::Vertex vertex;
-											vertex.Position = { BlockFaces::Faces[Direction::Front][q++] * width + x + width / 2.0f - 0.5, BlockFaces::Faces[Direction::Front][q++] * height + y + height / 2.0f - 0.5 , BlockFaces::Faces[Direction::Front][q++] + z };
-											vertex.TexCoord = { BlockFaces::Faces[Direction::Front][q++] * width , BlockFaces::Faces[Direction::Front][q++] * height };
-											vertices.emplace_back(vertex);
-											indices.push_back(indicesCount++);
-										}
-									}
-									else
-									{
-										for (int q = 0; q < 30;)
-										{
-											Selene::Vertex vertex;
-											vertex.Position = { BlockFaces::Faces[Direction::Back][q++] * width + x + width / 2.0f - 0.5, BlockFaces::Faces[Direction::Back][q++] * height + y + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Back][q++] + z };
-											vertex.TexCoord = { BlockFaces::Faces[Direction::Back][q++] * width, BlockFaces::Faces[Direction::Back][q++] * height };
-											vertices.emplace_back(vertex);
-											indices.push_back(indicesCount++);
-										}
-									}
-								}
-								else
-								{
-									int width = 0;
-									int height = 0;
-									bool run = true;
-
-									while (run)
-									{
-										for (int i = x; i < WorldConfig::CHUNK_SIZE; i++)
-										{
-											if (i == x)
-											{
-												for (int j = z; j < WorldConfig::CHUNK_SIZE; j++)
-												{
-													if (!greedyMask[i][y][j][face] && m_Blocks[i][y][j].BlockType == m_Blocks[x][y][z].BlockType && IsBlockFaceVisible(i, y, j, (Direction)face))
-													{
-														width++;
-													}
-													else
-													{
-														break;
-													}
-												}
-											}
-											else
-											{
-												for (int j = 0; j < width; j++)
-												{
-													if (greedyMask[i][y][z + j][face] || m_Blocks[i][y][z + j].BlockType != m_Blocks[x][y][z].BlockType || !IsBlockFaceVisible(i, y, z + j, (Direction)face))
-													{
-														run = false;
-													}
-												}
-											}
-											if (run)
-												height++;
-										}
-
-										run = false;
-									}
-
-
-									for (int i = 0; i < height; i++)
-									{
-										for (int j = 0; j < width; j++)
-										{
-											greedyMask[x + i][y][z + j][face] = true;
-										}
-									}
-
-									if (face == Direction::Top)
-									{
-										for (int q = 0; q < 30;)
-										{
-											Selene::Vertex vertex;
-											vertex.Position = { BlockFaces::Faces[Direction::Top][q++] * height + x + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Top][q++] + y , BlockFaces::Faces[Direction::Top][q++] * width + z + width / 2.0f - 0.5 };
-											vertex.TexCoord = { BlockFaces::Faces[Direction::Top][q++] * height, BlockFaces::Faces[Direction::Top][q++] * width };
-											vertices.emplace_back(vertex);
-											indices.push_back(indicesCount++);
-										}
-									}
-									else
-									{
-										for (int q = 0; q < 30;)
-										{
-											Selene::Vertex vertex;
-											vertex.Position = { BlockFaces::Faces[Direction::Bottom][q++] * height + x + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Bottom][q++] + y, BlockFaces::Faces[Direction::Bottom][q++] * width + z + width / 2.0f - 0.5 };
-											vertex.TexCoord = { BlockFaces::Faces[Direction::Bottom][q++] * height, BlockFaces::Faces[Direction::Bottom][q++] * width };
-											vertices.emplace_back(vertex);
-											indices.push_back(indicesCount++);
-										}
-									}
-
+									Selene::Vertex vertex;
+									vertex.Position = { BlockFaces::Faces[face][vertexData++] + x, BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + y, BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + z };
+									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyHeight, BlockFaces::Faces[face][vertexData++] * greedyWidth };
+									vertices.emplace_back(vertex);
+									indices.push_back(indicesCount++);
 								}
 							}
-						
+							else if (face == Direction::Front || face == Direction::Back)
+							{
+								do
+								{
+									for (int i = y; i < WorldConfig::CHUNK_HEIGHT; i++)
+									{
+										if (i == y)
+										{
+											for (int j = x; j < WorldConfig::CHUNK_SIZE; j++)
+											{
+												if (!greedyMask[j][i][z][face] && m_Blocks[j][i][z].BlockType == m_Blocks[x][y][z].BlockType && IsBlockFaceVisible(j, i, z, (Direction)face))
+													greedyWidth++;
+												else
+													break;
+											}
+										}
+										else
+										{
+											for (int j = 0; j < greedyWidth; j++)
+											{
+												if (greedyMask[x + j][i][z][face] || m_Blocks[x + j][i][z].BlockType != m_Blocks[x][y][z].BlockType || !IsBlockFaceVisible(x + j, i, z, (Direction)face))
+													runGreedyAlgorithm = false;
+											}
+										}
+										if (runGreedyAlgorithm)
+											greedyHeight++;
+									}
+
+									runGreedyAlgorithm = false;
+
+								} while (runGreedyAlgorithm);
+
+								for (int i = 0; i < greedyHeight; i++)
+									for (int j = 0; j < greedyWidth; j++)
+										greedyMask[x + j][y + i][z][face] = true;
+
+								for (int vertexData = 0; vertexData < 30;)
+								{
+									Selene::Vertex vertex;
+									vertex.Position = { BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + x, BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + y, BlockFaces::Faces[face][vertexData++] + z };
+									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyWidth , BlockFaces::Faces[face][vertexData++] * greedyHeight };
+									vertices.emplace_back(vertex);
+									indices.push_back(indicesCount++);
+								}
+							}
+							else
+							{
+								do
+								{
+									for (int i = x; i < WorldConfig::CHUNK_SIZE; i++)
+									{
+										if (i == x)
+										{
+											for (int j = z; j < WorldConfig::CHUNK_SIZE; j++)
+											{
+												if (!greedyMask[i][y][j][face] && m_Blocks[i][y][j].BlockType == m_Blocks[x][y][z].BlockType && IsBlockFaceVisible(i, y, j, (Direction)face))
+													greedyWidth++;
+												else
+													break;
+											}
+										}
+										else
+										{
+											for (int j = 0; j < greedyWidth; j++)
+											{
+												if (greedyMask[i][y][z + j][face] || m_Blocks[i][y][z + j].BlockType != m_Blocks[x][y][z].BlockType || !IsBlockFaceVisible(i, y, z + j, (Direction)face))
+													runGreedyAlgorithm = false;
+											}
+										}
+										if (runGreedyAlgorithm)
+											greedyHeight++;
+									}
+
+									runGreedyAlgorithm = false;
+
+								} while (runGreedyAlgorithm);
+
+
+
+								for (int i = 0; i < greedyHeight; i++)
+									for (int j = 0; j < greedyWidth; j++)
+										greedyMask[x + i][y][z + j][face] = true;
+									
+								for (int vertexData = 0; vertexData < 30;)
+								{
+									Selene::Vertex vertex;
+									vertex.Position = { BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + x, BlockFaces::Faces[face][vertexData++] + y , BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + z };
+									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyHeight, BlockFaces::Faces[face][vertexData++] * greedyWidth };
+									vertices.emplace_back(vertex);
+									indices.push_back(indicesCount++);
+								}
+							}
+						}
 					}
 				}
 			}
@@ -305,10 +230,10 @@ namespace Sandbox
 
 		switch (direction)
 		{
-			case Direction::Front:	return z < maxSize		? &m_Blocks[x][y][z + 1] : m_ChunkNeighbors[Direction::Front].lock().get()	? m_ChunkNeighbors[Direction::Front].lock().get()->GetBlock(x, y, min)		: nullptr;
-			case Direction::Back:	return z > min			? &m_Blocks[x][y][z - 1] : m_ChunkNeighbors[Direction::Back].lock().get()	? m_ChunkNeighbors[Direction::Back].lock().get()->GetBlock(x, y, maxSize)	: nullptr;
-			case Direction::Left:	return x > min			? &m_Blocks[x - 1][y][z] : m_ChunkNeighbors[Direction::Left].lock().get()	? m_ChunkNeighbors[Direction::Left].lock().get()->GetBlock(maxSize, y, z)	: nullptr;
-			case Direction::Right:	return x < maxSize		? &m_Blocks[x + 1][y][z] : m_ChunkNeighbors[Direction::Right].lock().get()	? m_ChunkNeighbors[Direction::Right].lock().get()->GetBlock(min, y, z)		: nullptr;
+			case Direction::Front:	return z < maxSize		? &m_Blocks[x][y][z + 1] : m_ChunkNeighbors[Direction::Front].get()	? m_ChunkNeighbors[Direction::Front].get()->GetBlock(x, y, min)		: nullptr;
+			case Direction::Back:	return z > min			? &m_Blocks[x][y][z - 1] : m_ChunkNeighbors[Direction::Back].get()	? m_ChunkNeighbors[Direction::Back].get()->GetBlock(x, y, maxSize)	: nullptr;
+			case Direction::Left:	return x > min			? &m_Blocks[x - 1][y][z] : m_ChunkNeighbors[Direction::Left].get()	? m_ChunkNeighbors[Direction::Left].get()->GetBlock(maxSize, y, z)	: nullptr;
+			case Direction::Right:	return x < maxSize		? &m_Blocks[x + 1][y][z] : m_ChunkNeighbors[Direction::Right].get()	? m_ChunkNeighbors[Direction::Right].get()->GetBlock(min, y, z)		: nullptr;
 			case Direction::Top:	return y < maxHeight	? &m_Blocks[x][y + 1][z] : nullptr;
 			case Direction::Bottom: return y > min			? &m_Blocks[x][y - 1][z] : nullptr;
 			default:				return nullptr;
