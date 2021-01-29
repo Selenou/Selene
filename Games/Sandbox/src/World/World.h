@@ -13,7 +13,7 @@ namespace Sandbox
 		void GenerateChunks();
 		void Render();
 	private:
-		void SetChunksNeighbors();
+		void SetChunkNeighbors(int x, int y);
 	private:
 		std::array<std::array<std::shared_ptr<Chunk>, WorldConfig::WORLD_SIZE>, WorldConfig::WORLD_SIZE> m_Chunks;
 	};
