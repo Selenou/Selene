@@ -1,5 +1,7 @@
 #include "Chunk.h"
 #include <memory>
+#include <algorithm>
+#include <array>
 
 namespace Sandbox
 {
@@ -8,80 +10,22 @@ namespace Sandbox
 	{
 		FillChunk(BlockType::Dirt);
 		m_Blocks[1][0][0] = { BlockType::Air };
+		m_Blocks[1][1][0] = { BlockType::Air };
 	}
-
-	static bool useGreedy = 1;
 
 	void Chunk::GenerateMesh()
 	{
-		if (useGreedy)
-		{
-			Greedy();
-		}
-		else
-		{ 
-			std::vector<Selene::Vertex> vertices;
-			std::vector<uint32_t> indices;
-
-			int indicesCount = 0;
-
-			for (int x = 0; x < WorldConfig::CHUNK_SIZE; x++)
-			{
-				for (int y = 0; y < WorldConfig::CHUNK_HEIGHT; y++)
-				{
-					for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
-					{
-						Block block = m_Blocks[x][y][z];
-
-						// If this block is visible 
-						if (block.BlockType != BlockType::Air && IsBlockVisible(x, y, z))
-						{
-							for (int faceIndex = 0; faceIndex < 6; faceIndex++)
-							{
-								// Add visible faces only
-								if (IsBlockFaceVisible(x, y, z, (Direction)faceIndex))
-								{
-									for (int i = 0; i < 30;)
-									{
-										Selene::Vertex vertex;
-										vertex.Position = { BlockFaces::Faces[faceIndex][i++] + x, BlockFaces::Faces[faceIndex][i++] + y , BlockFaces::Faces[faceIndex][i++] + z };
-										vertex.TexCoord = { BlockFaces::Faces[faceIndex][i++], BlockFaces::Faces[faceIndex][i++] };
-										vertices.emplace_back(vertex);
-
-										indices.push_back(indicesCount++);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-
-			auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
-			mat->Set(0, Selene::TextureCache::Load("assets/textures/box.png"));
-
-			m_Mesh = std::make_shared<Selene::Mesh>("block", vertices, indices, mat);
-			m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
-		}
+		Greedy();
 	}
 
 	void Chunk::Render()
 	{
-		if (useGreedy)
-		{
-			Selene::RenderingEngine::SubmitMesh(m_GreedyMesh);
-			return;
-		}
-
 		Selene::RenderingEngine::SubmitMesh(m_Mesh);
 	}
 
 	void Chunk::SetNeighbors(std::array<std::shared_ptr<Chunk>, 4> neighbors)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			m_ChunkNeighbors[i] = neighbors[i];
-		}
+		std::copy(std::begin(neighbors), std::end(neighbors), std::begin(m_ChunkNeighbors));
 	}
 
 	void Chunk::FillChunk(BlockType type)
@@ -92,7 +36,7 @@ namespace Sandbox
 			{
 				for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
 				{
-					m_Blocks[x][y][z] = { type };
+					m_Blocks[x][y][z].BlockType = type;
 				}
 			}
 		}
@@ -102,10 +46,9 @@ namespace Sandbox
 	{
 		std::vector<Selene::Vertex> vertices;
 		std::vector<uint32_t> indices;
-
 		int indicesCount = 0;
-
-		bool mask[WorldConfig::CHUNK_SIZE][WorldConfig::CHUNK_HEIGHT][WorldConfig::CHUNK_SIZE][6] = { false };
+ 
+		auto mask = new bool[WorldConfig::CHUNK_SIZE][WorldConfig::CHUNK_HEIGHT][WorldConfig::CHUNK_SIZE][6] { false };
 
 		for (int face = 0; face < 6; face++)
 		{
@@ -157,15 +100,6 @@ namespace Sandbox
 									run = false;
 								}
 
-								//debug , remove this
-								if (face == 2)
-								{
-									SLN_TRACE("left : w/h : {0},{1}", width, height);
-								}
-								else
-								{
-									SLN_TRACE("right : w/h : {0},{1}", width, height);
-								}
 
 								for (int i = 0; i < height; i++)
 								{
@@ -238,15 +172,6 @@ namespace Sandbox
 									run = false;
 								}
 
-								//debug , remove this
-								if (face == 0)
-								{
-									SLN_TRACE("front : w/h : {0},{1}", width, height);
-								}
-								else
-								{
-									SLN_TRACE("back : w/h : {0},{1}", width, height);
-								}
 
 								for (int i = 0; i < height; i++)
 								{
@@ -320,15 +245,6 @@ namespace Sandbox
 									run = false;
 								}
 
-								//debug , remove this
-								if (face == 4)
-								{
-									SLN_TRACE("top : w/h : {0},{1}", width, height);
-								}
-								else
-								{
-									SLN_TRACE("bottom : w/h : {0},{1}", width, height);
-								}
 
 								for (int i = 0; i < height; i++)
 								{
@@ -370,8 +286,10 @@ namespace Sandbox
 		auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
 		mat->Set(0, Selene::TextureCache::Load("assets/textures/box.png"));
 
-		m_GreedyMesh = std::make_shared<Selene::Mesh>("block", vertices, indices, mat);
-		m_GreedyMesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
+		m_Mesh = std::make_shared<Selene::Mesh>("block", vertices, indices, mat);
+		m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
+
+		delete[] mask;
 	}
 
 	std::array<Block*, 6> Chunk::GetBlockNeighbors(int x, int y, int z)

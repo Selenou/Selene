@@ -175,8 +175,19 @@ namespace Sandbox
 		ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
 		ImGui::End();
 
-		ImGui::Begin("Debug");
+		static bool openDebugMenu = true;
 		static bool useWireframeMode = false;
+
+		ImGuiWindowFlags debugWindowFlags =
+			ImGuiWindowFlags_NoDecoration |
+			ImGuiWindowFlags_NoDocking |
+			ImGuiWindowFlags_NoSavedSettings |
+			ImGuiWindowFlags_NoFocusOnAppearing |
+			ImGuiWindowFlags_NoNav |
+			ImGuiWindowFlags_NoMove;
+
+		ImGui::SetNextWindowBgAlpha(0.15f);
+		ImGui::Begin("Debug", &openDebugMenu, debugWindowFlags);
 		if (ImGui::Checkbox("Wireframe", &useWireframeMode))
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, useWireframeMode ? GL_LINE : GL_FILL);
