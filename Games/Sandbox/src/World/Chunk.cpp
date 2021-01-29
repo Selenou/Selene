@@ -7,62 +7,73 @@ namespace Sandbox
 		: m_ChunkOffsetX(x * WorldConfig::CHUNK_SIZE), m_ChunkOffsetY(y * WorldConfig::CHUNK_SIZE)
 	{
 		FillChunk(BlockType::Dirt);
-		m_Blocks[2][1][0] = { BlockType::Air };
+		m_Blocks[1][0][0] = { BlockType::Air };
 	}
+
+	static bool useGreedy = 1;
 
 	void Chunk::GenerateMesh()
 	{
-
-		Greedy();
-		return;
-		std::vector<Selene::Vertex> vertices;
-		std::vector<uint32_t> indices;
-
-		int indicesCount = 0;
-
-		for (int x = 0; x < WorldConfig::CHUNK_SIZE; x++)
+		if (useGreedy)
 		{
-			for (int y = 0; y < WorldConfig::CHUNK_HEIGHT; y++)
+			Greedy();
+		}
+		else
+		{ 
+			std::vector<Selene::Vertex> vertices;
+			std::vector<uint32_t> indices;
+
+			int indicesCount = 0;
+
+			for (int x = 0; x < WorldConfig::CHUNK_SIZE; x++)
 			{
-				for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
+				for (int y = 0; y < WorldConfig::CHUNK_HEIGHT; y++)
 				{
-					Block block = m_Blocks[x][y][z];
-
-					// If this block is visible 
-					if (block.BlockType != BlockType::Air && IsBlockVisible(x, y, z))
+					for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
 					{
-						for (int faceIndex = 0; faceIndex < 6; faceIndex++)
-						{
-							// Add visible faces only
-							if (IsBlockFaceVisible(x, y, z, (Direction)faceIndex))
-							{
-								for (int i = 0; i < 30;)
-								{
-									Selene::Vertex vertex;
-									vertex.Position = { BlockFaces::Faces[faceIndex][i++] + x, BlockFaces::Faces[faceIndex][i++] + y , BlockFaces::Faces[faceIndex][i++] + z };
-									vertex.TexCoord = { BlockFaces::Faces[faceIndex][i++], BlockFaces::Faces[faceIndex][i++] };
-									vertices.emplace_back(vertex);
+						Block block = m_Blocks[x][y][z];
 
-									indices.push_back(indicesCount++);
+						// If this block is visible 
+						if (block.BlockType != BlockType::Air && IsBlockVisible(x, y, z))
+						{
+							for (int faceIndex = 0; faceIndex < 6; faceIndex++)
+							{
+								// Add visible faces only
+								if (IsBlockFaceVisible(x, y, z, (Direction)faceIndex))
+								{
+									for (int i = 0; i < 30;)
+									{
+										Selene::Vertex vertex;
+										vertex.Position = { BlockFaces::Faces[faceIndex][i++] + x, BlockFaces::Faces[faceIndex][i++] + y , BlockFaces::Faces[faceIndex][i++] + z };
+										vertex.TexCoord = { BlockFaces::Faces[faceIndex][i++], BlockFaces::Faces[faceIndex][i++] };
+										vertices.emplace_back(vertex);
+
+										indices.push_back(indicesCount++);
+									}
 								}
 							}
 						}
 					}
 				}
 			}
+
+			auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
+			mat->Set(0, Selene::TextureCache::Load("assets/textures/box.png"));
+
+			m_Mesh = std::make_shared<Selene::Mesh>("block", vertices, indices, mat);
+			m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
 		}
-
-		auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
-		mat->Set(0, Selene::TextureCache::Load("assets/textures/box.png"));
-
-		m_Mesh = std::make_shared<Selene::Mesh>("block", vertices, indices, mat);
-		m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
 	}
 
 	void Chunk::Render()
 	{
-		//Selene::RenderingEngine::SubmitMesh(m_Mesh);
-		Selene::RenderingEngine::SubmitMesh(m_GreedyMesh);
+		if (useGreedy)
+		{
+			Selene::RenderingEngine::SubmitMesh(m_GreedyMesh);
+			return;
+		}
+
+		Selene::RenderingEngine::SubmitMesh(m_Mesh);
 	}
 
 	void Chunk::SetNeighbors(std::array<std::shared_ptr<Chunk>, 4> neighbors)
@@ -124,7 +135,8 @@ namespace Sandbox
 												{
 													width++;
 												}
-												else {
+												else 
+												{
 													break;
 												}
 											}
@@ -139,9 +151,20 @@ namespace Sandbox
 												}
 											}
 										}
-										height++;
+										if (run)
+											height++;
 									}
 									run = false;
+								}
+
+								//debug , remove this
+								if (face == 2)
+								{
+									SLN_TRACE("left : w/h : {0},{1}", width, height);
+								}
+								else
+								{
+									SLN_TRACE("right : w/h : {0},{1}", width, height);
 								}
 
 								for (int i = 0; i < height; i++)
@@ -157,7 +180,7 @@ namespace Sandbox
 									for (int q = 0; q < 30;)
 									{
 										Selene::Vertex vertex;
-										vertex.Position = { BlockFaces::Faces[Direction::Left][q++] + x, BlockFaces::Faces[Direction::Left][q++]* height + y + WorldConfig::CHUNK_HEIGHT/2 - 0.5, BlockFaces::Faces[Direction::Left][q++] * width + z + WorldConfig::CHUNK_SIZE / 2 - 0.5 };
+										vertex.Position = { BlockFaces::Faces[Direction::Left][q++] + x, BlockFaces::Faces[Direction::Left][q++]* height + y + height /2.0f - 0.5, BlockFaces::Faces[Direction::Left][q++] * width + z + width / 2.0f - 0.5 };
 										vertex.TexCoord = { BlockFaces::Faces[Direction::Left][q++]*height, BlockFaces::Faces[Direction::Left][q++]* width };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
@@ -168,7 +191,7 @@ namespace Sandbox
 									for (int q = 0; q < 30;)
 									{
 										Selene::Vertex vertex;
-										vertex.Position = { BlockFaces::Faces[Direction::Right][q++] + x, BlockFaces::Faces[Direction::Right][q++] * height + y + WorldConfig::CHUNK_HEIGHT / 2 - 0.5, BlockFaces::Faces[Direction::Right][q++] * width + z + WorldConfig::CHUNK_SIZE / 2 - 0.5 };
+										vertex.Position = { BlockFaces::Faces[Direction::Right][q++] + x, BlockFaces::Faces[Direction::Right][q++] * height + y + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Right][q++] * width + z + width / 2.0f - 0.5 };
 										vertex.TexCoord = { BlockFaces::Faces[Direction::Right][q++] * height, BlockFaces::Faces[Direction::Right][q++] * width };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
@@ -193,7 +216,8 @@ namespace Sandbox
 												{
 													width++;
 												}
-												else {
+												else 
+												{
 													break;
 												}
 											}
@@ -208,9 +232,20 @@ namespace Sandbox
 												}
 											}
 										}
-										height++;
+										if(run)
+											height++;
 									}
 									run = false;
+								}
+
+								//debug , remove this
+								if (face == 0)
+								{
+									SLN_TRACE("front : w/h : {0},{1}", width, height);
+								}
+								else
+								{
+									SLN_TRACE("back : w/h : {0},{1}", width, height);
 								}
 
 								for (int i = 0; i < height; i++)
@@ -226,7 +261,7 @@ namespace Sandbox
 									for (int q = 0; q < 30;)
 									{
 										Selene::Vertex vertex;
-										vertex.Position = { BlockFaces::Faces[Direction::Front][q++] * width + x + WorldConfig::CHUNK_SIZE / 2 - 0.5, BlockFaces::Faces[Direction::Front][q++] * height + y + WorldConfig::CHUNK_HEIGHT / 2 - 0.5 , BlockFaces::Faces[Direction::Front][q++] + z };
+										vertex.Position = { BlockFaces::Faces[Direction::Front][q++] * width + x + width / 2.0f - 0.5, BlockFaces::Faces[Direction::Front][q++] * height + y + height / 2.0f - 0.5 , BlockFaces::Faces[Direction::Front][q++] + z };
 										vertex.TexCoord = { BlockFaces::Faces[Direction::Front][q++] * width , BlockFaces::Faces[Direction::Front][q++] * height };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
@@ -237,7 +272,7 @@ namespace Sandbox
 									for (int q = 0; q < 30;)
 									{
 										Selene::Vertex vertex;
-										vertex.Position = { BlockFaces::Faces[Direction::Back][q++] * width + x + WorldConfig::CHUNK_SIZE / 2 - 0.5, BlockFaces::Faces[Direction::Back][q++] * height + y + WorldConfig::CHUNK_HEIGHT / 2 - 0.5, BlockFaces::Faces[Direction::Back][q++] + z };
+										vertex.Position = { BlockFaces::Faces[Direction::Back][q++] * width + x + width / 2.0f - 0.5, BlockFaces::Faces[Direction::Back][q++] * height + y + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Back][q++] + z };
 										vertex.TexCoord = { BlockFaces::Faces[Direction::Back][q++] * width, BlockFaces::Faces[Direction::Back][q++] * height };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
@@ -262,7 +297,8 @@ namespace Sandbox
 												{
 													width++;
 												}
-												else {
+												else 
+												{
 													break;
 												}
 											}
@@ -277,10 +313,21 @@ namespace Sandbox
 												}
 											}
 										}
-										height++;
+										if (run)
+											height++;
 									}
 
 									run = false;
+								}
+
+								//debug , remove this
+								if (face == 4)
+								{
+									SLN_TRACE("top : w/h : {0},{1}", width, height);
+								}
+								else
+								{
+									SLN_TRACE("bottom : w/h : {0},{1}", width, height);
 								}
 
 								for (int i = 0; i < height; i++)
@@ -296,7 +343,7 @@ namespace Sandbox
 									for (int q = 0; q < 30;)
 									{
 										Selene::Vertex vertex;
-										vertex.Position = { BlockFaces::Faces[Direction::Top][q++] * width + x + WorldConfig::CHUNK_SIZE / 2 - 0.5, BlockFaces::Faces[Direction::Top][q++] + y , BlockFaces::Faces[Direction::Top][q++] * height + z + WorldConfig::CHUNK_SIZE / 2 - 0.5 };
+										vertex.Position = { BlockFaces::Faces[Direction::Top][q++] * height + x + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Top][q++] + y , BlockFaces::Faces[Direction::Top][q++] * width + z + width / 2.0f - 0.5 };
 										vertex.TexCoord = { BlockFaces::Faces[Direction::Top][q++] * height, BlockFaces::Faces[Direction::Top][q++] * width };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
@@ -307,7 +354,7 @@ namespace Sandbox
 									for (int q = 0; q < 30;)
 									{
 										Selene::Vertex vertex;
-										vertex.Position = { BlockFaces::Faces[Direction::Bottom][q++] * width + x + WorldConfig::CHUNK_SIZE / 2 - 0.5, BlockFaces::Faces[Direction::Bottom][q++] + y, BlockFaces::Faces[Direction::Bottom][q++] * height + z + WorldConfig::CHUNK_SIZE / 2 - 0.5 };
+										vertex.Position = { BlockFaces::Faces[Direction::Bottom][q++] * height + x + height / 2.0f - 0.5, BlockFaces::Faces[Direction::Bottom][q++] + y, BlockFaces::Faces[Direction::Bottom][q++] * width + z + width / 2.0f - 0.5 };
 										vertex.TexCoord = { BlockFaces::Faces[Direction::Bottom][q++] * height, BlockFaces::Faces[Direction::Bottom][q++] * width };
 										vertices.emplace_back(vertex);
 										indices.push_back(indicesCount++);
