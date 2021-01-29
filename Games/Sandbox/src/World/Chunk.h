@@ -19,8 +19,7 @@ namespace Sandbox
 	private:
 		void FillChunk(BlockType type = BlockType::Air);
 		void Greedy();
-		std::array<Block*, 6> GetBlockNeighbors(int x, int y, int z);
-		bool IsBlockVisible(int x, int y, int z);
+		Block* GetNeighborBlock(int x, int y, int z, Direction direction);
 		bool IsBlockFaceVisible(int x, int y, int z, Direction faceDirection);
 	private:
 		int m_ChunkOffsetX, m_ChunkOffsetY;
