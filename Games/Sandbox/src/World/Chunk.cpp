@@ -1,16 +1,14 @@
 #include "Chunk.h"
-#include <memory>
-#include <algorithm>
-#include <array>
 
 namespace Sandbox
 {
 	Chunk::Chunk(int x, int y) 
 		: m_ChunkOffsetX(x * WorldConfig::CHUNK_SIZE), m_ChunkOffsetY(y * WorldConfig::CHUNK_SIZE)
 	{
-		FillChunk(BlockType::Dirt);
-		m_Blocks[1][0][0] = { BlockType::Air };
-		m_Blocks[1][1][0] = { BlockType::Air };
+		FillChunk(BlockType::Grass);
+		m_Blocks[0][0][0] = { BlockType::Air };
+		m_Blocks[1][1][0] = { BlockType::Dirt };
+		m_Blocks[0][1][0] = { BlockType::Sand };
 	}
 
 	void Chunk::GenerateMesh()
@@ -110,7 +108,8 @@ namespace Sandbox
 								{
 									Selene::Vertex vertex;
 									vertex.Position = { BlockFaces::Faces[face][vertexData++] + x, BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + y, BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + z };
-									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyHeight, BlockFaces::Faces[face][vertexData++] * greedyWidth };
+									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyHeight , BlockFaces::Faces[face][vertexData++] * greedyWidth };
+									vertex.CustomFlags = static_cast<uint32_t>(m_Blocks[x][y][z].BlockType);
 									vertices.emplace_back(vertex);
 									indices.push_back(indicesCount++);
 								}
@@ -156,6 +155,7 @@ namespace Sandbox
 									Selene::Vertex vertex;
 									vertex.Position = { BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + x, BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + y, BlockFaces::Faces[face][vertexData++] + z };
 									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyWidth , BlockFaces::Faces[face][vertexData++] * greedyHeight };
+									vertex.CustomFlags = static_cast<uint32_t>(m_Blocks[x][y][z].BlockType);
 									vertices.emplace_back(vertex);
 									indices.push_back(indicesCount++);
 								}
@@ -203,6 +203,7 @@ namespace Sandbox
 									Selene::Vertex vertex;
 									vertex.Position = { BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + x, BlockFaces::Faces[face][vertexData++] + y , BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + z };
 									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyHeight, BlockFaces::Faces[face][vertexData++] * greedyWidth };
+									vertex.CustomFlags = static_cast<uint32_t>(m_Blocks[x][y][z].BlockType);
 									vertices.emplace_back(vertex);
 									indices.push_back(indicesCount++);
 								}
@@ -214,7 +215,7 @@ namespace Sandbox
 		}
 
 		auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
-		mat->Set(0, Selene::TextureCache::Load("assets/textures/box.png"));
+		mat->Set(0, Selene::TextureCache::Load("assets/textures/blockTextureAtlas.png"));
 
 		m_Mesh = std::make_shared<Selene::Mesh>("chunk", vertices, indices, mat);
 		m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up

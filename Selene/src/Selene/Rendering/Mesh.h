@@ -15,6 +15,7 @@ namespace Selene
 	{
 		glm::vec3 Position;
 		glm::vec2 TexCoord;
+		uint32_t CustomFlags;
 	};
 
 	/////////////////////////////////////////////////////////

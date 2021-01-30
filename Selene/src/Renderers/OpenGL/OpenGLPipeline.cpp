@@ -18,7 +18,7 @@ namespace Selene
 			case DataType::Int2:    return GL_INT;
 			case DataType::Int3:    return GL_INT;
 			case DataType::Int4:    return GL_INT;
-			case DataType::Bool:    return GL_BOOL;
+			case DataType::UInt:	return GL_UNSIGNED_INT;
 			default:				SLN_ENGINE_ASSERT(false, "Unknown DataType!");
 		}
 
@@ -48,13 +48,25 @@ namespace Selene
 
 			glEnableVertexArrayAttrib(m_VaoID, attribIndex);
 
-			glVertexArrayAttribFormat(m_VaoID,
-				attribIndex,
-				element.GetComponentCount(),
-				glBaseType,
-				element.Normalized ? GL_TRUE : GL_FALSE,
-				element.Offset
-			);
+			if (element.Type == DataType::UInt)
+			{
+				glVertexArrayAttribIFormat(m_VaoID,
+					attribIndex,
+					element.GetComponentCount(),
+					glBaseType,
+					element.Offset
+				);
+			}
+			else
+			{
+				glVertexArrayAttribFormat(m_VaoID,
+					attribIndex,
+					element.GetComponentCount(),
+					glBaseType,
+					element.Normalized ? GL_TRUE : GL_FALSE,
+					element.Offset
+				);
+			}
 
 			glVertexArrayAttribBinding(m_VaoID, attribIndex, 0);
 

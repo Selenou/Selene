@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Selene.h"
-#include "Block.h"
+#include "BlockUtils.h"
 #include "WorldConfig.h"
 
 namespace Sandbox

@@ -4,7 +4,7 @@ namespace Selene
 {
 	enum class DataType
 	{
-		None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
+		None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, UInt
 	};
 
 	static inline uint32_t GetDataTypeSize(DataType type)
@@ -21,7 +21,7 @@ namespace Selene
 			case DataType::Int2:    return 4 * 2;
 			case DataType::Int3:    return 4 * 3;
 			case DataType::Int4:    return 4 * 4;
-			case DataType::Bool:    return 1;
+			case DataType::UInt:    return 4;
 			default:				SLN_ENGINE_ASSERT(false, "Unknown DataType!");
 		}
 		return 0;
@@ -57,7 +57,7 @@ namespace Selene
 				case DataType::Int2:    return 2;
 				case DataType::Int3:    return 3;
 				case DataType::Int4:    return 4;
-				case DataType::Bool:    return 1;
+				case DataType::UInt:   return 1;
 				default:				SLN_ENGINE_ASSERT(false, "Unknown DataType!");
 			}
 
