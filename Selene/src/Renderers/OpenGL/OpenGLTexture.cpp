@@ -43,8 +43,8 @@ namespace Selene
 		m_MipmapLevels = CalculateMipMapLevels(width, height);
 		glTextureStorage2D(m_TextureID, m_MipmapLevels, internalFormat, m_Width, m_Height);
 
-		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_LINEAR : GL_LINEAR_MIPMAP_NEAREST);
-		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -250,6 +250,14 @@ namespace Selene
 
 		// A single call to this function will work only if the texture atlas is a vertical one and not a grid
 		glTextureSubImage3D(m_TextureID, 0, 0, 0, 0, m_Width, tileHeight, count, dataFormat, GL_UNSIGNED_BYTE, data);
+
+		/*
+		GL_NEAREST					= no filtering at all
+		GL_NEAREST_MIPMAP_LINEAR	= linear filtering between mipmap levels, but no filtering inside each mipmap level
+		GL_NEAREST_MIPMAP_NEAREST	= no filtering, but mipmap selection
+		GL_LINEAR_MIPMAP_NEAREST	= bilinear filtering, with mipmap selection
+		GL_LINEAR_MIPMAP_LINEAR		= trilinear filtering
+		*/
 		
 		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_NEAREST : GL_NEAREST_MIPMAP_LINEAR);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

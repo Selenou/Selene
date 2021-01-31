@@ -5,16 +5,31 @@ namespace Sandbox
 	Chunk::Chunk(int x, int y) 
 		: m_ChunkOffsetX(x * WorldConfig::CHUNK_SIZE), m_ChunkOffsetY(y * WorldConfig::CHUNK_SIZE)
 	{
-		FillChunk(BlockType::Grass);
-		m_Blocks[0][0][0] = { BlockType::Air };
-		m_Blocks[1][1][0] = { BlockType::Dirt };
-		m_Blocks[0][1][0] = { BlockType::Sand };
+		FillChunk();
+
+		for (int x = 0; x < WorldConfig::CHUNK_SIZE; x++)
+		{
+			for (int y = 0; y < WorldConfig::CHUNK_HEIGHT; y++)
+			{
+				for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
+				{
+					if (y > WorldConfig::CHUNK_HEIGHT - 2)
+						m_Blocks[x][y][z] = { BlockType::Grass };
+					
+					else if (y > WorldConfig::CHUNK_HEIGHT - 5)
+						m_Blocks[x][y][z] = { BlockType::Dirt };
+					
+					else
+						m_Blocks[x][y][z] = { BlockType::Gravel };
+				}
+			}
+		}
 	}
 
 	void Chunk::GenerateMesh()
 	{
 		auto t= Selene::Time::GetTime();
-		GreedyMeshify();
+		GenerateGreedyMesh();
 		SLN_WARN("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
 	}
 
@@ -42,7 +57,7 @@ namespace Sandbox
 		}
 	}
 
-	void Chunk::GreedyMeshify()
+	void Chunk::GenerateGreedyMesh()
 	{
 		std::vector<Selene::Vertex> vertices;
 		std::vector<uint32_t> indices;

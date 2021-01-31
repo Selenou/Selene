@@ -7,7 +7,8 @@ namespace Sandbox
 		Air = 0,
 		Grass,
 		Dirt,
-		Sand
+		Sand,
+		Gravel
 	};
 
 	enum Direction

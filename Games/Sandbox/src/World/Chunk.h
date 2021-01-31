@@ -18,7 +18,7 @@ namespace Sandbox
 		inline Block* GetBlock(int x, int y, int z) { return &m_Blocks[x][y][z]; }
 	private:
 		void FillChunk(BlockType type = BlockType::Air);
-		void GreedyMeshify();
+		void GenerateGreedyMesh();
 		Block* GetNeighborBlock(int x, int y, int z, Direction direction);
 		bool IsBlockFaceVisible(int x, int y, int z, Direction faceDirection);
 	private:
