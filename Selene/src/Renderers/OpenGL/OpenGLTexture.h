@@ -29,4 +29,19 @@ namespace Selene
 	private:
 		uint32_t m_TextureID;
 	};
+
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+
+	class OpenGLTextureArray : public TextureArray
+	{
+	public:
+		OpenGLTextureArray(const std::string& path, int count);
+		virtual ~OpenGLTextureArray();
+	public:
+		virtual void Bind(uint32_t slot = 0) const override;
+	private:
+		uint32_t m_TextureID;
+	};
 }

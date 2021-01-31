@@ -43,7 +43,7 @@ namespace Selene
 		m_MipmapLevels = CalculateMipMapLevels(width, height);
 		glTextureStorage2D(m_TextureID, m_MipmapLevels, internalFormat, m_Width, m_Height);
 
-		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_LINEAR : GL_LINEAR_MIPMAP_NEAREST);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -203,6 +203,77 @@ namespace Selene
 	}
 
 	void OpenGLTextureCubeMap::Bind(uint32_t slot) const
+	{
+		glBindTextureUnit(slot, m_TextureID);
+	}
+
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+
+	OpenGLTextureArray::OpenGLTextureArray(const std::string& path, int count)
+		: TextureArray(path, count)
+	{
+		glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_TextureID);
+
+		int width, height, channels;
+
+		SLN_ENGINE_INFO("Loading image from [{0}]", path);
+		stbi_uc* data = data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		SLN_ENGINE_ASSERT(data, "Failed to load image");
+
+		m_Width = width;
+		m_Height = height;
+
+		int tileHeight = m_Height / count;
+
+		// Check img format
+		GLenum internalFormat = GL_NONE;
+		GLenum dataFormat = GL_NONE;
+
+		if (channels == 3)
+		{
+			internalFormat = GL_RGB8;
+			dataFormat = GL_RGB;
+			// if texture width is not a multiple of 4, we need to add this
+			// since the alignemenent must be a divisor or width * channels (default is 4)
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		}
+		else if (channels == 4)
+		{
+			internalFormat = GL_RGBA8;
+			dataFormat = GL_RGBA;
+		}
+
+		m_MipmapLevels = CalculateMipMapLevels(width, tileHeight);
+		glTextureStorage3D(m_TextureID, m_MipmapLevels, internalFormat, m_Width, tileHeight, count); // count = depth
+
+		// A single call to this function will work only if the texture atlas is a vertical one and not a grid
+		glTextureSubImage3D(m_TextureID, 0, 0, 0, 0, m_Width, tileHeight, count, dataFormat, GL_UNSIGNED_BYTE, data);
+		
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_NEAREST : GL_NEAREST_MIPMAP_LINEAR);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		if (m_MipmapLevels > 1)
+		{
+			glGenerateTextureMipmap(m_TextureID);
+		}
+		if (channels == 3)
+		{
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+		}
+
+		stbi_image_free(data);
+	}
+
+	OpenGLTextureArray::~OpenGLTextureArray()
+	{
+		glDeleteTextures(1, &m_TextureID);
+	}
+
+	void OpenGLTextureArray::Bind(uint32_t slot) const
 	{
 		glBindTextureUnit(slot, m_TextureID);
 	}
