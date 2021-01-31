@@ -6,9 +6,9 @@ namespace Sandbox
 		: m_ChunkOffsetX(x * WorldConfig::CHUNK_SIZE), m_ChunkOffsetY(y * WorldConfig::CHUNK_SIZE)
 	{
 		FillChunk(BlockType::Grass);
-		m_Blocks[0][0][0] = { BlockType::Air };
-		m_Blocks[1][1][0] = { BlockType::Dirt };
-		m_Blocks[0][1][0] = { BlockType::Sand };
+		//m_Blocks[0][0][0] = { BlockType::Air };
+		//m_Blocks[1][1][0] = { BlockType::Dirt };
+		//m_Blocks[0][1][0] = { BlockType::Sand };
 	}
 
 	void Chunk::GenerateMesh()
