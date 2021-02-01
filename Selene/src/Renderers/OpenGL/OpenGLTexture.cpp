@@ -195,6 +195,11 @@ namespace Selene
 		}
 
 		stbi_image_free(data);
+
+		for (size_t i = 0; i < faces.size(); i++)
+		{
+			delete[] faces[i];
+		}
 	}
 
 	OpenGLTextureCubeMap::~OpenGLTextureCubeMap()
@@ -211,8 +216,8 @@ namespace Selene
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
 
-	OpenGLTextureArray::OpenGLTextureArray(const std::string& path, int count)
-		: TextureArray(path, count)
+	OpenGLTextureArray::OpenGLTextureArray(const std::string& path, int hCount, int vCount)
+		: TextureArray(path, hCount, vCount)
 	{
 		glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_TextureID);
 
@@ -225,7 +230,8 @@ namespace Selene
 		m_Width = width;
 		m_Height = height;
 
-		int tileHeight = m_Height / count;
+		m_TileWidth = m_Width / hCount;
+		m_TileHeight = m_Height / vCount;
 
 		// Check img format
 		GLenum internalFormat = GL_NONE;
@@ -245,11 +251,33 @@ namespace Selene
 			dataFormat = GL_RGBA;
 		}
 
-		m_MipmapLevels = CalculateMipMapLevels(width, tileHeight);
-		glTextureStorage3D(m_TextureID, m_MipmapLevels, internalFormat, m_Width, tileHeight, count); // count = depth
+		m_MipmapLevels = CalculateMipMapLevels(m_TileWidth, m_TileHeight);
 
-		// A single call to this function will work only if the texture atlas is a vertical one and not a grid
-		glTextureSubImage3D(m_TextureID, 0, 0, 0, 0, m_Width, tileHeight, count, dataFormat, GL_UNSIGNED_BYTE, data);
+
+		glTextureStorage3D(m_TextureID, m_MipmapLevels, internalFormat, m_TileWidth, m_TileHeight, hCount * vCount);
+
+		int rowLength = hCount * m_TileWidth * channels;
+		std::vector<stbi_uc> tileData(m_TileWidth * m_TileHeight * channels);
+
+		for (int i = 0; i < vCount; i++)
+		{
+			for (int j = 0; j < hCount; j++)
+			{
+				stbi_uc* ptr = data + (i * rowLength * m_TileHeight) + (j * m_TileHeight * channels);
+
+				for (uint32_t row = 0; row < m_TileHeight; row++)
+				{
+					auto ptrStart = ptr + (row * rowLength);
+					auto ptrEnd = ptrStart + (m_TileWidth * channels);
+					auto dest = tileData.begin() + row * (m_TileWidth * channels);
+
+					std::copy(ptrStart, ptrEnd, dest);
+				}
+
+				int zOffset = i * hCount + j;
+				glTextureSubImage3D(m_TextureID, 0, 0, 0, zOffset, m_TileWidth, m_TileHeight, 1, dataFormat, GL_UNSIGNED_BYTE, tileData.data());
+			}
+		}
 
 		/*
 		GL_NEAREST					= no filtering at all

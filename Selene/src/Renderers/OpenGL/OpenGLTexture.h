@@ -37,11 +37,13 @@ namespace Selene
 	class OpenGLTextureArray : public TextureArray
 	{
 	public:
-		OpenGLTextureArray(const std::string& path, int count);
+		OpenGLTextureArray(const std::string& path, int hCount, int vCount);
 		virtual ~OpenGLTextureArray();
 	public:
 		virtual void Bind(uint32_t slot = 0) const override;
 	private:
 		uint32_t m_TextureID;
+		uint32_t m_TileWidth;
+		uint32_t m_TileHeight;
 	};
 }

@@ -13,6 +13,6 @@ out vec3 v_TexCoord;
 void main()
 {
 	int blockType = int(a_CustomFlags);
-	v_TexCoord = vec3(a_TexCoord,blockType-1);
+	v_TexCoord = vec3(a_TexCoord, blockType-1);
 	gl_Position = u_ViewProjection * u_Model * vec4(a_Position, 1.0);	
 }

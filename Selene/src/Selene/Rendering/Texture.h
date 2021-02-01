@@ -43,7 +43,7 @@ namespace Selene
 	{
 	public:
 		static const std::shared_ptr<Texture>& LoadTexture2D(const std::string& name);
-		static const std::shared_ptr<Texture>& LoadTextureArray(const std::string& name, int count);
+		static const std::shared_ptr<Texture>& LoadTextureArray(const std::string& name, int hCount, int vCount);
 		static const std::shared_ptr<Texture>& Get(const std::string& name);
 		static bool IsInCache(const std::string& name);
 		static void Add(const std::string& name, const std::shared_ptr<Texture>& texture);
@@ -70,8 +70,8 @@ namespace Selene
 	class TextureArray : public Texture
 	{
 	public:
-		static std::shared_ptr<TextureArray> Create(const std::string& path, int count);
+		static std::shared_ptr<TextureArray> Create(const std::string& path, int hCount, int vCount);
 	protected:
-		TextureArray(const std::string& path, int count) : Texture(path) {};
+		TextureArray(const std::string& path, int hCount, int vCount) : Texture(path) {};
 	};
 }

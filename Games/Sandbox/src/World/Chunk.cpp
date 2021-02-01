@@ -15,10 +15,8 @@ namespace Sandbox
 				{
 					if (y > WorldConfig::CHUNK_HEIGHT - 2)
 						m_Blocks[x][y][z] = { BlockType::Grass };
-					
-					else if (y > WorldConfig::CHUNK_HEIGHT - 5)
+					else if (y > WorldConfig::CHUNK_HEIGHT - 4)
 						m_Blocks[x][y][z] = { BlockType::Dirt };
-					
 					else
 						m_Blocks[x][y][z] = { BlockType::Gravel };
 				}
@@ -230,7 +228,7 @@ namespace Sandbox
 		}
 
 		auto& mat = Selene::Material::Create(Selene::RenderingEngine::GetShaderLibrary()->Get("chunk"));
-		mat->Set(0, Selene::TextureCache::LoadTextureArray("assets/textures/blockTextureAtlas.png", 8));
+		mat->Set(0, Selene::TextureCache::LoadTextureArray("assets/textures/blockTextureAtlas.png", 8, 8));
 
 		m_Mesh = std::make_shared<Selene::Mesh>("chunk", vertices, indices, mat);
 		m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up

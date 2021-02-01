@@ -8,6 +8,8 @@ namespace Sandbox
 {
 	class Chunk
 	{
+	friend class World;
+
 	public:
 		Chunk(int x, int y);
 	public:
@@ -24,8 +26,7 @@ namespace Sandbox
 	private:
 		int m_ChunkOffsetX, m_ChunkOffsetY;
 		std::shared_ptr<Selene::Mesh> m_Mesh;
-		std::shared_ptr<Selene::Mesh> m_GreedyMesh;
-		std::array<std::shared_ptr<Chunk>, 4> m_ChunkNeighbors; // weak_ptr is 7% slower for greedy meshing due to the lock() mechanism which cost a lot
+		std::array<std::shared_ptr<Chunk>, 4> m_ChunkNeighbors; // weak_ptr increases generation time by 7% for greedy meshing due to the lock() mechanism which cost a lot
 		Block m_Blocks[WorldConfig::CHUNK_SIZE][WorldConfig::CHUNK_HEIGHT][WorldConfig::CHUNK_SIZE];
 	};
 }

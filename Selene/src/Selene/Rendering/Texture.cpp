@@ -54,11 +54,11 @@ namespace Selene
 		return TextureCache::Get(name);
 	}
 
-	const std::shared_ptr<Texture>& TextureCache::LoadTextureArray(const std::string& name, int count)
+	const std::shared_ptr<Texture>& TextureCache::LoadTextureArray(const std::string& name, int hCount, int vCount)
 	{
 		if (!TextureCache::IsInCache(name))
 		{
-			TextureCache::Add(name, TextureArray::Create(name, count));
+			TextureCache::Add(name, TextureArray::Create(name, hCount, vCount));
 		}
 
 		return TextureCache::Get(name);
@@ -111,7 +111,7 @@ namespace Selene
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
 
-	std::shared_ptr<TextureArray> TextureArray::Create(const std::string& path, int count)
+	std::shared_ptr<TextureArray> TextureArray::Create(const std::string& path, int hCount, int vCount)
 	{
 		switch (RenderingEngine::GetAPI())
 		{
@@ -119,7 +119,7 @@ namespace Selene
 			SLN_ENGINE_ASSERT(false, "RenderingAPI::None is currently not supported!");
 			return nullptr;
 		case RenderingAPI::API::OpenGL:
-			return std::make_shared<OpenGLTextureArray>(path, count);
+			return std::make_shared<OpenGLTextureArray>(path, hCount, vCount);
 		case RenderingAPI::API::Vulkan:
 			SLN_ENGINE_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
 			return nullptr;

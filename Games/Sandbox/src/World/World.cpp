@@ -21,7 +21,7 @@ namespace Sandbox
 			}
 		}
 	}
-
+	
 	void World::Render()
 	{
 		for (auto& chunkRows : m_Chunks)
@@ -31,6 +31,18 @@ namespace Sandbox
 				chunk.get()->Render();
 			}
 		}
+	}
+
+	void World::Update(glm::vec3 playerPosition)
+	{
+		//SLN_TRACE("Player position : [{0},{1},{2}]", playerPosition.x, playerPosition.y, playerPosition.z);
+
+		/*
+			generate new Chunk + set Neighbor
+			add it in dataStructure + remove old chunk
+			update neightbors of adjacent chunk 
+		*/
+		
 	}
 
 	void World::SetChunkNeighbors(int x, int y)
