@@ -18,7 +18,8 @@ namespace Sandbox
 		Left,
 		Right,
 		Top,
-		Bottom
+		Bottom,
+		None
 	};
 
 	struct Block

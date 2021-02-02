@@ -17,6 +17,7 @@ namespace Sandbox
 		void Render();
 		void SetNeighbors(std::array<std::shared_ptr<Chunk>, 4> neighbors);
 	public:
+		inline void SetNeighbor(std::shared_ptr<Chunk> neighbor, Direction direction) { m_ChunkNeighbors[direction] = neighbor; }
 		inline Block* GetBlock(int x, int y, int z) { return &m_Blocks[x][y][z]; }
 	private:
 		void FillChunk(BlockType type = BlockType::Air);

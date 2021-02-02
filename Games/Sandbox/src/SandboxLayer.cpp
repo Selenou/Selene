@@ -93,7 +93,7 @@ namespace Sandbox
 		// World
 		Selene::RenderingEngine::GetShaderLibrary()->Load("chunk", "chunk.vert", "chunk.frag");
 		m_World = std::make_unique<World>();
-		m_World->GenerateChunks();
+		m_World->Init();
 	}
 
 	void SandboxLayer::Update(Selene::Timestep ts)
