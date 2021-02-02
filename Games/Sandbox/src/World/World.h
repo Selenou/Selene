@@ -3,6 +3,9 @@
 #include "Selene.h"
 #include "Chunk.h"
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/hash.hpp" // hashes for unordered_map
+
 namespace Sandbox
 {
 	class World
@@ -16,7 +19,6 @@ namespace Sandbox
 	private:
 		void SetChunkNeighbors(int x, int y);
 	private:
-		std::array<std::array<std::shared_ptr<Chunk>, WorldConfig::WORLD_SIZE>, WorldConfig::WORLD_SIZE> m_Chunks;
-		std::unordered_map<uint32_t, uint32_t> m_ChunksMap;
+		std::unordered_map<glm::vec2, std::shared_ptr<Chunk>> m_ChunksMap;
 	};
 }

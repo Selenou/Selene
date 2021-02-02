@@ -2,8 +2,8 @@
 
 namespace Sandbox
 {
-	Chunk::Chunk(int x, int y) 
-		: m_ChunkOffsetX(x * WorldConfig::CHUNK_SIZE), m_ChunkOffsetY(y * WorldConfig::CHUNK_SIZE)
+	Chunk::Chunk(glm::vec2& chunkPosition)
+		: m_ChunkPosition(chunkPosition)
 	{
 		FillChunk();
 
@@ -26,9 +26,9 @@ namespace Sandbox
 
 	void Chunk::GenerateMesh()
 	{
-		auto t= Selene::Time::GetTime();
+		//auto t= Selene::Time::GetTime();
 		GenerateGreedyMesh();
-		SLN_WARN("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
+		//SLN_WARN("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
 	}
 
 	void Chunk::Render()
@@ -231,7 +231,7 @@ namespace Sandbox
 		mat->Set(0, Selene::TextureCache::LoadTextureArray("assets/textures/blockTextureAtlas.png", 8, 8));
 
 		m_Mesh = std::make_shared<Selene::Mesh>("chunk", vertices, indices, mat);
-		m_Mesh->SetPosition({ m_ChunkOffsetX, 0.0f, m_ChunkOffsetY }); // y is up
+		m_Mesh->SetPosition({ m_ChunkPosition.x, 0.0f, m_ChunkPosition.y }); // y is up
 
 		delete[] greedyMask;
 	}

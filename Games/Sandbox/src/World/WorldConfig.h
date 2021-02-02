@@ -2,7 +2,8 @@
 
 namespace WorldConfig
 {
-	inline constexpr int CHUNK_SIZE		= 2;
-	inline constexpr int CHUNK_HEIGHT	= 5;
-	inline constexpr int WORLD_SIZE		= 2;
+	inline constexpr int CHUNK_SIZE					= 32;
+	inline constexpr int CHUNK_HEIGHT				= 5;
+	inline constexpr int DYNAMIC_WORLD_RADIUS		= 8; 
+	inline constexpr float CHUNK_DISTANCE_THRESHOLD	= DYNAMIC_WORLD_RADIUS * 1.1f;
 }

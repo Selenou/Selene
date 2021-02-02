@@ -4,59 +4,102 @@ namespace Sandbox
 {
 	void World::GenerateChunks()
 	{
-		for (int x = 0; x < WorldConfig::WORLD_SIZE; x++)
+		int range = WorldConfig::DYNAMIC_WORLD_RADIUS;
+
+		for (int x = -range; x <= range; x++)
 		{
-			for (int y = 0; y < WorldConfig::WORLD_SIZE; y++)
+			for (int y = -range; y <= range; y++)
 			{
-				m_Chunks[x][y] = std::make_shared<Chunk>(x, y);
+				glm::vec2 chunkPosition = { x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE };
+
+				if (glm::distance(glm::vec2({ x, y }), { 0, 0 }) < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
+				{
+					m_ChunksMap.emplace(glm::vec2({ x,y }), std::make_shared<Chunk>(chunkPosition));
+				}
 			}
 		}
 
-		for (int x = 0; x < WorldConfig::WORLD_SIZE; x++)
+		for (auto const& [chunkIndex, chunkPtr] : m_ChunksMap)
 		{
-			for (int y = 0; y < WorldConfig::WORLD_SIZE; y++)
-			{
-				SetChunkNeighbors(x, y);
-				m_Chunks[x][y]->GenerateMesh();
-			}
+			//SetChunkNeighbors(chunkIndex.x, chunkIndex.y);
+			chunkPtr->GenerateMesh();
 		}
 	}
 	
 	void World::Render()
 	{
-		for (auto& chunkRows : m_Chunks)
+		for (auto const& [chunkIndex, chunkPtr] : m_ChunksMap)
 		{
-			for (auto& chunk : chunkRows)
-			{
-				chunk.get()->Render();
-			}
+			chunkPtr->Render();
 		}
 	}
 
 	void World::Update(glm::vec3 playerPosition)
 	{
-		//SLN_TRACE("Player position : [{0},{1},{2}]", playerPosition.x, playerPosition.y, playerPosition.z);
+		std::vector<glm::vec2> chunksDeletion;
+		float chunkDistance;
 
-		/*
-			generate new Chunk + set Neighbor
-			add it in dataStructure + remove old chunk
-			update neightbors of adjacent chunk 
-		*/
-		
+		// Check which chunks need to be deleted
+		for (auto& [chunkIndex, chunkPtr] : m_ChunksMap)
+		{
+			chunkDistance = glm::distance(chunkPtr->m_ChunkPosition, { playerPosition.x, playerPosition.z }) / WorldConfig::CHUNK_SIZE;
+			
+			if (chunkDistance >= WorldConfig::CHUNK_DISTANCE_THRESHOLD)
+			{
+				chunksDeletion.emplace_back(chunkIndex);
+			}
+		}
+
+		// Delete old chunks
+		for (auto& chunkIndex : chunksDeletion)
+		{
+			m_ChunksMap.erase(chunkIndex);
+		}
+
+		if (chunksDeletion.size() > 0)
+		{
+			// Construction loop
+			int playerX = (int)round(playerPosition.x / WorldConfig::CHUNK_SIZE);
+			int playerZ = (int)round(playerPosition.z / WorldConfig::CHUNK_SIZE);
+			int range = WorldConfig::DYNAMIC_WORLD_RADIUS;
+
+			for (int x = playerX - range; x <= playerX + range; x++)
+			{
+				for (int y = playerZ - range; y <= playerZ + range; y++)
+				{
+					glm::vec2 chunkCandidateIndex = { x,y };
+
+					// If chunk candidate is not already created, check if it should be
+					if (m_ChunksMap.find(chunkCandidateIndex) == m_ChunksMap.end())
+					{
+						glm::vec2 chunkCandidateWorldPosition = { x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE };
+						chunkDistance = glm::distance(chunkCandidateWorldPosition, { playerPosition.x, playerPosition.z }) / WorldConfig::CHUNK_SIZE;
+
+						if (chunkDistance < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
+						{
+							std::shared_ptr<Chunk> newChunk = std::make_shared<Chunk>(chunkCandidateWorldPosition);
+							m_ChunksMap.emplace(chunkCandidateIndex, newChunk);
+							newChunk->GenerateMesh();
+							//SLN_TRACE("Generate {0},{1}", x, y);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	void World::SetChunkNeighbors(int x, int y)
 	{
-		const int min = 0;
-		const int maxSize = WorldConfig::WORLD_SIZE - 1;
+		const int min = -WorldConfig::DYNAMIC_WORLD_RADIUS /2;
+		const int max = WorldConfig::DYNAMIC_WORLD_RADIUS /2;
 
 		std::array<std::shared_ptr<Chunk>, 4> neighbors;
 
-		neighbors[Direction::Left]	= (x - 1 >= min)		? m_Chunks[x-1][y] : nullptr;
-		neighbors[Direction::Right] = (x + 1 <= maxSize)	? m_Chunks[x+1][y] : nullptr;
-		neighbors[Direction::Front] = (y + 1 <= maxSize)	? m_Chunks[x][y+1] : nullptr;
-		neighbors[Direction::Back]	= (y - 1 >= min)		? m_Chunks[x][y-1] : nullptr;
+		neighbors[Direction::Left]	= (x - 1 >= min) ? m_ChunksMap.at({x-1,y}) : nullptr;
+		neighbors[Direction::Right] = (x + 1 <= max) ? m_ChunksMap.at({x+1,y}) : nullptr;
+		neighbors[Direction::Front] = (y + 1 <= max) ? m_ChunksMap.at({x,y+1}) : nullptr;
+		neighbors[Direction::Back]	= (y - 1 >= min) ? m_ChunksMap.at({x,y-1}) : nullptr;
 
-		m_Chunks[x][y]->SetNeighbors(neighbors);
+		m_ChunksMap.at({x,y})->SetNeighbors(neighbors);
 	}
 }
