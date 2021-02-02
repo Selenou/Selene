@@ -26,9 +26,9 @@ namespace Sandbox
 
 	void Chunk::GenerateMesh()
 	{
-		auto t= Selene::Time::GetTime();
+		//auto t= Selene::Time::GetTime();
 		GenerateGreedyMesh();
-		SLN_WARN("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
+		//SLN_WARN("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
 	}
 
 	void Chunk::Render()

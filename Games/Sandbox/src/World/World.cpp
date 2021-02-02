@@ -1,9 +1,20 @@
 #include "World.h"
+#include "FastNoiseLite.h"
 
 namespace Sandbox
 {
 	void World::Init()
 	{
+
+		// TEST NOISE
+		FastNoiseLite perlinNoise;
+		perlinNoise.SetSeed(1337);
+		perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+		const float frequency = 5.0f; // Higher frequency implies abrupt terrain
+		const float amplitude = 20;
+		const float minimumHeight = 4;
+
+
 		int range = WorldConfig::DYNAMIC_WORLD_RADIUS;
 
 		for (int x = -range; x <= range; x++)
@@ -13,6 +24,8 @@ namespace Sandbox
 				if (glm::distance(glm::vec2({ x, y }), { 0, 0 }) < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
 				{
 					m_ChunksMap.emplace(glm::vec2({ x,y }), std::make_shared<Chunk>(glm::vec2({ x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE })));
+					float perlinValue = (((perlinNoise.GetNoise(x * frequency, y * frequency) + 1.0f) / 2.0f) * amplitude) + minimumHeight - amplitude * 0.5f;
+					SLN_TRACE("{0}", perlinValue);
 				}
 			}
 		}
@@ -52,7 +65,7 @@ namespace Sandbox
 		for (auto& chunkIndex : chunksDeletion)
 		{
 			m_ChunksMap.erase(chunkIndex);
-			//RegenerateDirtyChunks(chunkIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+			RegenerateDirtyChunks(chunkIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
 		}
 
 		if (chunksDeletion.size() > 0)
@@ -80,7 +93,7 @@ namespace Sandbox
 							SetChunkNeighbors(chunkCandidateIndex);
 							newChunk->GenerateMesh();
 
-							//RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+							RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
 						}
 					}
 				}
