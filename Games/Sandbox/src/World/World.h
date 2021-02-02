@@ -13,11 +13,15 @@ namespace Sandbox
 	public:
 		World() = default;
 	public:
-		void GenerateChunks();
+		void Init();
 		void Render();
 		void Update(glm::vec3 playerPosition);
 	private:
-		void SetChunkNeighbors(int x, int y);
+		void SetChunkNeighbors(glm::vec2 chunkIndex, Direction direction = Direction::None);
+		void RegenerateDirtyChunks(glm::vec2 chunkIndex);
+	public:
+		inline std::shared_ptr<Chunk> TryGetChunk(glm::vec2 chunkIndex) { return IsChunkLoaded(chunkIndex) ? m_ChunksMap.at(chunkIndex) : nullptr; }
+		inline bool IsChunkLoaded(glm::vec2 chunkIndex) { return m_ChunksMap.find(chunkIndex) != m_ChunksMap.end(); }
 	private:
 		std::unordered_map<glm::vec2, std::shared_ptr<Chunk>> m_ChunksMap;
 	};
