@@ -6,19 +6,42 @@ namespace Sandbox
 		: m_ChunkPosition(chunkPosition)
 	{
 		FillChunk();
+	}
 
+	void Chunk::Populate(FastNoiseLite& perlinNoise)
+	{
 		for (int x = 0; x < WorldConfig::CHUNK_SIZE; x++)
 		{
-			for (int y = 0; y < WorldConfig::CHUNK_HEIGHT; y++)
+			for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
 			{
-				for (int z = 0; z < WorldConfig::CHUNK_SIZE; z++)
+				float amplitude = WorldConfig::CHUNK_HEIGHT;
+				float frequency = 1.5f;
+				float heightMin = 10.0f;
+
+				float perlinValue = (heightMin) + ((perlinNoise.GetNoise(frequency * (m_ChunkPosition.x + x), frequency * (m_ChunkPosition.y + z)) + 1.0f) * 0.5f * amplitude);
+
+				for (int y = 0; y < WorldConfig::CHUNK_HEIGHT; y++)
 				{
-					if (y > WorldConfig::CHUNK_HEIGHT - 2)
-						m_Blocks[x][y][z] = { BlockType::Grass };
-					else if (y > WorldConfig::CHUNK_HEIGHT - 4)
-						m_Blocks[x][y][z] = { BlockType::Dirt };
+					if (y > perlinValue)
+					{
+						continue;
+					}
+					else if (y > WorldConfig::CHUNK_HEIGHT - 10)
+					{
+						SetBlock(x, y, z, BlockType::Snow);
+					}
+					else if (y > WorldConfig::CHUNK_HEIGHT - 20)
+					{
+						SetBlock(x, y, z, BlockType::Dirt);
+					}
+					else if (y > WorldConfig::CHUNK_HEIGHT - 30)
+					{
+						SetBlock(x, y, z, BlockType::Grass);
+					}
 					else
-						m_Blocks[x][y][z] = { BlockType::Gravel };
+					{
+						SetBlock(x, y, z, BlockType::Gravel);
+					}
 				}
 			}
 		}

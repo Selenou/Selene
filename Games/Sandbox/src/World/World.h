@@ -2,6 +2,7 @@
 
 #include "Selene.h"
 #include "Chunk.h"
+#include "FastNoiseLite.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/hash.hpp" // hashes for unordered_map
@@ -24,5 +25,6 @@ namespace Sandbox
 		inline bool IsChunkLoaded(glm::vec2 chunkIndex) { return m_ChunksMap.find(chunkIndex) != m_ChunksMap.end(); }
 	private:
 		std::unordered_map<glm::vec2, std::shared_ptr<Chunk>> m_ChunksMap;
+		FastNoiseLite m_PerlinNoise;
 	};
 }

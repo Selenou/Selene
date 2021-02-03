@@ -3,6 +3,7 @@
 #include "Selene.h"
 #include "BlockUtils.h"
 #include "WorldConfig.h"
+#include "FastNoiseLite.h"
 
 namespace Sandbox
 {
@@ -13,12 +14,14 @@ namespace Sandbox
 	public:
 		Chunk(glm::vec2& chunkPosition);
 	public:
+		void Populate(FastNoiseLite& perlinNoise);
 		void GenerateMesh();
 		void Render();
 		void SetNeighbors(std::array<std::shared_ptr<Chunk>, 4> neighbors);
 	public:
 		inline void SetNeighbor(std::shared_ptr<Chunk> neighbor, Direction direction) { m_ChunkNeighbors[direction] = neighbor; }
 		inline Block* GetBlock(int x, int y, int z) { return &m_Blocks[x][y][z]; }
+		inline void SetBlock(int x, int y, int z, BlockType type) {  m_Blocks[x][y][z].BlockType = type; }
 	private:
 		void FillChunk(BlockType type = BlockType::Air);
 		void GenerateGreedyMesh();

@@ -8,7 +8,8 @@ namespace Sandbox
 		Grass,
 		Dirt,
 		Sand,
-		Gravel
+		Gravel,
+		Snow
 	};
 
 	enum Direction

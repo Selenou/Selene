@@ -1,19 +1,12 @@
 #include "World.h"
-#include "FastNoiseLite.h"
 
 namespace Sandbox
 {
 	void World::Init()
 	{
-
-		// TEST NOISE
-		FastNoiseLite perlinNoise;
-		perlinNoise.SetSeed(1337);
-		perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-		const float frequency = 5.0f; // Higher frequency implies abrupt terrain
-		const float amplitude = 20;
-		const float minimumHeight = 4;
-
+		m_PerlinNoise.SetSeed(1337);
+		m_PerlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+		//m_PerlinNoise.SetFrequency(0.01f);
 
 		int range = WorldConfig::DYNAMIC_WORLD_RADIUS;
 
@@ -23,9 +16,9 @@ namespace Sandbox
 			{
 				if (glm::distance(glm::vec2({ x, y }), { 0, 0 }) < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
 				{
-					m_ChunksMap.emplace(glm::vec2({ x,y }), std::make_shared<Chunk>(glm::vec2({ x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE })));
-					float perlinValue = (((perlinNoise.GetNoise(x * frequency, y * frequency) + 1.0f) / 2.0f) * amplitude) + minimumHeight - amplitude * 0.5f;
-					SLN_TRACE("{0}", perlinValue);
+					auto& chunkPtr = std::make_shared<Chunk>(glm::vec2({ x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE }));
+					chunkPtr->Populate(m_PerlinNoise);
+					m_ChunksMap.emplace(glm::vec2({ x,y }), chunkPtr);
 				}
 			}
 		}
@@ -65,7 +58,7 @@ namespace Sandbox
 		for (auto& chunkIndex : chunksDeletion)
 		{
 			m_ChunksMap.erase(chunkIndex);
-			RegenerateDirtyChunks(chunkIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+			//RegenerateDirtyChunks(chunkIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
 		}
 
 		if (chunksDeletion.size() > 0)
@@ -89,11 +82,12 @@ namespace Sandbox
 						if (chunkDistance < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
 						{
 							std::shared_ptr<Chunk> newChunk = std::make_shared<Chunk>(chunkCandidateWorldPosition);
+							newChunk->Populate(m_PerlinNoise);
 							m_ChunksMap.emplace(chunkCandidateIndex, newChunk);
 							SetChunkNeighbors(chunkCandidateIndex);
 							newChunk->GenerateMesh();
 
-							RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+							//RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
 						}
 					}
 				}

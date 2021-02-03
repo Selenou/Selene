@@ -10,6 +10,6 @@ namespace Selene
 		inline constexpr bool VSYNC_ENABLED				= false;
 		inline constexpr bool MIPMAP_ENABLED			= true;
 		inline constexpr bool DEPTH_BUFER_ENABLED		= true;
-		inline constexpr bool FACE_CULLING_ENABLED		= false;
+		inline constexpr bool FACE_CULLING_ENABLED		= true;
 	};
 }
