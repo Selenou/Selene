@@ -270,10 +270,10 @@ namespace Sandbox
 
 		switch (direction)
 		{
-			case Direction::Front:	return z < maxSize		? &m_Blocks[x][y][z + 1] : m_ChunkNeighbors[Direction::Front].get()	? m_ChunkNeighbors[Direction::Front].get()->GetBlock(x, y, min)		: nullptr;
-			case Direction::Back:	return z > min			? &m_Blocks[x][y][z - 1] : m_ChunkNeighbors[Direction::Back].get()	? m_ChunkNeighbors[Direction::Back].get()->GetBlock(x, y, maxSize)	: nullptr;
-			case Direction::Left:	return x > min			? &m_Blocks[x - 1][y][z] : m_ChunkNeighbors[Direction::Left].get()	? m_ChunkNeighbors[Direction::Left].get()->GetBlock(maxSize, y, z)	: nullptr;
-			case Direction::Right:	return x < maxSize		? &m_Blocks[x + 1][y][z] : m_ChunkNeighbors[Direction::Right].get()	? m_ChunkNeighbors[Direction::Right].get()->GetBlock(min, y, z)		: nullptr;
+			case Direction::Front:	return z < maxSize		? &m_Blocks[x][y][z + 1] : m_ChunkNeighbors[Direction::Front]	? m_ChunkNeighbors[Direction::Front]->GetBlock(x, y, min)		: nullptr;
+			case Direction::Back:	return z > min			? &m_Blocks[x][y][z - 1] : m_ChunkNeighbors[Direction::Back]	? m_ChunkNeighbors[Direction::Back]->GetBlock(x, y, maxSize)	: nullptr;
+			case Direction::Left:	return x > min			? &m_Blocks[x - 1][y][z] : m_ChunkNeighbors[Direction::Left]	? m_ChunkNeighbors[Direction::Left]->GetBlock(maxSize, y, z)	: nullptr;
+			case Direction::Right:	return x < maxSize		? &m_Blocks[x + 1][y][z] : m_ChunkNeighbors[Direction::Right]	? m_ChunkNeighbors[Direction::Right]->GetBlock(min, y, z)		: nullptr;
 			case Direction::Top:	return y < maxHeight	? &m_Blocks[x][y + 1][z] : nullptr;
 			case Direction::Bottom: return y > min			? &m_Blocks[x][y - 1][z] : nullptr;
 			default:				return nullptr;
