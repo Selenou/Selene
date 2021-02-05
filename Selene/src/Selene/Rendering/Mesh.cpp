@@ -64,6 +64,7 @@ namespace Selene
 		VertexBufferLayout layout = VertexBufferLayout({
 			{ "a_Position", DataType::Float3 },
 			{ "a_TexCoord", DataType::Float2 },
+			{ "a_Normal", DataType::Float3 },
 			{ "a_CustomFlags", DataType::UInt }
 		});
 

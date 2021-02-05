@@ -26,15 +26,15 @@ namespace Sandbox
 					{
 						continue;
 					}
-					else if (y > WorldConfig::CHUNK_HEIGHT - 10)
+					else if (y > WorldConfig::CHUNK_HEIGHT - 7)
 					{
 						SetBlock(x, y, z, BlockType::Snow);
 					}
-					else if (y > WorldConfig::CHUNK_HEIGHT - 20)
+					else if (y > WorldConfig::CHUNK_HEIGHT - 25)
 					{
 						SetBlock(x, y, z, BlockType::Dirt);
 					}
-					else if (y > WorldConfig::CHUNK_HEIGHT - 30)
+					else if (y > WorldConfig::CHUNK_HEIGHT - 35)
 					{
 						SetBlock(x, y, z, BlockType::Grass);
 					}
@@ -140,11 +140,12 @@ namespace Sandbox
 									for (int j = 0; j < greedyWidth; j++)
 										greedyMask[x][y + i][z + j][face] = true;
 
-								for (int vertexData = 0; vertexData < 30;)
+								for (int vertexData = 0; vertexData < 48;)
 								{
 									Selene::Vertex vertex;
 									vertex.Position = { BlockFaces::Faces[face][vertexData++] + x, BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + y, BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + z };
 									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyHeight , BlockFaces::Faces[face][vertexData++] * greedyWidth };
+									vertex.Normal = { BlockFaces::Faces[face][vertexData++], BlockFaces::Faces[face][vertexData++], BlockFaces::Faces[face][vertexData++] };
 									vertex.CustomFlags = static_cast<uint32_t>(m_Blocks[x][y][z].BlockType);
 									vertices.emplace_back(vertex);
 									indices.push_back(indicesCount++);
@@ -186,11 +187,12 @@ namespace Sandbox
 									for (int j = 0; j < greedyWidth; j++)
 										greedyMask[x + j][y + i][z][face] = true;
 
-								for (int vertexData = 0; vertexData < 30;)
+								for (int vertexData = 0; vertexData < 48;)
 								{
 									Selene::Vertex vertex;
 									vertex.Position = { BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + x, BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + y, BlockFaces::Faces[face][vertexData++] + z };
 									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyWidth , BlockFaces::Faces[face][vertexData++] * greedyHeight };
+									vertex.Normal = { BlockFaces::Faces[face][vertexData++], BlockFaces::Faces[face][vertexData++], BlockFaces::Faces[face][vertexData++] };
 									vertex.CustomFlags = static_cast<uint32_t>(m_Blocks[x][y][z].BlockType);
 									vertices.emplace_back(vertex);
 									indices.push_back(indicesCount++);
@@ -234,11 +236,12 @@ namespace Sandbox
 									for (int j = 0; j < greedyWidth; j++)
 										greedyMask[x + i][y][z + j][face] = true;
 									
-								for (int vertexData = 0; vertexData < 30;)
+								for (int vertexData = 0; vertexData < 48;)
 								{
 									Selene::Vertex vertex;
 									vertex.Position = { BlockFaces::Faces[face][vertexData++] * greedyHeight + (greedyHeight - 1) / 2.0f + x, BlockFaces::Faces[face][vertexData++] + y , BlockFaces::Faces[face][vertexData++] * greedyWidth + (greedyWidth - 1) / 2.0f + z };
 									vertex.TexCoord = { BlockFaces::Faces[face][vertexData++] * greedyHeight, BlockFaces::Faces[face][vertexData++] * greedyWidth };
+									vertex.Normal = { BlockFaces::Faces[face][vertexData++], BlockFaces::Faces[face][vertexData++], BlockFaces::Faces[face][vertexData++] };
 									vertex.CustomFlags = static_cast<uint32_t>(m_Blocks[x][y][z].BlockType);
 									vertices.emplace_back(vertex);
 									indices.push_back(indicesCount++);
@@ -279,7 +282,7 @@ namespace Sandbox
 
 	bool Chunk::IsBlockFaceVisible(int x, int y, int z, Direction faceDirection)
 	{
-		auto blockNeighbor = GetNeighborBlock(x, y, z, faceDirection);
+		Block* blockNeighbor = GetNeighborBlock(x, y, z, faceDirection);
 
 		if (!blockNeighbor || blockNeighbor->BlockType == BlockType::Air)
 		{
