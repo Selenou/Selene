@@ -99,6 +99,7 @@ namespace Sandbox
 	void SandboxLayer::Update(Selene::Timestep ts)
 	{
 		m_Camera->Update(ts);
+
 		Selene::RenderingEngine::BeginFrame(*m_Camera);
 
 		// Skybox
@@ -113,7 +114,11 @@ namespace Sandbox
 		glCullFace(GL_BACK);
 		glDepthMask(GL_TRUE);
 
-		m_World->Update(m_Camera->GetPosition());
+		if (m_DynamicWorldGeneration)
+		{
+			m_World->Update(m_Camera->GetPosition());
+		}
+			
 		m_World->Render();
 
 		Selene::RenderingEngine::EndFrame();
@@ -141,7 +146,6 @@ namespace Sandbox
 		ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always, ImVec2(1.0f, 0.0f));
 		ImGui::SetNextWindowViewport(viewport->ID);
 		ImGui::SetNextWindowBgAlpha(0.15f);
-
 
 
 		// Fps average each second
@@ -193,6 +197,9 @@ namespace Sandbox
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, useWireframeMode ? GL_LINE : GL_FILL);
 		}
+
+		if (ImGui::Checkbox("Dynamic World Generation", &m_DynamicWorldGeneration)) {}
+		
 		ImGui::End();
 	}
 

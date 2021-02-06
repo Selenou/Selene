@@ -51,7 +51,7 @@ namespace Sandbox
 		for (auto& [chunkIndex, chunkPtr] : m_ChunksMap)
 		{
 			chunkDistance = glm::distance(chunkPtr->m_ChunkPosition, { playerPosition.x, playerPosition.z }) / WorldConfig::CHUNK_SIZE;
-			
+
 			if (chunkDistance >= WorldConfig::CHUNK_DISTANCE_THRESHOLD)
 			{
 				chunksDeletion.emplace_back(chunkIndex);
@@ -154,21 +154,21 @@ namespace Sandbox
 		}
 
 		// Regenerate all greedy meshes
-		if (IsChunkLoaded({ x - 1, y }))
+		/*if (IsChunkLoaded({ x - 1, y }))
 		{
-			//m_ChunksMap.at({ x - 1, y })->GenerateMesh();
+			m_ChunksMap.at({ x - 1, y })->GenerateMesh();
 		}
 		if (IsChunkLoaded({ x + 1, y }))
 		{
-			//m_ChunksMap.at({ x + 1, y })->GenerateMesh();
+			m_ChunksMap.at({ x + 1, y })->GenerateMesh();
 		}
 		if (IsChunkLoaded({ x, y + 1 }))
 		{
-			//m_ChunksMap.at({ x, y + 1 })->GenerateMesh();
+			m_ChunksMap.at({ x, y + 1 })->GenerateMesh();
 		}
 		if (IsChunkLoaded({ x, y - 1 }))
 		{
-			//m_ChunksMap.at({ x, y - 1 })->GenerateMesh();
-		}
+			m_ChunksMap.at({ x, y - 1 })->GenerateMesh();
+		}*/
 	}
 }
