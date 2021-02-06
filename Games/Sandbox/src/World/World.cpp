@@ -78,23 +78,38 @@ namespace Sandbox
 					glm::vec2 chunkCandidateIndex = { x,y };
 
 					// If chunk candidate is not already created, check if it should be
-					if (!IsChunkLoaded(chunkCandidateIndex))
+					if (!IsChunkLoaded(chunkCandidateIndex) && std::find(m_ChunkQueue.begin(), m_ChunkQueue.end(), chunkCandidateIndex) == m_ChunkQueue.end())
 					{
 						glm::vec2 chunkCandidateWorldPosition = { x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE };
 						chunkDistance = glm::distance(chunkCandidateWorldPosition, { playerPosition.x, playerPosition.z }) / WorldConfig::CHUNK_SIZE;
 
 						if (chunkDistance < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
 						{
-							std::shared_ptr<Chunk> newChunk = std::make_shared<Chunk>(chunkCandidateWorldPosition);
-							newChunk->Populate(m_PerlinNoise);
-							m_ChunksMap.emplace(chunkCandidateIndex, newChunk);
-							SetChunkNeighbors(chunkCandidateIndex);
-							newChunk->GenerateMesh();
-							RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+							m_ChunkQueue.push_back(chunkCandidateIndex);
 						}
 					}
 				}
 			}
+		}
+
+		PopChunk();
+	}
+
+	void World::PopChunk()
+	{
+		if (!m_ChunkQueue.empty())
+		{
+			auto& chunkCandidateIndex = m_ChunkQueue.front();
+			glm::vec2 chunkCandidateWorldPosition = { chunkCandidateIndex.x * WorldConfig::CHUNK_SIZE, chunkCandidateIndex.y * WorldConfig::CHUNK_SIZE };
+
+			std::shared_ptr<Chunk> newChunk = std::make_shared<Chunk>(chunkCandidateWorldPosition);
+			newChunk->Populate(m_PerlinNoise);
+			m_ChunksMap.emplace(chunkCandidateIndex, newChunk);
+			SetChunkNeighbors(chunkCandidateIndex);
+			newChunk->GenerateMesh();
+			RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+
+			m_ChunkQueue.pop_front();
 		}
 	}
 
