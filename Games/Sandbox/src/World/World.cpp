@@ -4,30 +4,34 @@ namespace Sandbox
 {
 	void World::Init()
 	{
-		m_PerlinNoise.SetSeed(1337);
-		m_PerlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-		//m_PerlinNoise.SetFrequency(0.01f);
-
-		int range = WorldConfig::DYNAMIC_WORLD_RADIUS;
-
-		for (int x = -range; x <= range; x++)
+		auto t = Selene::Time::GetTime();
 		{
-			for (int y = -range; y <= range; y++)
+			m_PerlinNoise.SetSeed(1337);
+			m_PerlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+			//m_PerlinNoise.SetFrequency(0.01f);
+
+			int range = WorldConfig::DYNAMIC_WORLD_RADIUS;
+
+			for (int x = -range; x <= range; x++)
 			{
-				if (glm::distance(glm::vec2({ x, y }), { 0, 0 }) < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
+				for (int y = -range; y <= range; y++)
 				{
-					auto& chunkPtr = std::make_shared<Chunk>(glm::vec2({ x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE }));
-					chunkPtr->Populate(m_PerlinNoise);
-					m_ChunksMap.emplace(glm::vec2({ x,y }), chunkPtr);
+					if (glm::distance(glm::vec2({ x, y }), { 0, 0 }) < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
+					{
+						auto& chunkPtr = std::make_shared<Chunk>(glm::vec2({ x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE }));
+						chunkPtr->Populate(m_PerlinNoise);
+						m_ChunksMap.emplace(glm::vec2({ x,y }), chunkPtr);
+					}
 				}
 			}
-		}
 
-		for (auto const& [chunkIndex, chunkPtr] : m_ChunksMap)
-		{
-			SetChunkNeighbors(chunkIndex);
-			chunkPtr->GenerateMesh();
+			for (auto const& [chunkIndex, chunkPtr] : m_ChunksMap)
+			{
+				SetChunkNeighbors(chunkIndex);
+				chunkPtr->GenerateMesh();
+			}
 		}
+		SLN_WARN("World generaton : {0}s", Selene::Time::GetTime() - t);
 	}
 	
 	void World::Render()
