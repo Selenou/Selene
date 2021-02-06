@@ -31,7 +31,7 @@ namespace Sandbox
 				chunkPtr->GenerateMesh();
 			}
 		}
-		SLN_WARN("World generaton : {0}s", Selene::Time::GetTime() - t);
+		SLN_WARN("World generation : {0}s", Selene::Time::GetTime() - t);
 	}
 	
 	void World::Render()
@@ -62,7 +62,7 @@ namespace Sandbox
 		for (auto& chunkIndex : chunksDeletion)
 		{
 			m_ChunksMap.erase(chunkIndex);
-			//RegenerateDirtyChunks(chunkIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+			RegenerateDirtyChunks(chunkIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
 		}
 
 		if (chunksDeletion.size() > 0)
@@ -90,8 +90,7 @@ namespace Sandbox
 							m_ChunksMap.emplace(chunkCandidateIndex, newChunk);
 							SetChunkNeighbors(chunkCandidateIndex);
 							newChunk->GenerateMesh();
-
-							//RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+							RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
 						}
 					}
 				}
@@ -157,19 +156,19 @@ namespace Sandbox
 		// Regenerate all greedy meshes
 		if (IsChunkLoaded({ x - 1, y }))
 		{
-			m_ChunksMap.at({ x - 1, y })->GenerateMesh();
+			//m_ChunksMap.at({ x - 1, y })->GenerateMesh();
 		}
 		if (IsChunkLoaded({ x + 1, y }))
 		{
-			m_ChunksMap.at({ x + 1, y })->GenerateMesh();
+			//m_ChunksMap.at({ x + 1, y })->GenerateMesh();
 		}
 		if (IsChunkLoaded({ x, y + 1 }))
 		{
-			m_ChunksMap.at({ x, y + 1 })->GenerateMesh();
+			//m_ChunksMap.at({ x, y + 1 })->GenerateMesh();
 		}
 		if (IsChunkLoaded({ x, y - 1 }))
 		{
-			m_ChunksMap.at({ x, y - 1 })->GenerateMesh();
+			//m_ChunksMap.at({ x, y - 1 })->GenerateMesh();
 		}
 	}
 }
