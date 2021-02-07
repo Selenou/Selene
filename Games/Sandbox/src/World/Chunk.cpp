@@ -51,12 +51,16 @@ namespace Sandbox
 	{
 		//auto t= Selene::Time::GetTime();
 		GenerateGreedyMesh();
+		m_IsMeshReady = true;
 		//SLN_WARN("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
 	}
 
 	void Chunk::Render()
 	{
-		Selene::RenderingEngine::SubmitMesh(m_Mesh);
+		if (m_IsMeshReady)
+		{
+			Selene::RenderingEngine::SubmitMesh(m_Mesh);
+		}
 	}
 
 	void Chunk::SetNeighbors(std::array<std::shared_ptr<Chunk>, 4> neighbors)

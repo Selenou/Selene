@@ -78,38 +78,57 @@ namespace Sandbox
 					glm::vec2 chunkCandidateIndex = { x,y };
 
 					// If chunk candidate is not already created, check if it should be
-					if (!IsChunkLoaded(chunkCandidateIndex) && std::find(m_ChunkQueue.begin(), m_ChunkQueue.end(), chunkCandidateIndex) == m_ChunkQueue.end())
+					if (!IsChunkLoaded(chunkCandidateIndex))
 					{
 						glm::vec2 chunkCandidateWorldPosition = { x * WorldConfig::CHUNK_SIZE, y * WorldConfig::CHUNK_SIZE };
 						chunkDistance = glm::distance(chunkCandidateWorldPosition, { playerPosition.x, playerPosition.z }) / WorldConfig::CHUNK_SIZE;
 
 						if (chunkDistance < WorldConfig::CHUNK_DISTANCE_THRESHOLD)
 						{
-							m_ChunkQueue.push_back(chunkCandidateIndex);
+							std::shared_ptr<Chunk> newChunk = std::make_shared<Chunk>(chunkCandidateWorldPosition);
+							newChunk->Populate(m_PerlinNoise);
+							m_ChunksMap.emplace(chunkCandidateIndex, newChunk);
+							SetChunkNeighbors(chunkCandidateIndex);
+							m_ChunkMeshBuilderQueue.push_back(chunkCandidateIndex);
+							RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
 						}
 					}
 				}
 			}
 		}
 
-		PopChunk();
+		GenerateChunkMesh(); // one call per frame, using a queue system to keep the game smooth on a single thread since greedy mesh is expensive
 	}
 
-	void World::PopChunk()
+	void World::GenerateChunkMesh()
 	{
-		if (!m_ChunkQueue.empty())
+		if (!m_ChunkMeshBuilderQueue.empty())
 		{
-			auto& chunkCandidateIndex = m_ChunkQueue.front();
-			glm::vec2 chunkCandidateWorldPosition = { chunkCandidateIndex.x * WorldConfig::CHUNK_SIZE, chunkCandidateIndex.y * WorldConfig::CHUNK_SIZE };
+			auto& chunkIndex = m_ChunkMeshBuilderQueue.front();
+			m_ChunkMeshBuilderQueue.pop_front();
 
-			std::shared_ptr<Chunk> newChunk = std::make_shared<Chunk>(chunkCandidateWorldPosition);
-			newChunk->Populate(m_PerlinNoise);
-			m_ChunksMap.emplace(chunkCandidateIndex, newChunk);
-			SetChunkNeighbors(chunkCandidateIndex);
-			newChunk->GenerateMesh();
-			RegenerateDirtyChunks(chunkCandidateIndex); // Regenerate adjacent chunk in order to reconstruct greedy mesh
+			if (TryGetChunk(chunkIndex) != nullptr)
+			{
+				m_ChunksMap.at(chunkIndex)->GenerateMesh();
+			}
+			else
+			{
+				GenerateChunkMesh();
+			}
+		}
+		else if (!m_ChunkMeshUpdateQueue.empty())
+		{
+			auto& chunkIndex = m_ChunkMeshUpdateQueue.front();
+			m_ChunkMeshUpdateQueue.pop_front();
 
-			m_ChunkQueue.pop_front();
+			if (TryGetChunk(chunkIndex) != nullptr)
+			{
+				m_ChunksMap.at(chunkIndex)->GenerateMesh();
+			}
+			else
+			{
+				GenerateChunkMesh();
+			}
 		}
 	}
 
@@ -169,21 +188,21 @@ namespace Sandbox
 		}
 
 		// Regenerate all greedy meshes
-		/*if (IsChunkLoaded({ x - 1, y }))
+		if (IsChunkLoaded({ x - 1, y }))
 		{
-			m_ChunksMap.at({ x - 1, y })->GenerateMesh();
+			m_ChunkMeshUpdateQueue.push_back({ x - 1, y });
 		}
 		if (IsChunkLoaded({ x + 1, y }))
 		{
-			m_ChunksMap.at({ x + 1, y })->GenerateMesh();
+			m_ChunkMeshUpdateQueue.push_back({ x + 1, y });
 		}
 		if (IsChunkLoaded({ x, y + 1 }))
 		{
-			m_ChunksMap.at({ x, y + 1 })->GenerateMesh();
+			m_ChunkMeshUpdateQueue.push_back({ x, y + 1 });
 		}
 		if (IsChunkLoaded({ x, y - 1 }))
 		{
-			m_ChunksMap.at({ x, y - 1 })->GenerateMesh();
-		}*/
+			m_ChunkMeshUpdateQueue.push_back({ x, y - 1 });
+		}
 	}
 }
