@@ -31,6 +31,7 @@ namespace Selene
 
 		static inline void BuildHeader(LogSeverity severity)
 		{
+			// Timestamp
 			char timeBuffer[11];
 			std::time_t currentTime = std::time(nullptr);
 			std::strftime(timeBuffer, 11, "[%H:%M:%S]", std::localtime(&currentTime));

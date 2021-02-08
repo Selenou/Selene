@@ -126,60 +126,6 @@ namespace Voxel
 
 	void VoxelLayer::RenderUI()
 	{
-		auto info = Selene::RenderingEngine::GetAPIInfo();
-		auto stats = Selene::RenderingEngine::GetStats();
-
-		static bool openRenderingStats = true;
-
-		ImGuiWindowFlags windowFlags =
-			ImGuiWindowFlags_NoDecoration |
-			ImGuiWindowFlags_NoDocking |
-			ImGuiWindowFlags_AlwaysAutoResize |
-			ImGuiWindowFlags_NoSavedSettings |
-			ImGuiWindowFlags_NoFocusOnAppearing |
-			ImGuiWindowFlags_NoNav |
-			ImGuiWindowFlags_NoMove;
-
-		ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImVec2 workAreaPos = viewport->GetWorkPos();
-		ImVec2 windowPos = ImVec2(workAreaPos.x + viewport->GetWorkSize().x - 10.0f, workAreaPos.y + 10.0f);
-		ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always, ImVec2(1.0f, 0.0f));
-		ImGui::SetNextWindowViewport(viewport->ID);
-		ImGui::SetNextWindowBgAlpha(0.15f);
-
-
-		// Fps average each second
-		
-		static int s_AverageFps;
-		static int s_FrameCounter;
-		static float s_FrametimeSum;
-
-		s_FrametimeSum += stats.Ts.GetSeconds();
-		s_FrameCounter++;
-
-		if(s_FrametimeSum > 1.0f)
-		{
-			s_AverageFps = s_FrameCounter;
-
-			s_FrameCounter = 0;
-			s_FrametimeSum = 0.0f;
-		}
-
-
-		ImGui::Begin("Rendering", &openRenderingStats, windowFlags);
-		ImGui::Text("FPS : %i", s_AverageFps);
-		ImGui::Text("Frametime : %f ms", stats.Ts.GetMilliseconds());
-		ImGui::Text("Draw calls : %i", stats.DrawCalls);
-		ImGui::Text("Vertex Count : %i", stats.TotalVertexCount);
-		ImGui::Text("Index Count : %i", stats.TotalIndexCount);
-		ImGui::Separator();
-		ImGui::Text("API : %s", info.API.c_str());
-		ImGui::Text("Vendor : %s", info.Vendor.c_str());
-		ImGui::Text("Renderer : %s", info.Renderer.c_str());
-		ImGui::Text("Version : %s", info.Version.c_str());
-		ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
-		ImGui::End();
-
 		static bool openDebugMenu = true;
 		static bool useWireframeMode = false;
 
