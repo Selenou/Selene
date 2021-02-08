@@ -19,7 +19,7 @@ namespace Selene
 			case DataType::Int3:    return GL_INT;
 			case DataType::Int4:    return GL_INT;
 			case DataType::UInt:	return GL_UNSIGNED_INT;
-			default:				SLN_ENGINE_ASSERT(false, "Unknown DataType!");
+			default:				SLN_ASSERT(false, "Unknown DataType!");
 		}
 
 		return 0;

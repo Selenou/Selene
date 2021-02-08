@@ -44,13 +44,13 @@ namespace Selene
 
 	void Mesh::Load(uint32_t importFlags)
 	{
-		SLN_ENGINE_INFO("Loading mesh from [{0}]", m_FilePath.c_str());
+		SLN_INFO("Loading mesh from [%s]", m_FilePath.c_str());
 
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(m_FilePath, importFlags);
 
 		bool isValid = scene && scene->mRootNode && scene->HasMeshes();
-		SLN_ENGINE_ASSERT(isValid, importer.GetErrorString());
+		SLN_ASSERT(isValid, importer.GetErrorString());
 
 		ProcessMeshes(scene);
 		ProcessMaterials(scene);
@@ -112,7 +112,7 @@ namespace Selene
 			{
 				aiFace face = mesh->mFaces[i];
 
-				SLN_ENGINE_ASSERT((mesh->mFaces[i].mNumIndices == 3), "Face must have 3 indices");
+				SLN_ASSERT((mesh->mFaces[i].mNumIndices == 3), "Face must have 3 indices");
 
 				for (size_t j = 0; j < face.mNumIndices; j++)
 				{
@@ -135,7 +135,7 @@ namespace Selene
 			{
 				auto aiMaterial = scene->mMaterials[i];
 				auto aiMaterialName = aiMaterial->GetName();
-				//SLN_ENGINE_TRACE("Processing material [{0}]", aiMaterialName.data);
+				//SLN_TRACE("Processing material [%s]", aiMaterialName.data);
 
 				auto& mat = Material::Create(RenderingEngine::GetShaderLibrary()->Get("unlit/unlitTexture"));
 				

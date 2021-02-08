@@ -17,16 +17,16 @@ namespace Selene
 		switch (severity)
 		{
 			case GL_DEBUG_SEVERITY_HIGH:   
-				SLN_ENGINE_CRITICAL(message); 
+				SLN_CRITICAL(message); 
 				return;
 			case GL_DEBUG_SEVERITY_MEDIUM:  
-				SLN_ENGINE_ERROR(message); 
+				SLN_ERROR(message); 
 				return;
 			case GL_DEBUG_SEVERITY_LOW:   
-				SLN_ENGINE_WARN(message); 
+				SLN_WARN(message); 
 				return;
 			case GL_DEBUG_SEVERITY_NOTIFICATION: 
-				SLN_ENGINE_TRACE(message); 
+				SLN_TRACE(message); 
 				return;
 		}
 	}

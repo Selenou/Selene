@@ -10,7 +10,7 @@ namespace Selene
 	{
 		ShaderSources shaderSources;
 
-		SLN_ENGINE_INFO("Loading shader from [{0}, {1}]", vertexSrc, fragmentSrc);
+		SLN_INFO("Loading shader from [%s, %s]", vertexSrc, fragmentSrc);
 		shaderSources.VertexSrc = ReadFromFile(vertexSrc);
 		shaderSources.FragmentSrc = ReadFromFile(fragmentSrc);
 
@@ -63,7 +63,7 @@ namespace Selene
 			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
 			std::vector<GLchar> infoLog(maxLength);
 			glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
-			SLN_ENGINE_ASSERT(false, "Vertex shader compilation failed :\n{0}", &infoLog[0]);
+			SLN_ASSERT(false, "Vertex shader compilation failed : [%s]", &infoLog[0]);
 		}
 
 		glAttachShader(program, vertexShader);
@@ -82,7 +82,7 @@ namespace Selene
 			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
 			std::vector<GLchar> infoLog(maxLength);
 			glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &infoLog[0]);
-			SLN_ENGINE_ASSERT(false, "Fragment shader compilation failed :\n{0}", &infoLog[0]);
+			SLN_ASSERT(false, "Fragment shader compilation failed : [%s]", &infoLog[0]);
 		}
 
 		glAttachShader(program, fragmentShader);
@@ -98,7 +98,7 @@ namespace Selene
 			glGetShaderiv(program, GL_INFO_LOG_LENGTH, &maxLength);
 			std::vector<GLchar> infoLog(maxLength);
 			glGetShaderInfoLog(program, maxLength, &maxLength, &infoLog[0]);
-			SLN_ENGINE_ASSERT(false, "Shader program linking failed :\n{0}", &infoLog[0]);
+			SLN_ASSERT(false, "Shader program linking failed : [%s]", &infoLog[0]);
 		}
 		
 		m_ShaderID = program;
@@ -127,7 +127,7 @@ namespace Selene
 		}
 		else
 		{
-			SLN_ENGINE_ERROR("Could not open file '{0}'", file);
+			SLN_ERROR("Could not open file [%s]", file);
 		}
 
 		return fileStr;

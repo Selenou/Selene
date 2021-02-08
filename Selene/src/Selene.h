@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Selene/Core/Game.h"
-#include "Selene/Core/Log.h"
+#include "Selene/Core/Logger.h"
 #include "Selene/Core/Layer.h"
 #include "Selene/Core/Input.h"
 #include "Selene/Core/Time.h"

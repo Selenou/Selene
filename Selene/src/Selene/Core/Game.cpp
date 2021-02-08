@@ -8,7 +8,7 @@ namespace Selene
 {
 	Game::Game(RenderingAPI::API api)
 	{
-		SLN_ENGINE_ASSERT(!s_Instance, "Application already exists!");
+		SLN_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
 		// Set this first because window creation will need this for creating its rendering context
@@ -18,6 +18,7 @@ namespace Selene
 		m_Window->SetEventCallback(SLN_BIND_EVENT(Game::OnEvent));
 
 		RenderingEngine::Init();
+		//Log::Init();
 
 		m_LayerStack = std::make_unique<LayerStack>();
 	}

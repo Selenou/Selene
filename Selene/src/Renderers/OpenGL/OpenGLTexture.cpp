@@ -12,9 +12,9 @@ namespace Selene
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
 
-		SLN_ENGINE_INFO("Loading image from [{0}]", path);
+		SLN_INFO("Loading image from [%s]", path);
 		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-		SLN_ENGINE_ASSERT(data, "Failed to load image");
+		SLN_ASSERT(data, "Failed to load image");
 
 		m_Width = width;
 		m_Height = height;
@@ -89,9 +89,9 @@ namespace Selene
 
 		int width, height, channels;
 
-		SLN_ENGINE_INFO("Loading image from [{0}]", path);
+		SLN_INFO("Loading image from [%s]", path);
 		stbi_uc* data = data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-		SLN_ENGINE_ASSERT(data, "Failed to load image");
+		SLN_ASSERT(data, "Failed to load image");
 
 		m_Width = width;
 		m_Height = height;
@@ -223,9 +223,9 @@ namespace Selene
 
 		int width, height, channels;
 
-		SLN_ENGINE_INFO("Loading image from [{0}]", path);
+		SLN_INFO("Loading image from [%s]", path);
 		stbi_uc* data = data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-		SLN_ENGINE_ASSERT(data, "Failed to load image");
+		SLN_ASSERT(data, "Failed to load image");
 
 		m_Width = width;
 		m_Height = height;

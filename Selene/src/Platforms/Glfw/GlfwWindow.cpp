@@ -40,9 +40,9 @@ namespace Selene
 	void GlfwWindow::Init()
 	{
 		// Init Glfw
-		SLN_ENGINE_INFO("Initializing Glfw");
+		SLN_INFO("Initializing Glfw");
 		int glfwInitSuccess = glfwInit();
-		SLN_ENGINE_ASSERT(glfwInitSuccess, "Failed to initialize Glfw");
+		SLN_ASSERT(glfwInitSuccess, "Failed to initialize Glfw");
 
 		//if (RenderingAPI::GetAPI() == RenderingAPI::API::Vulkan)
 		//{
@@ -50,9 +50,9 @@ namespace Selene
 		//}
 		
 		// Create window
-		SLN_ENGINE_INFO("Creating Window [{0} ({1}, {2}])", m_Data.Title, m_Data.Width, m_Data.Height);
+		SLN_INFO("Creating Window [%s (%i, %i])", m_Data.Title, m_Data.Width, m_Data.Height);
 		m_Window = glfwCreateWindow(m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		SLN_ENGINE_ASSERT(m_Window, "Failed to create GLFW window");
+		SLN_ASSERT(m_Window, "Failed to create GLFW window");
 		
 		// Create Rendering Context
 		m_RenderingContext = RenderingContext::Create(m_Window);
@@ -113,7 +113,7 @@ namespace Selene
 
 	void OnError(int error, const char * description)
 	{
-		SLN_ENGINE_ERROR("Glfw Error ({0}): {1}", error, description);
+		SLN_ERROR("Glfw Error %i: %s", error, description);
 	}
 
 	void OnWindowClose(GLFWwindow * window)

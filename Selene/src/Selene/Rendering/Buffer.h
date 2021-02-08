@@ -22,7 +22,7 @@ namespace Selene
 			case DataType::Int3:    return 4 * 3;
 			case DataType::Int4:    return 4 * 4;
 			case DataType::UInt:    return 4;
-			default:				SLN_ENGINE_ASSERT(false, "Unknown DataType!");
+			default:				SLN_ASSERT(false, "Unknown DataType!");
 		}
 		return 0;
 	}
@@ -57,8 +57,8 @@ namespace Selene
 				case DataType::Int2:    return 2;
 				case DataType::Int3:    return 3;
 				case DataType::Int4:    return 4;
-				case DataType::UInt:   return 1;
-				default:				SLN_ENGINE_ASSERT(false, "Unknown DataType!");
+				case DataType::UInt:	return 1;
+				default:				SLN_ASSERT(false, "Unknown DataType!");
 			}
 
 			return 0;

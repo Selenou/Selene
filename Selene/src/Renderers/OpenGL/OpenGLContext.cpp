@@ -11,8 +11,8 @@ namespace Selene
 		glfwMakeContextCurrent(m_WindowHandle);
 
 		// Init Glad
-		SLN_ENGINE_INFO("Initializing Glad");
+		SLN_INFO("Initializing Glad");
 		int gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		SLN_ENGINE_ASSERT(gladInitSuccess, "Failed to initialize Glad");
+		SLN_ASSERT(gladInitSuccess, "Failed to initialize Glad");
 	}
 }

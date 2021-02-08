@@ -27,15 +27,15 @@ namespace Selene
 		switch (RenderingEngine::GetAPI())
 		{
 			case RenderingAPI::API::None:
-				SLN_ENGINE_ASSERT(false, "RenderingAPI::None is currently not supported!");
+				SLN_ASSERT(false, "RenderingAPI::None is currently not supported!");
 				return nullptr;
 			case RenderingAPI::API::OpenGL:
 				return std::make_shared<OpenGLTexture2D>(path);
 			case RenderingAPI::API::Vulkan:
-				SLN_ENGINE_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
+				SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
 				return nullptr;
 			default:
-				SLN_ENGINE_ASSERT(false, "Unknown RendererAPI!");
+				SLN_ASSERT(false, "Unknown RendererAPI!");
 				return nullptr;
 		}
 	}
@@ -77,7 +77,7 @@ namespace Selene
 	void TextureCache::Add(const std::string& name, const std::shared_ptr<Texture>& texture)
 	{
 		s_TextureCache.emplace(name, texture); // TODO : we may not want to use strong ref here, std::unordered_map<std::string, const std::shared_ptr<Texture2D>&> or weak_ptr ? Need to investigate
-		SLN_ENGINE_INFO("Texture [{0}] is added in texture cache", name);
+		SLN_INFO("Texture [%s] is added in texture cache", name);
 	}
 
 	//void TextureCache::Remove(const std::string& name)
@@ -94,15 +94,15 @@ namespace Selene
 		switch (RenderingEngine::GetAPI())
 		{
 		case RenderingAPI::API::None:
-			SLN_ENGINE_ASSERT(false, "RenderingAPI::None is currently not supported!");
+			SLN_ASSERT(false, "RenderingAPI::None is currently not supported!");
 			return nullptr;
 		case RenderingAPI::API::OpenGL:
 			return std::make_shared<OpenGLTextureCubeMap>(path);
 		case RenderingAPI::API::Vulkan:
-			SLN_ENGINE_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
+			SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
 			return nullptr;
 		default:
-			SLN_ENGINE_ASSERT(false, "Unknown RendererAPI!");
+			SLN_ASSERT(false, "Unknown RendererAPI!");
 			return nullptr;
 		}
 	}
@@ -116,15 +116,15 @@ namespace Selene
 		switch (RenderingEngine::GetAPI())
 		{
 		case RenderingAPI::API::None:
-			SLN_ENGINE_ASSERT(false, "RenderingAPI::None is currently not supported!");
+			SLN_ASSERT(false, "RenderingAPI::None is currently not supported!");
 			return nullptr;
 		case RenderingAPI::API::OpenGL:
 			return std::make_shared<OpenGLTextureArray>(path, hCount, vCount);
 		case RenderingAPI::API::Vulkan:
-			SLN_ENGINE_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
+			SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
 			return nullptr;
 		default:
-			SLN_ENGINE_ASSERT(false, "Unknown RendererAPI!");
+			SLN_ASSERT(false, "Unknown RendererAPI!");
 			return nullptr;
 		}
 	}

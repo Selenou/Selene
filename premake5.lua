@@ -1,6 +1,6 @@
 workspace "Selene"
 	architecture "x86_64"
-	startproject "Sandbox"
+	startproject "Raycaster"
 
 	configurations 
 	{ 
@@ -14,7 +14,6 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["glfw"] = "%{wks.location}/Selene/vendor/glfw/include"
 IncludeDir["glad"] = "%{wks.location}/Selene/vendor/glad/include"
-IncludeDir["spdlog"] = "%{wks.location}/Selene/vendor/spdlog"
 IncludeDir["glm"] = "%{wks.location}/Selene/vendor/glm"
 IncludeDir["imgui"] = "%{wks.location}/Selene/vendor/imgui"
 IncludeDir["stb_image"] = "%{wks.location}/Selene/vendor/stb_image"
@@ -30,6 +29,6 @@ group ""
 include "Selene"
 
 group "Games"
-	include "Games/Doom"
-	include "Games/Sandbox"
+	include "Games/Raycaster"
+	include "Games/Voxel"
 group ""

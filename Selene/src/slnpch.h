@@ -7,9 +7,10 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <array>
 #include <cmath>
 #include <filesystem>
 #include <thread>
 
 #include "Selene/Core/Macro.h"
-#include "Selene/Core/Log.h"
+#include "Selene/Core/Logger.h"
