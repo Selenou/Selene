@@ -8,6 +8,11 @@ workspace "Selene"
 		"DebugOptimized", 
 		"Release" 
 	}
+	
+	flags
+    {
+        "MultiProcessorCompile"
+    }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -32,3 +37,27 @@ group "Games"
 	include "Games/Raycaster"
 	include "Games/Voxel"
 group ""
+
+newaction 
+{
+	trigger     = "clean",
+	description = "Clean build files",
+	execute     = function ()
+		print("Cleaning build files ...")
+		os.remove{"**.sln", "**.vcxproj", "**.vcxproj.filters", "**.vcxproj.user"}
+		print("Cleaning project binaries ...")
+		os.rmdir("./bin")
+		os.rmdir("./bin-int")
+		print("Cleaning vendor binaries ...")
+		-- Glad
+		os.rmdir("./Selene/vendor/glad/bin")
+		os.rmdir("./Selene/vendor/glad/bin-int")
+		-- Glfw
+		os.rmdir("./Selene/vendor/glfw/bin")
+		os.rmdir("./Selene/vendor/glfw/bin-int")
+		-- Imgui
+		os.rmdir("./Selene/vendor/imgui/bin")
+		os.rmdir("./Selene/vendor/imgui/bin-int")
+		print("Cleaning done !")
+	end
+}
