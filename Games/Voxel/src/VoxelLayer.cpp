@@ -101,27 +101,30 @@ namespace Voxel
 	{
 		m_Camera->Update(ts);
 
-		Selene::RenderingEngine::BeginFrame(*m_Camera);
-
-		// Skybox
-		glDepthMask(GL_FALSE);
-		glCullFace(GL_FRONT);
-		m_TextureCubeMap->Bind();
-		m_SkyboxShader->Bind();
-		glm::mat4 v = glm::mat4(glm::mat3(m_Camera->GetViewMatrix())); // from mat3 to mat4 : removes any translation, but keeps all rotation transformations so the user can still look around the scene
-		glm::mat4 vp = m_Camera->GetProjectionMatrix() * v;
-		m_SkyboxShader->SetUniform("u_ViewProjection", vp);
-		Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxEbo->GetCount(), m_SkyboxVbo->GetCount());
-		glCullFace(GL_BACK);
-		glDepthMask(GL_TRUE);
-
 		if (m_DynamicWorldGeneration)
 		{
 			m_World->Update(m_Camera->GetPosition());
 		}
-			
-		m_World->Render();
+	}
 
+	void VoxelLayer::Render()
+	{
+		Selene::RenderingEngine::BeginFrame(*m_Camera);
+		{
+			// Skybox
+			glDepthMask(GL_FALSE);
+			glCullFace(GL_FRONT);
+			m_TextureCubeMap->Bind();
+			m_SkyboxShader->Bind();
+			glm::mat4 v = glm::mat4(glm::mat3(m_Camera->GetViewMatrix())); // from mat3 to mat4 : removes any translation, but keeps all rotation transformations so the user can still look around the scene
+			glm::mat4 vp = m_Camera->GetProjectionMatrix() * v;
+			m_SkyboxShader->SetUniform("u_ViewProjection", vp);
+			Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxEbo->GetCount(), m_SkyboxVbo->GetCount());
+			glCullFace(GL_BACK);
+			glDepthMask(GL_TRUE);
+
+			m_World->Render();
+		}
 		Selene::RenderingEngine::EndFrame();
 	}
 
@@ -164,5 +167,4 @@ namespace Voxel
 				return false;
 			});
 	}
-
 }

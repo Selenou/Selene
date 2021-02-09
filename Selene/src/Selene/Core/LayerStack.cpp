@@ -26,15 +26,21 @@ namespace Selene
 		}
 	}
 
-	void LayerStack::RenderUI()
+	void LayerStack::Render()
 	{
-		m_ImGuiLayer->StartNewFrame();
-
 		for (Layer* layer : m_Layers)
 		{
-			layer->RenderUI();
+			layer->Render();
 		}
 
+		// UI
+		m_ImGuiLayer->StartNewFrame();
+		{
+			for (Layer* layer : m_Layers)
+			{
+				layer->RenderUI();
+			}
+		}
 		m_ImGuiLayer->EndFrame();
 	}
 

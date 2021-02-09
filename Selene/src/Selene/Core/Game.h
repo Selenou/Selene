@@ -20,10 +20,12 @@ namespace Selene
 		inline Window& GetWindow() { return *m_Window; }
 		inline static Game& GetInstance() { return *s_Instance; }
 	private:
-		bool OnWindowClose(WindowCloseEvent& e);
-		bool OnFramebufferResize(FramebufferResizeEvent& e);
+		void Update();
 		void Render();
 		void UpdateTimeStep();
+	private:
+		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnFramebufferResize(FramebufferResizeEvent& e);
 	private:
 		static inline Game* s_Instance = nullptr;
 		std::unique_ptr<Window> m_Window;

@@ -18,7 +18,6 @@ namespace Selene
 		m_Window->SetEventCallback(SLN_BIND_EVENT(Game::OnEvent));
 
 		RenderingEngine::Init();
-		//Log::Init();
 
 		m_LayerStack = std::make_unique<LayerStack>();
 	}
@@ -28,16 +27,21 @@ namespace Selene
 		while (m_IsRunning)
 		{
 			UpdateTimeStep();
-			m_Window->PollEvents();
+			Update();
 			Render();
 		} 
+	}
+
+	void Game::Update()
+	{
+		m_Window->PollEvents();
+		m_LayerStack->Update(m_TimeStep);
 	}
 
 	void Game::Render()
 	{
 		RenderingEngine::Clear();
-		m_LayerStack->Update(m_TimeStep);
-		m_LayerStack->RenderUI();
+		m_LayerStack->Render();
 		m_Window->SwapBuffers();
 	}
 

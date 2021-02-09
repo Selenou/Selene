@@ -12,7 +12,7 @@ namespace Selene
 		~LayerStack();
 	public:
 		void Update(Timestep ts);
-		void RenderUI();
+		void Render();
 		void HandleEvent(Event& event);
 		void PushLayer(Layer* layer);
 		void PopLayer(Layer* layer);

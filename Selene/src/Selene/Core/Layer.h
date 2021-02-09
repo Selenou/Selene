@@ -16,6 +16,7 @@ namespace Selene
 		virtual void Attach() {}
 		virtual void Detach() {}
 		virtual void Update(Timestep ts) {}
+		virtual void Render() {}
 		virtual void RenderUI() {}
 		virtual void OnEvent(Event& event) {}
 		inline const std::string& GetName() const { return m_Name; }

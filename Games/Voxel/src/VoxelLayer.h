@@ -11,6 +11,7 @@ namespace Voxel
 		VoxelLayer();
 	public:
 		virtual void Update(Selene::Timestep ts) override;
+		virtual void Render() override;
 		virtual void RenderUI() override;
 		virtual void OnEvent(Selene::Event& event) override;
 	private:

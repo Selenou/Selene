@@ -12,19 +12,18 @@ namespace Raycaster
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 	}
 
-	/*void RaycasterLayer::Update(Selene::Timestep ts)
+	void RaycasterLayer::Update(Selene::Timestep ts)
 	{
-		//m_Camera->Update(ts);
-
-		//Selene::RenderingEngine::BeginFrame(*m_Camera);
-
-
-		//Selene::RenderingEngine::EndFrame();
+		m_Camera->Update(ts);
 	}
 
-	void VoxelLayer::RenderUI()
+	void RaycasterLayer::Render()
 	{
+		Selene::RenderingEngine::BeginFrame(*m_Camera);
+		{
 
+		}
+		Selene::RenderingEngine::EndFrame();
 	}
 
 	void RaycasterLayer::OnEvent(Selene::Event& event)
@@ -35,5 +34,5 @@ namespace Raycaster
 			m_Camera->SetViewportSize(e.GetWidth(), e.GetHeight());
 			return false;
 		});
-	}*/
+	}
 }

@@ -9,9 +9,9 @@ namespace Raycaster
 	public:
 		RaycasterLayer();
 	public:
-		//virtual void Update(Selene::Timestep ts) override;
-		//virtual void RenderUI() override;
-		//virtual void OnEvent(Selene::Event& event) override;
+		virtual void Update(Selene::Timestep ts) override;
+		virtual void Render() override;
+		virtual void OnEvent(Selene::Event& event) override;
 	private :
 		std::unique_ptr<Selene::Camera> m_Camera;
 	};
