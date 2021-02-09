@@ -4,16 +4,16 @@
 
 namespace Voxel
 {
-	class Voxel : public Selene::Game
+	class VoxelGame : public Selene::Game
 	{
 	public:
-		Voxel(Selene::RenderingAPI::API renderingAPI)
+		VoxelGame(Selene::RenderingAPI::API renderingAPI)
 			: Game(renderingAPI)
 		{
 			PushLayer(new VoxelLayer());
 		}
 
-		~Voxel()
+		~VoxelGame()
 		{
 		}
 	};
@@ -21,5 +21,5 @@ namespace Voxel
 
 Selene::Game* Selene::CreateGame()
 {
-	return new Voxel::Voxel(Selene::RenderingAPI::API::OpenGL);
+	return new Voxel::VoxelGame(Selene::RenderingAPI::API::OpenGL);
 }

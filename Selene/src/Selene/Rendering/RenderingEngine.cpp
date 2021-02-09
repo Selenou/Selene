@@ -10,8 +10,6 @@ namespace Selene
 		s_RenderingEngineData.m_RenderingStats = {};
 
 		s_RenderingEngineData.m_ShaderLibrary = std::make_unique<ShaderLibrary>();
-		s_RenderingEngineData.m_ShaderLibrary->Load("unlit/unlitTexture", "unlit/unlitTexture.vert", "unlit/unlitTexture.frag");
-		s_RenderingEngineData.m_ShaderLibrary->Load("skybox", "skybox.vert", "skybox.frag");
 	}
 
 	void RenderingEngine::Clear()

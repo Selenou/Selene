@@ -7,6 +7,11 @@ project "Voxel"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
+	}
+
 	files 
 	{ 
 		"src/**.h", 

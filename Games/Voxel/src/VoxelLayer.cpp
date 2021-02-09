@@ -11,11 +11,11 @@ namespace Voxel
 	VoxelLayer::VoxelLayer()
 		: Layer("Voxel")
 	{
+		auto& window = Selene::Game::GetInstance().GetWindow();
+
 		m_Camera = std::make_unique<Selene::Camera>();
 		m_Camera->SetPerspective(45.0f);
 		m_Camera->SetPosition({ 0.0f, 10.0f, 0.0f });
-
-		auto& window = Selene::Game::GetInstance().GetWindow();
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
 		// Skybox
@@ -86,6 +86,7 @@ namespace Voxel
 			m_SkyboxEbo = Selene::IndexBuffer::Create(indices, sizeof(indices));
 			m_SkyboxPipeline->BindIndexBuffer(m_SkyboxEbo);
 
+			Selene::RenderingEngine::GetShaderLibrary()->Load("skybox", "skybox.vert", "skybox.frag");
 			m_SkyboxShader = Selene::RenderingEngine::GetShaderLibrary()->Get("skybox");
 			m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
 		}
