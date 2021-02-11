@@ -1,6 +1,6 @@
 workspace "Selene"
 	architecture "x86_64"
-	startproject "Voxel"
+	startproject "Playground"
 
 	configurations 
 	{ 
@@ -35,7 +35,7 @@ group ""
 include "Selene"
 
 group "Games"
-	include "Games/Raycaster"
+	include "Games/Playground"
 	include "Games/Voxel"
 group ""
 

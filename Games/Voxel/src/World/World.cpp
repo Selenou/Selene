@@ -31,7 +31,7 @@ namespace Voxel
 				chunkPtr->GenerateMesh();
 			}
 		}
-		SLN_WARN("World generation : %fs", Selene::Time::GetTime() - t);
+		SLN_INFO("World generation : %fs", Selene::Time::GetTime() - t);
 	}
 	
 	void World::Render()

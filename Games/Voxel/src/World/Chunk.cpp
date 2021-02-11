@@ -52,7 +52,7 @@ namespace Voxel
 		//auto t= Selene::Time::GetTime();
 		GenerateGreedyMesh();
 		m_IsMeshReady = true;
-		//SLN_WARN("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
+		//SLN_INFO("Greedy meshing generaton : {0}s", Selene::Time::GetTime() - t);
 	}
 
 	void Chunk::Render()

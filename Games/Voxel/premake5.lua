@@ -30,7 +30,9 @@ project "Voxel"
 	links 
 	{ 
 		"Selene",
-		"%{wks.location}/Selene/vendor/assimp/assimp-vc141-mt.lib"
+		"%{wks.location}/Selene/vendor/assimp/assimp-vc141-mt.lib",
+		"%{wks.location}/Selene/vendor/openal/OpenAL32.lib",
+		"%{wks.location}/Selene/vendor/vulkan/vulkan-1.lib"
 	}
 
 	filter "system:windows"

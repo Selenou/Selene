@@ -39,9 +39,7 @@ project "Selene"
 	{ 
 		"Glfw",
 		"Glad",
-		"ImGui",
-		"vendor/openal/OpenAL32.lib",
-		"vendor/vulkan/vulkan-1.lib" --defined opengl32.lib
+		"ImGui"
 	}
 
 	filter "system:windows"

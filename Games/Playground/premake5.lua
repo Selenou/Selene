@@ -1,4 +1,4 @@
-project "Raycaster"
+project "Playground"
 	kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
@@ -23,12 +23,16 @@ project "Raycaster"
         "%{wks.location}/Selene/src",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.openal}"
 	}
 
 	links 
 	{ 
-		"Selene" 
+		"Selene",
+		"%{wks.location}/Selene/vendor/assimp/assimp-vc141-mt.lib",
+		"%{wks.location}/Selene/vendor/openal/OpenAL32.lib",
+		"%{wks.location}/Selene/vendor/vulkan/vulkan-1.lib"
 	}
 
 	filter "system:windows"

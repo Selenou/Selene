@@ -1,10 +1,10 @@
 #include "VoxelLayer.h"
-#include "imgui/imgui.h"
+#include <imgui/imgui.h>
 
 //tmp
-#include  <glad/glad.h>
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Voxel
 {

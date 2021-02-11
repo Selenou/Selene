@@ -5,7 +5,7 @@
 #include "FastNoiseLite.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include "glm/gtx/hash.hpp" // hashes for unordered_map
+#include <glm/gtx/hash.hpp> // hashes for unordered_map
 
 #include <deque>
 
