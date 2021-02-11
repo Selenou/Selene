@@ -2,9 +2,9 @@
 			
 layout(location = 0) out vec4 color;
 
-in vec3 v_TexCoord;
+in vec2 v_TexCoord;
 
-uniform samplerCube u_Texture;
+uniform sampler2D u_Texture;
 
 void main()
 {

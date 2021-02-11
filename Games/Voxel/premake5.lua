@@ -23,7 +23,8 @@ project "Voxel"
         "%{wks.location}/Selene/src",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.openal}"
 	}
 
 	links 
@@ -42,7 +43,8 @@ project "Voxel"
 		postbuildcommands 
 		{
 			'{COPY} "./assets" "%{cfg.targetdir}/assets"',
-			'{COPY} "%{wks.location}/Selene/vendor/assimp/assimp-vc141-mt.dll" "%{cfg.targetdir}"'
+			'{COPY} "%{wks.location}/Selene/vendor/assimp/assimp-vc141-mt.dll" "%{cfg.targetdir}"',
+			'{COPY} "%{wks.location}/Selene/vendor/openal/OpenAL32.dll" "%{cfg.targetdir}"'
 		}
 
 	filter "configurations:Debug"

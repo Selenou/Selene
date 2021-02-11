@@ -30,6 +30,7 @@ project "Selene"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.openal}",
 		"%{IncludeDir.vulkan}",
 		"%{IncludeDir.assimp}"
 	}
@@ -39,6 +40,7 @@ project "Selene"
 		"Glfw",
 		"Glad",
 		"ImGui",
+		"vendor/openal/OpenAL32.lib",
 		"vendor/vulkan/vulkan-1.lib" --defined opengl32.lib
 	}
 

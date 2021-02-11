@@ -1,6 +1,6 @@
 #include <Selene.h>
 #include "Selene/Main.h"
-
+#include "RaycasterLayer.h"
 
 namespace Raycaster
 {
@@ -10,7 +10,7 @@ namespace Raycaster
 		RaycasterGame(Selene::RenderingAPI::API renderingAPI)
 			: Game(renderingAPI)
 		{
-
+			PushLayer(new RaycasterLayer());
 		}
 
 		~RaycasterGame()

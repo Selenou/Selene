@@ -1,7 +1,7 @@
 #include "slnpch.h"
 #include "RenderingPanel.h"
 #include "Selene/Rendering/RenderingEngine.h"
-#include "imgui.h"
+#include <imgui/imgui.h>
 
 namespace Selene
 {

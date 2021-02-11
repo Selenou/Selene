@@ -1,11 +1,11 @@
 #include "slnpch.h"
 #include "ImGuiLayer.h"
 #include "Selene/Core/Game.h"
-#include "imgui.h"
+#include <imgui/imgui.h>
 
-#include "backends/imgui_impl_opengl3.h"
-#include "backends/imgui_impl_vulkan.h"
-#include "backends/imgui_impl_glfw.h"
+#include "imgui/backends/imgui_impl_opengl3.h"
+#include "imgui/backends/imgui_impl_vulkan.h"
+#include "imgui/backends/imgui_impl_glfw.h"
 #include <GLFW/glfw3.h>
 
 namespace Selene

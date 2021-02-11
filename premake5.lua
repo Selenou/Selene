@@ -1,6 +1,6 @@
 workspace "Selene"
 	architecture "x86_64"
-	startproject "Raycaster"
+	startproject "Voxel"
 
 	configurations 
 	{ 
@@ -19,9 +19,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["glfw"] = "%{wks.location}/Selene/vendor/glfw/include"
 IncludeDir["glad"] = "%{wks.location}/Selene/vendor/glad/include"
-IncludeDir["glm"] = "%{wks.location}/Selene/vendor/glm"
-IncludeDir["imgui"] = "%{wks.location}/Selene/vendor/imgui"
-IncludeDir["stb_image"] = "%{wks.location}/Selene/vendor/stb_image"
+IncludeDir["glm"] = "%{wks.location}/Selene/vendor/glm/include"
+IncludeDir["stb_image"] = "%{wks.location}/Selene/vendor/stb_image/include"
+IncludeDir["imgui"] = "%{wks.location}/Selene/vendor/imgui/include"
+IncludeDir["openal"] = "%{wks.location}/Selene/vendor/openal/include"
 IncludeDir["vulkan"] = "%{wks.location}/Selene/vendor/vulkan/include"
 IncludeDir["assimp"] = "%{wks.location}/Selene/vendor/assimp/include"
 

@@ -2,6 +2,8 @@
 #include "Selene/Main.h"
 #include "VoxelLayer.h"
 
+#include <AL/alc.h>
+
 namespace Voxel
 {
 	class VoxelGame : public Selene::Game
@@ -11,6 +13,12 @@ namespace Voxel
 			: Game(renderingAPI)
 		{
 			PushLayer(new VoxelLayer());
+
+			ALCdevice* openALDevice = alcOpenDevice(nullptr);
+			if (!openALDevice)
+				std::cerr << "ERROR: No device" << std::endl;
+
+			ALCcontext* openALContext = alcCreateContext(openALDevice, nullptr);
 		}
 
 		~VoxelGame()
