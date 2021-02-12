@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Macro.h"
 #include "Selene/Rendering/RenderingEngine.h"
+#include "Selene/Audio/AudioEngine.h"
 #include "Selene/EventSystem/EventDispatcher.h"
 
 namespace Selene 
@@ -18,6 +19,7 @@ namespace Selene
 		m_Window->SetEventCallback(SLN_BIND_EVENT(Game::OnEvent));
 
 		RenderingEngine::Init();
+		AudioEngine::Init();
 
 		m_LayerStack = std::make_unique<LayerStack>();
 	}

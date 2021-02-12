@@ -37,6 +37,18 @@ project "Playground"
 
 	filter "system:windows"
 		systemversion "latest"
+		
+		linkoptions 
+		{ 
+			--"/ENTRY:mainCRTStartup" -- if WindowedApp
+		}
+		
+		postbuildcommands 
+		{
+			'{COPY} "./assets" "%{cfg.targetdir}/assets"',
+			'{COPY} "%{wks.location}/Selene/vendor/assimp/assimp-vc141-mt.dll" "%{cfg.targetdir}"',
+			'{COPY} "%{wks.location}/Selene/vendor/openal/OpenAL32.dll" "%{cfg.targetdir}"'
+		}
 
 	filter "configurations:Debug"
 		defines "SLN_DEBUG"

@@ -6,7 +6,7 @@ namespace Selene
 {
 	std::unique_ptr<RenderingAPI> RenderingAPI::Create()
 	{
-		SLN_INFO("Creating RenderingAPI");
+		SLN_INFO("Initializing Rendering API");
 
 		switch (s_API)
 		{

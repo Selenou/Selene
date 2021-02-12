@@ -58,9 +58,3 @@ namespace Selene
 		}
 	};
 }
-
-#define SLN_TRACE(...)		Selene::Logger::Log(Selene::LogSeverity::Trace, __VA_ARGS__)
-#define SLN_INFO(...)		Selene::Logger::Log(Selene::LogSeverity::Info, __VA_ARGS__)
-#define SLN_WARN(...)		Selene::Logger::Log(Selene::LogSeverity::Warning, __VA_ARGS__)
-#define SLN_ERROR(...)		Selene::Logger::Log(Selene::LogSeverity::Error, __VA_ARGS__)
-#define SLN_CRITICAL(...)	Selene::Logger::Log(Selene::LogSeverity::Critical, __VA_ARGS__)

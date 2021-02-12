@@ -37,6 +37,7 @@ project "Voxel"
 
 	filter "system:windows"
 		systemversion "latest"
+		
 		linkoptions 
 		{ 
 			--"/ENTRY:mainCRTStartup" -- if WindowedApp
