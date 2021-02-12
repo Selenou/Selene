@@ -10,6 +10,11 @@ namespace Playground
 		m_Camera = std::make_unique<Selene::Camera>();
 		m_Camera->SetOrthographic(2.0f);
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
+
+
+		// buf = AE::CreateAudioBuffer
+		// AE::CreateAudioSource(buffer);
+		// AE::Play(source)
 	}
 
 	void PlaygroundLayer::Update(Selene::Timestep ts)

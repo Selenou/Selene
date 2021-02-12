@@ -4,7 +4,7 @@ project "Glfw"
     staticruntime "on"
     
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{

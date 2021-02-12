@@ -6,7 +6,7 @@ namespace Selene
 {
 	AudioDevice::AudioDevice()
 	{
-		m_Device = alcOpenDevice(nullptr);
+		m_Device = alcOpenDevice(nullptr); // Sselect the "preferred device"
 		SLN_ASSERT(m_Device, "Could not open playback device");
 		
 		m_Context = alcCreateContext(m_Device, nullptr);
