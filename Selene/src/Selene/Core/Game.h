@@ -11,7 +11,7 @@ namespace Selene
 	{
 	public:
 		Game(RenderingAPI::API api);
-		virtual ~Game() = default;
+		virtual ~Game();
 	public:
 		void Run();
 		void PushLayer(Layer* layer);

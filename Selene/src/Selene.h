@@ -12,6 +12,8 @@
 #include "Selene/EventSystem/MouseEvent.h"
 #include "Selene/EventSystem/WindowEvent.h"
 
+#include "Selene/Audio/AudioEngine.h"
+
 #include "Selene/Rendering/RenderingEngine.h"
 #include "Selene/Rendering/RenderingAPI.h"
 #include "Selene/Rendering/Pipeline.h"

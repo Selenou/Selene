@@ -4,15 +4,22 @@
 namespace Selene
 {
 	AudioSource::AudioSource()
-		: m_SourceID(0), m_Gain(1.0f), m_Pitch(1.0f), m_IsLooping(false), m_Position(glm::vec3(0.0f)), m_Velocity(glm::vec3(0.0f))
+		: m_SourceID(-1), m_BufferID(-1), m_Gain(1.0f), m_Pitch(1.0f), m_IsLooping(false), m_Position(glm::vec3(0.0f)), m_Velocity(glm::vec3(0.0f))
 	{
-
+		SLN_INFO("Creating Audio Source");
 		alGenSources(1, &m_SourceID);
 	}
 
 	AudioSource::~AudioSource()
 	{
+		SLN_INFO("Deleting Audio Source");
 		alDeleteSources(1, &m_SourceID);
+	}
+
+	void AudioSource::SetBuffer(ALuint bufferId)
+	{
+		m_BufferID = bufferId;
+		alSourcei(m_SourceID, AL_BUFFER, m_BufferID);
 	}
 
 	void AudioSource::SetGain(float gain) 

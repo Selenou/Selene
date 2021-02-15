@@ -24,6 +24,11 @@ namespace Selene
 		m_LayerStack = std::make_unique<LayerStack>();
 	}
 
+	Game::~Game()
+	{
+		AudioEngine::Cleanup();
+	}
+
 	void Game::Run()
 	{
 		while (m_IsRunning)

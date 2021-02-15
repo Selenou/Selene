@@ -12,9 +12,14 @@ namespace Playground
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
 
-		// buf = AE::CreateAudioBuffer
-		// AE::CreateAudioSource(buffer);
-		// AE::Play(source)
+		source = Selene::AudioEngine::CreateAudioSource("assets/sounds/fairy.wav");
+		source->SetIsLooping(true);
+		source->Play();
+	}
+
+	PlaygroundLayer::~PlaygroundLayer()
+	{
+		delete source;
 	}
 
 	void PlaygroundLayer::Update(Selene::Timestep ts)

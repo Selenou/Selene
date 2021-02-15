@@ -17,6 +17,7 @@ namespace Selene
 		inline void Stop() { alSourceStop(m_SourceID); }
 		inline void Pause() { alSourcePause(m_SourceID); }
 	public:
+		void SetBuffer(ALuint bufferId);
 		void SetGain(float gain);
 		void SetPitch(float pitch);
 		void SetIsLooping(bool isLooping);
@@ -30,6 +31,7 @@ namespace Selene
 		inline const glm::vec3& GetVelocity() const { return m_Velocity; }
 	private:
 		ALuint m_SourceID;
+		ALuint m_BufferID;
 		float m_Gain;
 		float m_Pitch;
 		bool m_IsLooping;
