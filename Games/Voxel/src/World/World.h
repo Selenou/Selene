@@ -2,7 +2,7 @@
 
 #include "Selene.h"
 #include "Chunk.h"
-#include "FastNoiseLite.h"
+#include <fastnoise/FastNoiseLite.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp> // hashes for unordered_map

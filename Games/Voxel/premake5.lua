@@ -24,7 +24,8 @@ project "Voxel"
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.openal}"
+		"%{IncludeDir.openal}",
+		"./vendor/fastnoise/include"
 	}
 
 	links 
