@@ -1,7 +1,7 @@
 #pragma once
 
 #include "slnpch.h"
-#include "Selene/EventSystem/Event.h"
+#include "Selene/Event/Event.h"
 #include "Time.h"
 
 namespace Selene 

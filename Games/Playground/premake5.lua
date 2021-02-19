@@ -24,7 +24,8 @@ project "Playground"
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.openal}"
+		"%{IncludeDir.openal}",
+		"%{IncludeDir.entt}"
 	}
 
 	links 

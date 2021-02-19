@@ -2,7 +2,7 @@
 
 #include "slnpch.h"
 
-#include "Selene/EventSystem/Event.h"
+#include "Selene/Event/Event.h"
 #include "Selene/Config.h"
 
 namespace Selene 

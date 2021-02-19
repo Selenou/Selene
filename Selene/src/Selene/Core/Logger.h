@@ -16,7 +16,7 @@ namespace Selene
 	class Logger
 	{
 	public:
-		template <class T>
+		template <typename T>
 		static inline decltype(auto) FormatArg(T const& t) { return t; }
 
 		static inline const char* FormatArg(std::string const& t) { return t.c_str(); }

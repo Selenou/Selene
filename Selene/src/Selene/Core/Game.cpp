@@ -3,7 +3,7 @@
 #include "Macro.h"
 #include "Selene/Rendering/RenderingEngine.h"
 #include "Selene/Audio/AudioEngine.h"
-#include "Selene/EventSystem/EventDispatcher.h"
+#include "Selene/Event/EventDispatcher.h"
 
 namespace Selene 
 {

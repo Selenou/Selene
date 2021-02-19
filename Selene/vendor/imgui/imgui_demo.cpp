@@ -968,8 +968,8 @@ static void ShowDemoWindowWidgets()
         // - You can use ShowMetricsWindow() to inspect the draw data that are being passed to your renderer,
         //   it will help you debug issues if you are confused about it.
         // - Consider using the lower-level ImDrawList::AddImage() API, via ImGui::GetWindowDrawList()->AddImage().
-        // - Read https://github.com/ocornut/imgui/blob/master/docs/FAQ.md
-        // - Read https://github.com/ocornut/imgui/wiki/Image-Loading-and-Displaying-Examples
+        // - Read https://github.com/ocornut/ImGui/blob/master/docs/FAQ.md
+        // - Read https://github.com/ocornut/ImGui/wiki/Image-Loading-and-Displaying-Examples
         ImTextureID my_tex_id = io.Fonts->TexID;
         float my_tex_w = (float)io.Fonts->TexWidth;
         float my_tex_h = (float)io.Fonts->TexHeight;
@@ -1362,7 +1362,7 @@ static void ShowDemoWindowWidgets()
 
     // Plot/Graph widgets are currently fairly limited.
     // Consider writing your own plotting widget, or using a third-party one
-    // (for third-party Plot widgets, see 'Wiki->Useful Widgets' or https://github.com/ocornut/imgui/labels/plot%2Fgraph)
+    // (for third-party Plot widgets, see 'Wiki->Useful Widgets' or https://github.com/ocornut/ImGui/labels/plot%2Fgraph)
     if (ImGui::TreeNode("Plots Widgets"))
     {
         static bool animate = true;

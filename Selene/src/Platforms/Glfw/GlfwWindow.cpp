@@ -1,8 +1,8 @@
 #include "slnpch.h"
 #include "GlfwWindow.h"
-#include "Selene/EventSystem/WindowEvent.h"
-#include "Selene/EventSystem/MouseEvent.h"
-#include "Selene/EventSystem/KeyEvent.h"
+#include "Selene/Event/WindowEvent.h"
+#include "Selene/Event/MouseEvent.h"
+#include "Selene/Event/KeyEvent.h"
 #include "Selene/Rendering/RenderingAPI.h"
 #include "Selene/Config.h"
 #include <stb_image.h>

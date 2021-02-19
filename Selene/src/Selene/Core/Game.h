@@ -2,7 +2,7 @@
 
 #include "Window.h"
 #include "LayerStack.h"
-#include "Selene/EventSystem/WindowEvent.h"
+#include "Selene/Event/WindowEvent.h"
 #include "Selene/Rendering/RenderingAPI.h"
 
 namespace Selene 

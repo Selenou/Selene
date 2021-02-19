@@ -13,7 +13,7 @@ namespace Selene
 		{
 		}
 
-		template<class T, class F>
+		template<typename T, class F>
 		bool Dispatch(const F& func)
 		{
 			if (!m_Event.m_IsHandled &&

@@ -6,13 +6,17 @@
 #include "Selene/Core/Input.h"
 #include "Selene/Core/Time.h"
 
-#include "Selene/EventSystem/Event.h"
-#include "Selene/EventSystem/EventDispatcher.h"
-#include "Selene/EventSystem/KeyEvent.h"
-#include "Selene/EventSystem/MouseEvent.h"
-#include "Selene/EventSystem/WindowEvent.h"
+#include "Selene/Event/Event.h"
+#include "Selene/Event/EventDispatcher.h"
+#include "Selene/Event/KeyEvent.h"
+#include "Selene/Event/MouseEvent.h"
+#include "Selene/Event/WindowEvent.h"
 
 #include "Selene/Audio/AudioEngine.h"
+
+#include "Selene/Scene/Scene.h"
+#include "Selene/Scene/Actor.h"
+#include "Selene/Scene/Components/Components.h"
 
 #include "Selene/Rendering/RenderingEngine.h"
 #include "Selene/Rendering/RenderingAPI.h"

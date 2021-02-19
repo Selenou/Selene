@@ -2446,7 +2446,7 @@ bool ImGui::DragIntRange2(const char* label, int* v_current_min, int* v_current_
 
 #ifndef IMGUI_DISABLE_OBSOLETE_FUNCTIONS
 
-// Obsolete versions with power parameter. See https://github.com/ocornut/imgui/issues/3361 for details.
+// Obsolete versions with power parameter. See https://github.com/ocornut/ImGui/issues/3361 for details.
 bool ImGui::DragScalar(const char* label, ImGuiDataType data_type, void* p_data, float v_speed, const void* p_min, const void* p_max, const char* format, float power)
 {
     ImGuiSliderFlags drag_flags = ImGuiSliderFlags_None;
@@ -3072,7 +3072,7 @@ bool ImGui::VSliderInt(const char* label, const ImVec2& size, int* v, int v_min,
 
 #ifndef IMGUI_DISABLE_OBSOLETE_FUNCTIONS
 
-// Obsolete versions with power parameter. See https://github.com/ocornut/imgui/issues/3361 for details.
+// Obsolete versions with power parameter. See https://github.com/ocornut/ImGui/issues/3361 for details.
 bool ImGui::SliderScalar(const char* label, ImGuiDataType data_type, void* p_data, const void* p_min, const void* p_max, const char* format, float power)
 {
     ImGuiSliderFlags slider_flags = ImGuiSliderFlags_None;

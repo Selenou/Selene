@@ -12,9 +12,13 @@ namespace Playground
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
 
-		m_Source = Selene::AudioEngine::CreateAudioSource("assets/sounds/fairy.wav");
-		m_Source->SetIsLooping(true);
-		m_Source->Play();
+
+		m_Scene = std::make_shared<Selene::Scene>();
+
+		Selene::Actor cadence = m_Scene->CreateActor("CadenceBackgroundMusic");
+		auto& sourceComponent = cadence.AddComponent<Selene::AudioSourceComponent>(*(Selene::AudioEngine::CreateAudioSource("assets/sounds/fairy.wav")));
+		sourceComponent.Source.SetIsLooping(true);
+		sourceComponent.Source.Play();
 	}
 
 	void PlaygroundLayer::Update(Selene::Timestep ts)

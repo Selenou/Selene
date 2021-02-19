@@ -25,6 +25,7 @@ IncludeDir["imgui"] = "%{wks.location}/Selene/vendor/imgui/include"
 IncludeDir["openal"] = "%{wks.location}/Selene/vendor/openal/include"
 IncludeDir["vulkan"] = "%{wks.location}/Selene/vendor/vulkan/include"
 IncludeDir["assimp"] = "%{wks.location}/Selene/vendor/assimp/include"
+IncludeDir["entt"] = "%{wks.location}/Selene/vendor/entt/include"
 
 group "Vendors"
 	include "Selene/vendor/glfw"

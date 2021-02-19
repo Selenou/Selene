@@ -19,7 +19,8 @@ project "Selene"
 	{
 		"src/**.h", 
 		"src/**.cpp",
-		"vendor/stb_image/**.cpp"
+		"vendor/stb_image/stb_image.cpp",
+		"vendor/ImGui/imgui_build.cpp"
 	}
 
 	includedirs 
@@ -32,7 +33,8 @@ project "Selene"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.openal}",
 		"%{IncludeDir.vulkan}",
-		"%{IncludeDir.assimp}"
+		"%{IncludeDir.assimp}",
+		"%{IncludeDir.entt}"
 	}
 	
 	links 

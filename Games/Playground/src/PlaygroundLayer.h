@@ -14,6 +14,6 @@ namespace Playground
 		virtual void OnEvent(Selene::Event& event) override;
 	private :
 		std::unique_ptr<Selene::Camera> m_Camera;
-		Selene::AudioSource* m_Source;
+		std::shared_ptr<Selene::Scene> m_Scene;
 	};
 }
