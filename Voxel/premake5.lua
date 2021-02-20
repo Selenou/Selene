@@ -1,4 +1,4 @@
-project "Playground"
+project "Voxel"
 	kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
@@ -25,7 +25,8 @@ project "Playground"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.openal}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"./vendor/fastnoise/include"
 	}
 
 	links 
@@ -38,11 +39,6 @@ project "Playground"
 
 	filter "system:windows"
 		systemversion "latest"
-		
-		linkoptions 
-		{ 
-			--"/ENTRY:mainCRTStartup" -- if WindowedApp
-		}
 		
 		postbuildcommands 
 		{

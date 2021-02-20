@@ -1,6 +1,6 @@
 workspace "Selene"
 	architecture "x86_64"
-	startproject "Playground"
+	startproject "SeleneEditor"
 
 	configurations 
 	{ 
@@ -27,18 +27,17 @@ IncludeDir["vulkan"] = "%{wks.location}/Selene/vendor/vulkan/include"
 IncludeDir["assimp"] = "%{wks.location}/Selene/vendor/assimp/include"
 IncludeDir["entt"] = "%{wks.location}/Selene/vendor/entt/include"
 
-group "Vendors"
+group "Dependencies"
 	include "Selene/vendor/glfw"
 	include "Selene/vendor/glad"
 	include "Selene/vendor/imgui"
 group ""
 
 include "Selene"
+include "SeleneEditor"
+include "Voxel"
 
-group "Games"
-	include "Games/Playground"
-	include "Games/Voxel"
-group ""
+
 
 newaction 
 {

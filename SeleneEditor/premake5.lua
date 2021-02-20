@@ -1,5 +1,5 @@
-project "Voxel"
-	kind "ConsoleApp" --WindowedApp
+project "SeleneEditor"
+	kind "WindowedApp"
     language "C++"
     cppdialect "C++17"
 	staticruntime "on"
@@ -25,8 +25,7 @@ project "Voxel"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.openal}",
-		"%{IncludeDir.entt}",
-		"./vendor/fastnoise/include"
+		"%{IncludeDir.entt}"
 	}
 
 	links 
@@ -42,7 +41,7 @@ project "Voxel"
 		
 		linkoptions 
 		{ 
-			--"/ENTRY:mainCRTStartup" -- if WindowedApp
+			"/ENTRY:mainCRTStartup"
 		}
 		
 		postbuildcommands 
