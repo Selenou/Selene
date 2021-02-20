@@ -5,8 +5,8 @@ Game Engine written in modern C++
 
 ### Selene
 + It's the game engine itself
-+ Designed to be APi agnostic / Cross-platform 
-+ Currently working with OpenGl (4.5) and Windows64
++ Designed to be API agnostic / Cross-platform 
++ Currently working with OpenGl (4.5 with full DSA support) and Windows 64
 + I plan to add Vulkan/DX11/DX12 implementation in the future
 
 ### SeleneEditor
