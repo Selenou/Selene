@@ -1,4 +1,3 @@
-#include "slnpch.h"
 #include "RenderingPanel.h"
 #include "Selene.h"
 #include <imgui/imgui.h>
