@@ -1,11 +1,13 @@
 #pragma once
 
+#include "EditorPanel.h"
+
 namespace Selene
 {
-	class RenderingPanel
+	class RenderingPanel : public EditorPanel
 	{
 	public:
-		void DrawPanel();
+		virtual void Draw() override;
 	private:
 		int m_AverageFps = 0;
 		int m_FrameCounter = 0;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Selene/Core/Layer.h"
-#include "RenderingPanel.h"
 
 namespace Selene
 {
@@ -16,7 +15,5 @@ namespace Selene
 		virtual void RenderUI() override;
 		void StartNewFrame();
 		void EndFrame();
-	private:
-		RenderingPanel m_RenderingPanel;
 	};
 }

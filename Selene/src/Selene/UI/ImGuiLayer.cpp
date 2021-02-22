@@ -50,9 +50,7 @@ namespace Selene
 
 	void ImGuiLayer::RenderUI()
 	{
-		m_RenderingPanel.DrawPanel();
-
-		static bool show = true;
+		//static bool show = true;
 		//ImGui::ShowDemoWindow(&show);
 	}
 

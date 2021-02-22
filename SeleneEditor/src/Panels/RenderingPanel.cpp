@@ -1,19 +1,16 @@
 #include "slnpch.h"
 #include "RenderingPanel.h"
-#include "Selene/Rendering/RenderingEngine.h"
+#include "Selene.h"
 #include <imgui/imgui.h>
 
 namespace Selene
 {
-	void RenderingPanel::DrawPanel()
+	void RenderingPanel::Draw()
 	{
-		auto info = Selene::RenderingEngine::GetAPIInfo();
-		auto stats = Selene::RenderingEngine::GetStats();
-
-		static bool openRenderingStats = true;
+		auto info = RenderingEngine::GetAPIInfo();
+		auto stats = RenderingEngine::GetStats();
 
 		ImGuiWindowFlags windowFlags =
-			ImGuiWindowFlags_NoDecoration |
 			ImGuiWindowFlags_NoDocking |
 			ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoSavedSettings |
@@ -39,18 +36,22 @@ namespace Selene
 			m_FrametimeSum = 0.0f;
 		}
 
-		ImGui::Begin("Rendering", &openRenderingStats, windowFlags);
-		ImGui::Text("FPS : %i", m_AverageFps);
-		ImGui::Text("Frametime : %f ms", stats.Ts.GetMilliseconds());
-		ImGui::Text("Draw calls : %i", stats.DrawCalls);
-		ImGui::Text("Vertex Count : %i", stats.TotalVertexCount);
-		ImGui::Text("Index Count : %i", stats.TotalIndexCount);
+		ImGui::Begin("Rendering Info", nullptr, windowFlags);
+		{
+			ImGui::Text("FPS : %i", m_AverageFps);
+			ImGui::Text("Frametime : %f ms", stats.Ts.GetMilliseconds());
+			ImGui::Text("Draw calls : %i", stats.DrawCalls);
+			ImGui::Text("Vertex Count : %i", stats.TotalVertexCount);
+			ImGui::Text("Index Count : %i", stats.TotalIndexCount);
+		}
 		ImGui::Separator();
-		ImGui::Text("API : %s", info.API.c_str());
-		ImGui::Text("Vendor : %s", info.Vendor.c_str());
-		ImGui::Text("Renderer : %s", info.Renderer.c_str());
-		ImGui::Text("Version : %s", info.Version.c_str());
-		ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
+		{
+			ImGui::Text("API : %s", info.API.c_str());
+			ImGui::Text("Vendor : %s", info.Vendor.c_str());
+			ImGui::Text("Renderer : %s", info.Renderer.c_str());
+			ImGui::Text("Version : %s", info.Version.c_str());
+			ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
+		}
 		ImGui::End();
 	}
 }
