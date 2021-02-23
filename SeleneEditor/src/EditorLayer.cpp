@@ -1,8 +1,8 @@
 #include "EditorLayer.h"
-#include "Panels/RenderingPanel.h"
+#include "Panels/ViewportPanel.h"
 #include "Panels/HierarchyPanel.h"
 #include "Panels/ConsolePanel.h"
-#include "Panels/DetailsPanel.h"
+#include "Utils/IconsForkAwesome.h"
 
 #include <imgui/imgui.h>
 
@@ -17,10 +17,9 @@ namespace Selene
 		m_Camera->SetOrthographic(2.0f);
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
-		//m_Panels.emplace_back(std::make_unique<RenderingPanel>());
+		m_Panels.emplace_back(std::make_unique<ViewportPanel>());
 		m_Panels.emplace_back(std::make_unique<HierarchyPanel>());
 		m_Panels.emplace_back(std::make_unique<ConsolePanel>());
-		m_Panels.emplace_back(std::make_unique<DetailsPanel>());
 
 		m_Scene = std::make_shared<Scene>();
 
@@ -28,6 +27,20 @@ namespace Selene
 		auto& sourceComponent = cadence.AddComponent<AudioSourceComponent>(*(AudioEngine::CreateAudioSource("assets/sounds/fairy.wav")));
 		//sourceComponent.Source.SetIsLooping(true);
 		//sourceComponent.Source.Play();
+	}
+
+	void EditorLayer::Attach()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/quicksand/Quicksand-Bold.ttf", 17.0f);
+		ImFontConfig config;
+		config.MergeMode = true;
+		config.GlyphMinAdvanceX = 13.0f; // Use if you want to make the icon monospaced
+		static const ImWchar icon_ranges[] = { ICON_MIN_FK, ICON_MAX_FK, 0 };
+		io.Fonts->AddFontFromFileTTF("assets/fonts/forkawesome/forkawesome-webfont.ttf", 13.0f, &config, icon_ranges);
+
+		io.Fonts->AddFontFromFileTTF("assets/fonts/quicksand/Quicksand-Medium.ttf", 16.0f);
 	}
 
 	void EditorLayer::Update(Timestep ts)
@@ -46,58 +59,7 @@ namespace Selene
 
 	void EditorLayer::RenderUI()
 	{
-		// Dockspace
-        ImGuiViewport* viewport = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(viewport->GetWorkPos());
-        ImGui::SetNextWindowSize(viewport->GetWorkSize());
-        ImGui::SetNextWindowViewport(viewport->ID);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar |
-			ImGuiWindowFlags_NoDocking |
-			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoCollapse | 
-			ImGuiWindowFlags_NoResize | 
-			ImGuiWindowFlags_NoMove | 
-			ImGuiWindowFlags_NoBringToFrontOnFocus | 
-			ImGuiWindowFlags_NoNavFocus;
-        
-        ImGui::Begin("Selene Editor DockSpace", nullptr, window_flags);
-        ImGui::PopStyleVar(3);
-
-        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
-        {
-            ImGuiID dockspace_id = ImGui::GetID("DockSpace");
-            ImGui::DockSpace(dockspace_id);
-        }
-
-        if (ImGui::BeginMenuBar())
-        {
-            if (ImGui::BeginMenu("File"))
-            {
-                if (ImGui::MenuItem("Test"))
-				{ 
-					
-				}
-                ImGui::EndMenu();
-            }
-
-			if (ImGui::BeginMenu("About"))
-			{
-				if (ImGui::MenuItem("Test"))
-				{
-
-				}
-				ImGui::EndMenu();
-			}
-
-            ImGui::EndMenuBar();
-        }
-
-        ImGui::End();
-
+		DrawDockspace();
 
 		for (auto& panel : m_Panels)
 		{
@@ -113,5 +75,60 @@ namespace Selene
 			m_Camera->SetViewportSize(e.GetWidth(), e.GetHeight());
 			return false;
 		});
+	}
+
+
+	void EditorLayer::DrawDockspace()
+	{
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->GetWorkPos());
+		ImGui::SetNextWindowSize(viewport->GetWorkSize());
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar |
+			ImGuiWindowFlags_NoDocking |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoBringToFrontOnFocus |
+			ImGuiWindowFlags_NoNavFocus;
+
+		ImGui::Begin("Selene Editor DockSpace", nullptr, window_flags);
+		ImGui::PopStyleVar(3);
+
+		if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
+		{
+			ImGuiID dockspace_id = ImGui::GetID("DockSpace");
+			ImGui::DockSpace(dockspace_id);
+		}
+
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Test"))
+				{
+
+				}
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("About"))
+			{
+				if (ImGui::MenuItem("Test"))
+				{
+
+				}
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMenuBar();
+		}
+
+		ImGui::End();
 	}
 }

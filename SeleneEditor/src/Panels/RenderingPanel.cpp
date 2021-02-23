@@ -1,5 +1,6 @@
 #include "RenderingPanel.h"
 #include "Selene.h"
+#include "Utils/IconsForkAwesome.h"
 #include <imgui/imgui.h>
 
 namespace Selene
@@ -17,11 +18,11 @@ namespace Selene
 			ImGuiWindowFlags_NoNav |
 			ImGuiWindowFlags_NoMove;
 
-		ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImVec2 workAreaPos = viewport->GetWorkPos();
-		ImVec2 windowPos = ImVec2(workAreaPos.x + viewport->GetWorkSize().x - 10.0f, workAreaPos.y + 10.0f);
-		ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always, ImVec2(1.0f, 0.0f));
-		ImGui::SetNextWindowViewport(viewport->ID);
+		ImVec2 windowtPos = ImGui::GetWindowPos();
+		float x = windowtPos.x + ImGui::GetContentRegionAvail().x;
+		float y = windowtPos.y + (ImGui::GetWindowSize().y - ImGui::GetContentRegionAvail().y);
+		ImVec2 panelPos = ImVec2(x,y);
+		ImGui::SetNextWindowPos(panelPos, ImGuiCond_Always, ImVec2(1.0f, 0.0f));
 		ImGui::SetNextWindowBgAlpha(0.15f);
 
 		m_FrametimeSum += stats.Ts.GetSeconds();
@@ -35,7 +36,7 @@ namespace Selene
 			m_FrametimeSum = 0.0f;
 		}
 
-		ImGui::Begin("Rendering Info", nullptr, windowFlags);
+		ImGui::Begin(ICON_FK_WRENCH " Rendering Stats", nullptr, windowFlags);
 		{
 			ImGui::Text("FPS : %i", m_AverageFps);
 			ImGui::Text("Frametime : %f ms", stats.Ts.GetMilliseconds());

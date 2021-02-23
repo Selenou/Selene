@@ -20,6 +20,7 @@ project "SeleneEditor"
 
 	includedirs 
 	{ 
+		"src",
         "%{wks.location}/Selene/src",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.glm}",
