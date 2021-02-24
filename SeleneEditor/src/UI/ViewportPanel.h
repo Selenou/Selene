@@ -1,11 +1,11 @@
 #pragma once
 
-#include "EditorPanel.h"
+#include "EditorUI.h"
 #include "RenderingPanel.h"
 
 namespace Selene 
 {
-	class ViewportPanel : public EditorPanel
+	class ViewportPanel : public EditorUI
 	{
 	public:
 		virtual void Draw() override;

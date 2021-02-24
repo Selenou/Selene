@@ -1,12 +1,15 @@
 #include "slnpch.h"
 #include "Scene.h"
 #include "Actor.h"
+#include "Components/NameComponent.h"
 
 namespace Selene
 {
 	Actor Scene::CreateActor(const std::string& name)
 	{
-		return Actor { m_Registry.create(), shared_from_this() };
+		 Actor actor { m_Registry.create(), shared_from_this() };
+		 actor.AddComponent<NameComponent>(name);
+		 return actor;
 	}
 
 	void Scene::DestroyActor(Actor actor)

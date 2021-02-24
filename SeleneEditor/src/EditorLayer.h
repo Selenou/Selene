@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Selene.h"
-#include "Panels/EditorPanel.h"
+#include "UI/Dockspace.h"
 
 namespace Selene
 {
@@ -15,10 +15,8 @@ namespace Selene
 		virtual void Render() override;
 		virtual void RenderUI() override;
 		virtual void OnEvent(Event& event) override;
-	private:
-		void DrawDockspace();
 	private :
-		std::vector<std::unique_ptr<EditorPanel>> m_Panels;
+		std::unique_ptr<Dockspace> m_Dockspace;
 		std::unique_ptr<Camera> m_Camera;
 		std::shared_ptr<Scene> m_Scene;
 	};

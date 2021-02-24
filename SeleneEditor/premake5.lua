@@ -1,5 +1,5 @@
 project "SeleneEditor"
-	kind "WindowedApp"
+	kind "ConsoleApp" --"WindowedApp"
     language "C++"
     cppdialect "C++17"
 	staticruntime "on"
@@ -42,7 +42,7 @@ project "SeleneEditor"
 		
 		linkoptions 
 		{ 
-			"/ENTRY:mainCRTStartup"
+			--"/ENTRY:mainCRTStartup"
 		}
 		
 		postbuildcommands 

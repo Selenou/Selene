@@ -2,7 +2,7 @@
 
 namespace Selene
 {
-	class EditorPanel
+	class EditorUI
 	{
 	public:
 		virtual void Draw() = 0;
