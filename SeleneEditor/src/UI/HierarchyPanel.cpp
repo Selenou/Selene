@@ -15,8 +15,6 @@ namespace Selene
 	{
 		ImGui::Begin(ICON_FK_BARS " Scene Hierarchy"); // Adjacent string literal tokens are concatenated, covered by [lex.phases]/6
 		{
-			static uint32_t selection_mask = -1;
-
 			Actor clickedActor;
 
 			m_ActiveScene.lock()->m_Registry.each([&](auto actorID)

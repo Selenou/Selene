@@ -1,7 +1,7 @@
 #include "Dockspace.h"
 #include "ViewportPanel.h"
 #include "HierarchyPanel.h"
-#include "ConsolePanel.h"
+#include "LogsPanel.h"
 #include "Utils/IconsForkAwesome.h"
 #include <imgui/imgui.h>
 
@@ -11,7 +11,7 @@ namespace Selene
 	{
 		m_Panels.emplace_back(std::make_unique<ViewportPanel>());
 		m_Panels.emplace_back(std::make_unique<HierarchyPanel>(scene));
-		m_Panels.emplace_back(std::make_unique<ConsolePanel>());
+		m_Panels.emplace_back(std::make_unique<LogsPanel>());
 	}
 
 	void Dockspace::Draw()

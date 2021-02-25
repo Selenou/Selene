@@ -23,38 +23,45 @@ namespace Selene
 
 		template <typename ... Args>
 		static inline void Log(LogSeverity severity, const char* format, Args const& ... args)
-		{	
-			BuildHeader(severity);
-			printf(format, FormatArg(args)...);
-			printf("\n");
-		}
-
-		static inline void BuildHeader(LogSeverity severity)
 		{
 			// Timestamp
 			char timeBuffer[11];
 			std::time_t currentTime = std::time(nullptr);
 			std::strftime(timeBuffer, 11, "[%H:%M:%S]", std::localtime(&currentTime));
 
-			std::string header(timeBuffer);
-			header += "[Selene]";
-			header += GetSeverityTag(severity);
-			header += " ";
+			std::string logStr(timeBuffer);
+			logStr += "[Selene]";
+			logStr += GetSeverityTag(severity);
+			logStr += " ";
+			logStr += format;
+ 
+			// Write formatted log in a buffer (with computed size)
+			size_t bufferSize = snprintf(nullptr, 0, logStr.c_str(), FormatArg(args) ...) + 1; // Extra space for '\0'
+			std::unique_ptr<char[]> buffer(new char[bufferSize]);
+			snprintf(buffer.get(), bufferSize, logStr.c_str(), FormatArg(args) ...);
 
-			printf(header.c_str());
+			// Write in console
+			printf("%s\n", buffer.get());
+			// For Selene Editor
+			s_Logs.emplace_back(severity, std::string(buffer.get()));
 		}
 
 		static inline char* GetSeverityTag(LogSeverity severity)
 		{
 			switch (severity)
 			{
-				case Selene::LogSeverity::Trace:	return "[Trace]";
-				case Selene::LogSeverity::Info:		return "[Info]";
-				case Selene::LogSeverity::Warning:	return "[Warning]";
-				case Selene::LogSeverity::Error:	return "[Error]";
-				case Selene::LogSeverity::Critical: return "[Critical]";
-				default:							return "[Trace]";
+				case LogSeverity::Trace:	return "[Trace]";
+				case LogSeverity::Info:		return "[Info]";
+				case LogSeverity::Warning:	return "[Warning]";
+				case LogSeverity::Error:	return "[Error]";
+				case LogSeverity::Critical: return "[Critical]";
+				default:					return "[Trace]";
 			}
 		}
+	public:
+		static inline void ClearLogs() { s_Logs.clear(); }
+		static inline std::vector<std::pair<LogSeverity, std::string>>& GetLogs() { return s_Logs; }
+	public:
+		static inline std::vector<std::pair<LogSeverity, std::string>> s_Logs;
 	};
 }

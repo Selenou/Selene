@@ -27,6 +27,11 @@ namespace Selene
 			std::string name = "Actor" + std::to_string(i);
 			m_Scene->CreateActor(name);
 		}
+		SLN_CRITICAL("test");
+		SLN_ERROR("test");
+		SLN_WARN("test");
+		SLN_INFO("test");
+		SLN_TRACE("test");
 	}
 
 	void EditorLayer::Attach()
