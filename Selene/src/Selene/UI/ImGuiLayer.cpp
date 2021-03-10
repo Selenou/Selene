@@ -4,6 +4,7 @@
 
 #include "Selene/Rendering/RenderingEngine.h"
 #include "Renderers/OpenGL/OpenGLImGuiLayer.h"
+#include "Renderers/DX11/DX11ImGuiLayer.h"
 
 namespace Selene
 {
@@ -16,6 +17,8 @@ namespace Selene
 				return nullptr;
 			case RenderingAPI::API::OpenGL: 
 				return new OpenGLImGuiLayer();
+			case RenderingAPI::API::DX11:
+				return new DX11ImGuiLayer();
 			default:
 				SLN_ASSERT(false, "Unknown RenderingAPI!");
 				return nullptr;

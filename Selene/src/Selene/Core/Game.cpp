@@ -18,7 +18,7 @@ namespace Selene
 		m_Window = std::unique_ptr<Window>(Window::Create()); 
 		m_Window->SetEventCallback(SLN_BIND_EVENT(Game::OnEvent));
 
-		RenderingEngine::Init();
+		//RenderingEngine::Init();
 		AudioEngine::Init();
 
 		m_LayerStack = std::make_unique<LayerStack>();
@@ -47,7 +47,7 @@ namespace Selene
 
 	void Game::Render()
 	{
-		RenderingEngine::Clear();
+		//RenderingEngine::Clear();
 		m_LayerStack->Render();
 		m_Window->SwapBuffers();
 	}
