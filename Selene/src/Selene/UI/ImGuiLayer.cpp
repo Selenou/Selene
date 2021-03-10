@@ -1,15 +1,27 @@
 #include "slnpch.h"
 #include "ImGuiLayer.h"
-#include "Selene/Core/Game.h"
 #include <imgui/imgui.h>
 
-#include <imgui/backends/imgui_impl_opengl3.h>
-#include <imgui/backends/imgui_impl_vulkan.h>
-#include <imgui/backends/imgui_impl_glfw.h>
-#include <GLFW/glfw3.h>
+#include "Selene/Rendering/RenderingEngine.h"
+#include "Renderers/OpenGL/OpenGLImGuiLayer.h"
 
 namespace Selene
 {
+	ImGuiLayer* ImGuiLayer::Create()
+	{
+		switch (RenderingEngine::GetAPI())
+		{
+			case RenderingAPI::API::None:
+				SLN_ASSERT(false, "RenderingAPI::None is currently not supported!");
+				return nullptr;
+			case RenderingAPI::API::OpenGL: 
+				return new OpenGLImGuiLayer();
+			default:
+				SLN_ASSERT(false, "Unknown RenderingAPI!");
+				return nullptr;
+		}
+	}
+
 	void ImGuiLayer::Attach()
 	{
 		IMGUI_CHECKVERSION();
@@ -17,7 +29,7 @@ namespace Selene
 		SLN_INFO("Initializing ImGui");
 		ImGui::CreateContext();
 
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;		// Enable Keyboard Controls
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;		// Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;			// Enable Docking
@@ -32,48 +44,11 @@ namespace Selene
 			style.WindowRounding = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
-
-		Game& game = Game::GetInstance();
-		auto window = static_cast<GLFWwindow*>(game.GetWindow().GetNativeWindow());
-
-		// Setup Platform/Renderer bindings
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init("#version 410");
-	}
-
-	void ImGuiLayer::Detach()
-	{
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
 	}
 
 	void ImGuiLayer::RenderUI()
 	{
 		//static bool show = true;
 		//ImGui::ShowDemoWindow(&show);
-	}
-
-	void ImGuiLayer::StartNewFrame()
-	{
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-	}
-
-	void ImGuiLayer::EndFrame()
-	{
-		ImGuiIO& io = ImGui::GetIO();
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			GLFWwindow* backup_current_context = glfwGetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			glfwMakeContextCurrent(backup_current_context);
-		}
 	}
 }

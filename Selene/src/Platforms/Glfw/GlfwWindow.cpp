@@ -55,7 +55,7 @@ namespace Selene
 		SLN_ASSERT(m_Window, "Failed to create GLFW window");
 		
 		// Create Rendering Context
-		m_RenderingContext = RenderingContext::Create(m_Window);
+		m_RenderingContext = Context::Create(m_Window);
 		m_RenderingContext->Init();
 
 		// Glfw additional settings

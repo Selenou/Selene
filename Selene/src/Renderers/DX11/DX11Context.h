@@ -1,15 +1,14 @@
 #pragma once
-
 #include "Selene/Rendering/Context.h"
 
 struct GLFWwindow;
 
-namespace Selene 
+namespace Selene
 {
-	class VulkanContext : public Context
+	class DX11Context : public Context
 	{
 	public:
-		VulkanContext(GLFWwindow* windowHandle) : m_WindowHandle(windowHandle) {}
+		DX11Context(GLFWwindow* windowHandle) : m_WindowHandle(windowHandle) {}
 	public:
 		virtual void Init() override;
 		virtual void Destroy() override;

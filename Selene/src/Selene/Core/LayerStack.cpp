@@ -5,7 +5,7 @@ namespace Selene
 {
 	LayerStack::LayerStack()
 	{
-		m_ImGuiLayer = new ImGuiLayer();
+		m_ImGuiLayer = ImGuiLayer::Create();
 		PushOverlay(m_ImGuiLayer);
 	}
 

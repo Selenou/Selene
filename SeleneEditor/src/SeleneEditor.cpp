@@ -1,5 +1,5 @@
 #include <Selene.h>
-#include "Selene/Main.h"
+#include "Selene/EntryPoint.h"
 #include "EditorLayer.h"
 
 namespace Selene

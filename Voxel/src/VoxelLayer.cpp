@@ -18,6 +18,7 @@ namespace Voxel
 		m_Camera->SetPosition({ 0.0f, 10.0f, 0.0f });
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
+		/*
 		// Skybox
 		{
 			float skyboxVertices[] =
@@ -95,6 +96,7 @@ namespace Voxel
 		Selene::RenderingEngine::GetShaderLibrary()->Load("chunk", "chunk.vert", "chunk.frag");
 		m_World = std::make_unique<World>();
 		m_World->Init();
+		*/
 	}
 
 	void VoxelLayer::Update(Selene::Timestep ts)
@@ -103,14 +105,14 @@ namespace Voxel
 
 		if (m_DynamicWorldGeneration)
 		{
-			m_World->Update(m_Camera->GetPosition());
+			//m_World->Update(m_Camera->GetPosition());
 		}
 	}
 
 	void VoxelLayer::Render()
 	{
 		Selene::RenderingEngine::BeginFrame(*m_Camera);
-		{
+		/*{
 			// Skybox
 			glDepthMask(GL_FALSE);
 			glCullFace(GL_FRONT);
@@ -124,7 +126,7 @@ namespace Voxel
 			glDepthMask(GL_TRUE);
 
 			m_World->Render();
-		}
+		}*/
 		Selene::RenderingEngine::EndFrame();
 	}
 
@@ -142,29 +144,33 @@ namespace Voxel
 			ImGuiWindowFlags_NoMove;
 
 		ImGui::SetNextWindowBgAlpha(0.15f);
-		ImGui::Begin("Debug", &openDebugMenu, debugWindowFlags);
-		if (ImGui::Checkbox("Wireframe", &useWireframeMode))
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, useWireframeMode ? GL_LINE : GL_FILL);
-		}
 
-		if (ImGui::Checkbox("Dynamic World Generation", &m_DynamicWorldGeneration)) {}
-		
+		ImGui::Begin("Debug", &openDebugMenu, debugWindowFlags);
+		{
+			if (ImGui::Checkbox("Wireframe", &useWireframeMode))
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, useWireframeMode ? GL_LINE : GL_FILL);
+			}
+
+			if (ImGui::Checkbox("Dynamic World Generation", &m_DynamicWorldGeneration)) {}
+		}
 		ImGui::End();
 	}
 
 	void VoxelLayer::OnEvent(Selene::Event& event)
 	{
 		Selene::EventDispatcher dispatcher(event);
+
 		dispatcher.Dispatch<Selene::FramebufferResizeEvent>([=](Selene::FramebufferResizeEvent& e)
-			{
-				m_Camera->SetViewportSize(e.GetWidth(), e.GetHeight());
-				return false;
-			});
+		{
+			m_Camera->SetViewportSize(e.GetWidth(), e.GetHeight());
+			return false;
+		});
+
 		dispatcher.Dispatch<Selene::MousePositionMoveEvent>([=](Selene::MousePositionMoveEvent& e)
-			{
-				m_Camera->UpdateMousePosition(e.GetX(), e.GetY());
-				return false;
-			});
+		{
+			m_Camera->UpdateMousePosition(e.GetX(), e.GetY());
+			return false;
+		});
 	}
 }

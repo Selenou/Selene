@@ -7,13 +7,16 @@ namespace Selene
 	class ImGuiLayer : public Layer
 	{
 	public:
-		ImGuiLayer() : Layer("ImGuiLayer") {}
-		~ImGuiLayer() = default;
+		static ImGuiLayer* Create();
 	public:
-		virtual void Attach() override;
-		virtual void Detach() override;
+		virtual void Attach() override = 0;
+		virtual void Detach() = 0; 
+	public:
+		virtual void StartNewFrame() = 0;
+		virtual void EndFrame() = 0;
+	public:
 		virtual void RenderUI() override;
-		void StartNewFrame();
-		void EndFrame();
+	protected:
+		ImGuiLayer() : Layer("ImGui") {}
 	};
 }

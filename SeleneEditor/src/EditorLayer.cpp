@@ -18,20 +18,16 @@ namespace Selene
 		m_Dockspace = std::make_unique<Dockspace>(m_Scene);
 
 		Actor cadence = m_Scene->CreateActor("CadenceBackgroundMusic");
-		//auto& sourceComponent = cadence.AddComponent<AudioSourceComponent>(*(AudioEngine::CreateAudioSource("assets/sounds/fairy.wav")));
-		//sourceComponent.Source.SetIsLooping(true);
-		//sourceComponent.Source.Play();
+		auto& sourceComponent = cadence.AddComponent<AudioSourceComponent>(*(AudioEngine::CreateAudioSource("assets/sounds/fairy.wav")));
+		sourceComponent.Source.SetIsLooping(true);
+		sourceComponent.Source.Play();
 
+		// Test
 		for (int i = 0; i < 10; i++)
 		{
 			std::string name = "Actor" + std::to_string(i);
 			m_Scene->CreateActor(name);
 		}
-		SLN_CRITICAL("test");
-		SLN_ERROR("test");
-		SLN_WARN("test");
-		SLN_INFO("test");
-		SLN_TRACE("test");
 	}
 
 	void EditorLayer::Attach()

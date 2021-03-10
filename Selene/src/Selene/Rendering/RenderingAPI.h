@@ -9,6 +9,7 @@ namespace Selene
 		{
 			None = 0,
 			OpenGL,
+			DX11,
 			Vulkan
 		};
 

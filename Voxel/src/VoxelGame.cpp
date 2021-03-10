@@ -1,5 +1,5 @@
 #include <Selene.h>
-#include "Selene/Main.h"
+#include "Selene/EntryPoint.h"
 #include "VoxelLayer.h"
 
 namespace Voxel

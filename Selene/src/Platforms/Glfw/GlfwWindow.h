@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Selene/Core/Window.h"
-#include "Selene/Rendering/RenderingContext.h"
+#include "Selene/Rendering/Context.h"
 #include <GLFW/glfw3.h>
 
 namespace Selene 
@@ -33,7 +33,7 @@ namespace Selene
 	private:
 		void SetWindowIcon();
 	private:
-		std::unique_ptr<RenderingContext> m_RenderingContext;
+		std::unique_ptr<Context> m_RenderingContext;
 		GLFWwindow* m_Window;
 		GlfwWindowData m_Data;
 	};
