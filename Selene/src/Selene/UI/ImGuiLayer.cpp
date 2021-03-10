@@ -1,6 +1,6 @@
 #include "slnpch.h"
 #include "ImGuiLayer.h"
-#include <imgui/imgui.h>
+#include <imgui.h>
 
 #include "Selene/Rendering/RenderingEngine.h"
 #include "Renderers/OpenGL/OpenGLImGuiLayer.h"

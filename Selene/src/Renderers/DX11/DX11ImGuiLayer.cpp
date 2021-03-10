@@ -5,10 +5,10 @@
 //tmp, always include Windows stuff before glfw
 #include <d3d11.h>
 
-#include <imgui/backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_glfw.h>
 #include <GLFW/glfw3.h>
 
-#include <imgui/backends/imgui_impl_dx11.h>
+#include <backends/imgui_impl_dx11.h>
 
 namespace Selene
 {

@@ -2,8 +2,8 @@
 #include "OpenGLImGuiLayer.h"
 #include "Selene/Core/Game.h"
 
-#include <imgui/backends/imgui_impl_glfw.h>
-#include <imgui/backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 #include <GLFW/glfw3.h>
 

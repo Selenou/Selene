@@ -1,5 +1,5 @@
 #include "VoxelLayer.h"
-#include <imgui/imgui.h>
+#include <imgui.h>
 
 //tmp
 #include <glad/glad.h>

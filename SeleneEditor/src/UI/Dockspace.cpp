@@ -3,7 +3,7 @@
 #include "HierarchyPanel.h"
 #include "LogsPanel.h"
 #include "Utils/IconsForkAwesome.h"
-#include <imgui/imgui.h>
+#include <imgui.h>
 
 namespace Selene
 {
