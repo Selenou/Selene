@@ -11,8 +11,13 @@ namespace Selene
 		glfwMakeContextCurrent(m_WindowHandle);
 
 		// Init Glad
-		SLN_INFO("Initializing Glad");
+		SLN_INFO("Initializing Glad / OpenGL Rendering Context");
 		int gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		SLN_ASSERT(gladInitSuccess, "Failed to initialize Glad");
+	}
+
+	void OpenGLContext::SwapBuffers()
+	{
+		glfwSwapBuffers(m_WindowHandle);
 	}
 }

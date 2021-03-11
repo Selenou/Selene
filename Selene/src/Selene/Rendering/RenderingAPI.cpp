@@ -1,6 +1,7 @@
 #include "slnpch.h"
 #include "RenderingAPI.h"
 #include "Renderers/OpenGL/OpenGLRenderingAPI.h"
+#include "Renderers/DX11/DX11RenderingAPI.h"
 
 namespace Selene
 {
@@ -15,6 +16,8 @@ namespace Selene
 				return nullptr;
 			case RenderingAPI::API::OpenGL:
 				return std::make_unique<OpenGLRenderingAPI>();
+			case RenderingAPI::API::DX11:
+				return std::make_unique<DX11RenderingAPI>();
 			case RenderingAPI::API::Vulkan:
 				SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not available!");
 				return nullptr;

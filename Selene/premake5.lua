@@ -46,6 +46,11 @@ project "Selene"
 
 	filter "system:windows"
 		systemversion "latest"
+		
+		links
+		{
+			"d3d11.lib"
+		}
 
 	filter "configurations:Debug"
 		defines "SLN_DEBUG"

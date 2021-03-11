@@ -24,8 +24,10 @@ namespace Selene
 		virtual void PollEvents() override;
 		inline virtual unsigned int GetWidth() const override { return m_Data.Width; }
 		inline virtual unsigned int GetHeight() const override { return m_Data.Height; }
+		inline virtual bool IsVSync() const override { return m_Data.VSync; }
 	    inline virtual void SetEventCallback(const EventCallback& callback) override { m_Data.EventCallback = callback; }
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
+		inline virtual Context* GetRenderingContext() override { return m_RenderingContext.get(); };
 		virtual void SetVSync(bool enabled) override;
 	protected:
 		virtual void Init() override;

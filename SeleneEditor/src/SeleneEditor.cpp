@@ -20,6 +20,6 @@ namespace Selene
 
 	Game* CreateGame() 
 	{
-		return new SeleneEditor(RenderingAPI::API::OpenGL);
+		return new SeleneEditor(RenderingAPI::API::DX11);
 	}
 }

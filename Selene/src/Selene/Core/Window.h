@@ -4,6 +4,7 @@
 
 #include "Selene/Event/Event.h"
 #include "Selene/Config.h"
+#include "Selene/Rendering/Context.h"
 
 namespace Selene 
 {
@@ -29,9 +30,11 @@ namespace Selene
 		virtual void PollEvents() = 0;
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
+		virtual bool IsVSync() const = 0;
 		virtual void SetEventCallback(const EventCallback& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
 		virtual void* GetNativeWindow() const = 0;
+		virtual Context* GetRenderingContext() = 0;
 		static Window* Create(const WindowSettings& props = WindowSettings());
 	protected:
 		virtual void Init() = 0;

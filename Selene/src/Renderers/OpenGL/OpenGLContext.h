@@ -13,6 +13,7 @@ namespace Selene
 	public:
 		virtual void Init() override;
 		virtual void Destroy() override {};
+		virtual void SwapBuffers() override;
 	private:
 		GLFWwindow* m_WindowHandle;
 	};
