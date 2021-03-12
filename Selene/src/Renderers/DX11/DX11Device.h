@@ -15,6 +15,7 @@ namespace Selene
 		inline ID3D11Device* GetDevice() { return m_Device; }
 		inline ID3D11DeviceContext* GetDeviceContext() { return m_DeviceContext; }
 		inline IDXGISwapChain* GetSwapChain() { return m_SwapChain; }
+		inline ID3D11RenderTargetView* GetBackBuffer() { return m_Backbuffer; }
 	private:
 		ID3D11Device* m_Device = nullptr; // Virtual representation of the video adapter                  
 		ID3D11DeviceContext* m_DeviceContext = nullptr; // Responsible for managing the GPU and the rendering pipeline

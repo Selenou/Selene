@@ -10,57 +10,51 @@ namespace Selene
 
 	void DX11Device::Init(HWND windowHandle)
 	{
-
-        //TODO REWORK THIS
-        //TODO REWORK THIS
-        //TODO REWORK THIS
-        //TODO REWORK THIS
-
-
-        RECT clientRect;
-        GetClientRect(windowHandle, &clientRect);
-        LONG width = clientRect.right - clientRect.left;
-        LONG height = clientRect.bottom - clientRect.top;
-
         SLN_ASSERT(windowHandle, "Window handle is null!");
-        DXGI_SWAP_CHAIN_DESC scd = {};
-        scd.BufferCount = 1;    
-        scd.BufferDesc.Width = width;
-        scd.BufferDesc.Height = height;
-        scd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;    
-        scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-        scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-        scd.BufferDesc.RefreshRate.Numerator = 0;
-        scd.BufferDesc.RefreshRate.Denominator = 0;
-        scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   
-        scd.Flags = 0;
-        scd.OutputWindow = windowHandle;                               
-        scd.SampleDesc.Count = 1;             
-        scd.SampleDesc.Quality = 0;
-        scd.Windowed = TRUE; 
-        scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-        D3D_FEATURE_LEVEL featureLevels = { D3D_FEATURE_LEVEL_11_0 };
-        UINT createDeviceFlags = 0;
 
-        // create a device, device context and swap chain using the information in the scd struct
-        D3D11CreateDeviceAndSwapChain(nullptr,
+        DXGI_SWAP_CHAIN_DESC swapChainDescription = {};
+        swapChainDescription.BufferDesc.Width                   = 0;
+        swapChainDescription.BufferDesc.Height                  = 0;
+        swapChainDescription.BufferDesc.Format                  = DXGI_FORMAT_R8G8B8A8_UNORM;
+        swapChainDescription.BufferDesc.RefreshRate.Numerator   = 0;
+        swapChainDescription.BufferDesc.RefreshRate.Denominator = 0;
+        swapChainDescription.BufferDesc.ScanlineOrdering        = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+        swapChainDescription.BufferDesc.Scaling                 = DXGI_MODE_SCALING_UNSPECIFIED;
+        swapChainDescription.SampleDesc.Count                   = 1; 
+        swapChainDescription.SampleDesc.Quality                 = 0; 
+        swapChainDescription.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        swapChainDescription.BufferCount                        = 1; // 1 back bufer = double buffering (front + back)
+        swapChainDescription.OutputWindow                       = windowHandle;
+        swapChainDescription.Windowed                           = TRUE;
+        swapChainDescription.SwapEffect                         = DXGI_SWAP_EFFECT_DISCARD;
+        swapChainDescription.Flags                              = 0;
+
+        D3D11CreateDeviceAndSwapChain(
+            nullptr,
             D3D_DRIVER_TYPE_HARDWARE,
             nullptr,
-            createDeviceFlags,
-            &featureLevels,
-            1,
+            0,
+            nullptr,
+            0,
             D3D11_SDK_VERSION,
-            &scd,
+            &swapChainDescription,
             &m_SwapChain,
             &m_Device,
             nullptr,
-            &m_DeviceContext);
+            &m_DeviceContext
+        );
 
-        
-        ID3D11Texture2D* backBuffer;
-        m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
+        // Get the address of the back buffer
+        ID3D11Resource* backBuffer = nullptr;
+        m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&backBuffer));
+
+        // Use the back buffer address to create the render target
+        SLN_ASSERT(backBuffer, "Back buffer is null!");
         m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_Backbuffer);
+         
         backBuffer->Release();
+
+        // Set the render target as the back buffer
         m_DeviceContext->OMSetRenderTargets(1, &m_Backbuffer, nullptr);
 	}
 

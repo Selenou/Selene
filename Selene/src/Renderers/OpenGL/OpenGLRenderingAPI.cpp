@@ -52,16 +52,19 @@ namespace Selene
 		// Fill Rendering Info
 		auto& info = RenderingAPI::GetInfo();
 		info.API = "OpenGL";
+		info.Version = (const char*)glGetString(GL_VERSION);
 		info.Vendor = (const char*)glGetString(GL_VENDOR);
 		info.Renderer = (const char*)glGetString(GL_RENDERER);
-		info.Version = (const char*)glGetString(GL_VERSION);
-		info.ShadingLanguageVersion = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 	}
 
 	void OpenGLRenderingAPI::Clear()
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	void OpenGLRenderingAPI::SetClearColor(const glm::vec4& color)
+	{
+		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
 	void OpenGLRenderingAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)

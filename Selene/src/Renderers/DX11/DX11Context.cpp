@@ -1,6 +1,5 @@
 #include "slnpch.h"
 #include "DX11Context.h"
-#include "Selene/Core/Game.h"
 
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32

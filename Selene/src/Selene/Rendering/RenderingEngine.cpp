@@ -9,6 +9,7 @@ namespace Selene
 
 		s_RenderingEngineData.RenderingAPI = RenderingAPI::Create();
 		s_RenderingEngineData.RenderingAPI->Init();
+		s_RenderingEngineData.RenderingAPI->SetClearColor({ 1.0f, 1.0f, 0.5f, 1.0f });
 		s_RenderingEngineData.RenderingStats = {};
 
 		s_RenderingEngineData.ShaderLibrary = std::make_unique<ShaderLibrary>();

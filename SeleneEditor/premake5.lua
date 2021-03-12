@@ -40,6 +40,12 @@ project "SeleneEditor"
 	filter "system:windows"
 		systemversion "latest"
 		
+		links
+		{
+			"d3d11.lib",
+			"dxgi.lib"
+		}
+		
 		linkoptions 
 		{ 
 			"/ENTRY:mainCRTStartup"

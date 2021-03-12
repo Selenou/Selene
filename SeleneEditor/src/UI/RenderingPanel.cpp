@@ -47,10 +47,9 @@ namespace Selene
 		ImGui::Separator();
 		{
 			ImGui::Text("API : %s", info.API.c_str());
+			ImGui::Text("Version : %s", info.Version.c_str());
 			ImGui::Text("Vendor : %s", info.Vendor.c_str());
 			ImGui::Text("Renderer : %s", info.Renderer.c_str());
-			ImGui::Text("Version : %s", info.Version.c_str());
-			ImGui::Text("Shading Language Version : %s", info.ShadingLanguageVersion.c_str());
 		}
 		ImGui::End();
 	}

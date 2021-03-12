@@ -40,6 +40,12 @@ project "Voxel"
 	filter "system:windows"
 		systemversion "latest"
 		
+		links
+		{
+			"d3d11.lib",
+			"dxgi.lib"
+		}
+		
 		postbuildcommands 
 		{
 			'{COPY} "./assets" "%{cfg.targetdir}/assets"',

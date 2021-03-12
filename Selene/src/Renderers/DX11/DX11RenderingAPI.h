@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Selene/Rendering/RenderingAPI.h"
+#include <d3d11.h>
 
 namespace Selene
 {
@@ -9,9 +10,12 @@ namespace Selene
 	public:
 		virtual void Init() override;
 		virtual void Clear() override;
+		virtual void SetClearColor(const glm::vec4& color) override;
 		virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
 		virtual void DrawIndexed(uint32_t count) override {};
 		virtual void DrawIndexedBaseVertex(uint32_t count, uint32_t offset) override {};
 		virtual void DrawInstanced(uint32_t indiceCount, uint32_t instanceCount) override {};
+	protected:
+		glm::vec4 m_ClearColor;
 	};
 }
