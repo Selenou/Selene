@@ -3,11 +3,6 @@
 
 namespace Selene
 {
-	DX11Device::~DX11Device()
-	{
-		Destroy();
-	}
-
 	void DX11Device::Init(HWND windowHandle)
 	{
         SLN_ASSERT(windowHandle, "Window handle is null!");
@@ -45,24 +40,14 @@ namespace Selene
         );
 
         // Get the address of the back buffer
-        ID3D11Resource* backBuffer = nullptr;
-        m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&backBuffer));
+        Microsoft::WRL::ComPtr<ID3D11Resource> backBuffer;
+        m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), (void**)(&backBuffer));
 
         // Use the back buffer address to create the render target
         SLN_ASSERT(backBuffer, "Back buffer is null!");
-        m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_Backbuffer);
-         
-        backBuffer->Release();
+        m_Device->CreateRenderTargetView(backBuffer.Get(), nullptr, m_Backbuffer.GetAddressOf());
 
         // Set the render target as the back buffer
-        m_DeviceContext->OMSetRenderTargets(1, &m_Backbuffer, nullptr);
-	}
-
-	void DX11Device::Destroy()
-	{
-        m_Backbuffer->Release();
-		m_SwapChain->Release();
-		m_Device->Release();
-		m_DeviceContext->Release();
+        m_DeviceContext->OMSetRenderTargets(1, m_Backbuffer.GetAddressOf(), nullptr);
 	}
 }

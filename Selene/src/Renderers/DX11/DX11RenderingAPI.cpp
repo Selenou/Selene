@@ -2,22 +2,20 @@
 #include "DX11RenderingAPI.h"
 #include "Selene/Config.h"
 #include "DX11Context.h"
+#include <wrl.h> // ComPtr
 
 namespace Selene 
 {
 	void DX11RenderingAPI::Init()
 	{
-		IDXGIFactory* factory = nullptr;
-		CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
+		Microsoft::WRL::ComPtr<IDXGIFactory1> factory;
+		CreateDXGIFactory1(__uuidof(IDXGIFactory), (void**)&factory);
 
-		IDXGIAdapter* adapter = nullptr;
-		factory->EnumAdapters(0, &adapter);
+		Microsoft::WRL::ComPtr<IDXGIAdapter1> adapter;
+		factory->EnumAdapters1(0, &adapter);
 
 		DXGI_ADAPTER_DESC adapterDesc;
 		adapter->GetDesc(&adapterDesc);
-
-		factory->Release();
-		adapter->Release();
 
 		// Renderer
 		char renderer[128];
@@ -35,18 +33,16 @@ namespace Selene
 		}
 
 		// Version
-		//LARGE_INTEGER driverVersion;
-		//adapter->CheckInterfaceSupport(__uuidof(IDXGIDevice), &driverVersion);
-		//std::string major, minor, release, build;
-		//major = std::to_string(HIWORD(driverVersion.HighPart));
-		//minor = std::to_string(LOWORD(driverVersion.HighPart));
-		//release = std::to_string(HIWORD(driverVersion.LowPart));
-		//build = std::to_string(LOWORD(driverVersion.LowPart));
+		LARGE_INTEGER driverVersion;
+		adapter->CheckInterfaceSupport(__uuidof(IDXGIDevice), &driverVersion);
+		// major.minor.release.build
+		std::string version = std::to_string(HIWORD(driverVersion.HighPart)) + "." + std::to_string(LOWORD(driverVersion.HighPart)) + 
+			"." + std::to_string(HIWORD(driverVersion.LowPart)) + "." + std::to_string(LOWORD(driverVersion.LowPart)); 
 
 		// Fill Rendering Info
 		auto& info = RenderingAPI::GetInfo();
 		info.API = "DX11";
-		//info.Version = std::string( major.c_str() + ""+ major.c_str());
+		info.Version = version;
 		info.Vendor = vendor;
 		info.Renderer = renderer;
 	}
