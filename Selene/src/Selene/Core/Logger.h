@@ -41,7 +41,7 @@ namespace Selene
 			snprintf(buffer.get(), bufferSize, logStr.c_str(), FormatArg(args) ...);
 
 			// Write in console
-			printf("%s\n", buffer.get());
+			printf("%s%s\n", GetSeverityColor(severity), buffer.get());
 			// For Selene Editor
 			s_Logs.emplace_back(severity, std::string(buffer.get()));
 		}
@@ -58,6 +58,20 @@ namespace Selene
 				default:					return "[Trace]";
 			}
 		}
+
+		static inline char* GetSeverityColor(LogSeverity severity)
+		{
+			switch (severity)
+			{
+				case LogSeverity::Trace:	return "\033[0;97m";
+				case LogSeverity::Info:		return "\033[0;92m";
+				case LogSeverity::Warning:	return "\033[0;93m";
+				case LogSeverity::Error:	return "\033[0;91m";
+				case LogSeverity::Critical: return "\033[0;101m";
+				default:					return "\033[0;97m";
+			}
+		}
+
 	public:
 		static inline void ClearLogs() { s_Logs.clear(); }
 		static inline std::vector<std::pair<LogSeverity, std::string>>& GetLogs() { return s_Logs; }

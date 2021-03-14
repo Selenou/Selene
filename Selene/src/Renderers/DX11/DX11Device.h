@@ -1,6 +1,6 @@
 #pragma once
-#include <d3d11.h>
-#include <wrl.h> // ComPtr
+
+#include "DX11.h"
 
 namespace Selene
 {

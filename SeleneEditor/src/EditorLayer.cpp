@@ -13,21 +13,13 @@ namespace Selene
 		m_Camera->SetOrthographic(2.0f);
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
-		
 		m_Scene = std::make_shared<Scene>();
 		m_Dockspace = std::make_unique<Dockspace>(m_Scene);
 
 		Actor cadence = m_Scene->CreateActor("CadenceBackgroundMusic");
 		auto& sourceComponent = cadence.AddComponent<AudioSourceComponent>(*(AudioEngine::CreateAudioSource("assets/sounds/fairy.wav")));
 		sourceComponent.Source.SetIsLooping(true);
-		sourceComponent.Source.Play();
-
-		// Test
-		for (int i = 0; i < 10; i++)
-		{
-			std::string name = "Actor" + std::to_string(i);
-			m_Scene->CreateActor(name);
-		}
+		//sourceComponent.Source.Play();
 	}
 
 	void EditorLayer::Attach()

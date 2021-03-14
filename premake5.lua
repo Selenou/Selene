@@ -5,7 +5,6 @@ workspace "Selene"
 	configurations 
 	{ 
 		"Debug", 
-		"DebugOptimized", 
 		"Release" 
 	}
 	

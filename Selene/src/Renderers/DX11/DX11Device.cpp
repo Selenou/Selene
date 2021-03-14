@@ -24,11 +24,18 @@ namespace Selene
         swapChainDescription.SwapEffect                         = DXGI_SWAP_EFFECT_DISCARD;
         swapChainDescription.Flags                              = 0;
 
-        D3D11CreateDeviceAndSwapChain(
+        // https://stackoverflow.com/questions/41163733/debug-directx-code
+        UINT createDeviceFlags = 0;
+
+#ifdef SLN_DEBUG
+        createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG; 
+#endif
+
+        THROW_DX11_FAILURE(D3D11CreateDeviceAndSwapChain(
             nullptr,
             D3D_DRIVER_TYPE_HARDWARE,
             nullptr,
-            0,
+            createDeviceFlags,
             nullptr,
             0,
             D3D11_SDK_VERSION,
@@ -37,15 +44,15 @@ namespace Selene
             &m_Device,
             nullptr,
             &m_DeviceContext
-        );
+        ));
 
         // Get the address of the back buffer
         Microsoft::WRL::ComPtr<ID3D11Resource> backBuffer;
-        m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), (void**)(&backBuffer));
+        THROW_DX11_FAILURE(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), (void**)(&backBuffer)));
 
         // Use the back buffer address to create the render target
         SLN_ASSERT(backBuffer, "Back buffer is null!");
-        m_Device->CreateRenderTargetView(backBuffer.Get(), nullptr, m_Backbuffer.GetAddressOf());
+        THROW_DX11_FAILURE(m_Device->CreateRenderTargetView(backBuffer.Get(), nullptr, m_Backbuffer.GetAddressOf()));
 
         // Set the render target as the back buffer
         m_DeviceContext->OMSetRenderTargets(1, m_Backbuffer.GetAddressOf(), nullptr);

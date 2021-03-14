@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Selene/Rendering/RenderingAPI.h"
-#include <d3d11.h>
+#include "DX11.h"
 
 namespace Selene
 {

@@ -2,7 +2,12 @@
 
 #include "Logger.h"
 
-#define SLN_ASSERT(x, ...)		if(!x) { SLN_CRITICAL(__VA_ARGS__); __debugbreak(); } 
+#if SLN_DEBUG
+	#define SLN_ASSERT(x, ...)		if(!x) { SLN_CRITICAL(__VA_ARGS__); __debugbreak(); } 
+#else
+	#define SLN_ASSERT(x, ...)		(x)
+#endif
+
 #define SLN_BIND_EVENT(evt)		[this](auto&&... args) { return evt(std::forward<decltype(args)>(args)...); } // Variadic Generic Lambda, C++14 (Lambda is faster than bind)
 
 #define SLN_TRACE(...)			Selene::Logger::Log(Selene::LogSeverity::Trace, __VA_ARGS__)

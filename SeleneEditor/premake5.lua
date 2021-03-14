@@ -1,5 +1,5 @@
 project "SeleneEditor"
-	kind "WindowedApp"
+	kind "ConsoleApp" --WindowedApp
     language "C++"
     cppdialect "C++17"
 	staticruntime "on"
@@ -48,7 +48,7 @@ project "SeleneEditor"
 		
 		linkoptions 
 		{ 
-			"/ENTRY:mainCRTStartup"
+			--"/ENTRY:mainCRTStartup"
 		}
 		
 		postbuildcommands 
@@ -62,11 +62,6 @@ project "SeleneEditor"
 		defines "SLN_DEBUG"
 		runtime "Debug"
 		symbols "on"
-
-	filter "configurations:DebugOptimized"
-		defines "SLN_DEBUGOPT"
-		runtime "Release"
-		optimize "on"
 
 	filter "configurations:Release"
 		defines "SLN_RELEASE"

@@ -1,6 +1,8 @@
 #pragma once
+
 #include "Selene/Rendering/Context.h"
 #include "DX11Device.h"
+#include "DX11.h"
 #include "Selene/Core/Game.h"
 
 struct GLFWwindow;
@@ -19,6 +21,7 @@ namespace Selene
 		inline static DX11Context* Get() { return static_cast<DX11Context*>(Game::GetInstance().GetWindow().GetRenderingContext()); }
 		inline ID3D11Device* GetDevice() { return m_Device->GetDevice(); }
 		inline ID3D11DeviceContext* GetDeviceContext() { return m_Device->GetDeviceContext(); }
+		inline IDXGISwapChain* GetSwapChain() { return m_Device->GetSwapChain(); }
 		inline ID3D11RenderTargetView* GetBackBuffer() { return m_Device->GetBackBuffer(); }
 	private:
 		GLFWwindow* m_WindowHandle;
