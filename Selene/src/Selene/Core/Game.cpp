@@ -75,7 +75,7 @@ namespace Selene
 	bool Game::OnFramebufferResize(FramebufferResizeEvent& e)
 	{
 		RenderingEngine::SetViewport(e.GetWidth(), e.GetHeight());
-		Render(); //TODO : use a dedicated thread for rendering and get rid of this line
+		//Render(); //TODO : use a dedicated thread for rendering and get rid of this line
 		return false;
 	}
 
