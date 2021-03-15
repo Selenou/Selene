@@ -40,7 +40,8 @@ namespace Selene
 			std::unique_ptr<char[]> buffer(new char[bufferSize]);
 			snprintf(buffer.get(), bufferSize, logStr.c_str(), FormatArg(args) ...);
 
-			// Write in console
+			// Write in console, Color might not work depending on VS settings (see below)
+			// https://developercommunity.visualstudio.com/t/console-colors-dont-work-when-automatically-close/599998
 			printf("%s%s\n", GetSeverityColor(severity), buffer.get());
 			// For Selene Editor
 			s_Logs.emplace_back(severity, std::string(buffer.get()));
