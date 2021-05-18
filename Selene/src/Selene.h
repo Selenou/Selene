@@ -26,3 +26,4 @@
 #include "Selene/Rendering/Texture.h"
 #include "Selene/Rendering/Buffer.h"
 #include "Selene/Rendering/Camera.h"
+#include "Selene/Rendering/Framebuffer.h"

@@ -47,7 +47,7 @@ namespace Selene
 				SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
 				return nullptr;
 			default:
-				SLN_ASSERT(false, "Unknown RendererAPI!");
+				SLN_ASSERT(false, "Unknown RendereringAPI!");
 				return nullptr;
 		}
 	}
@@ -69,7 +69,7 @@ namespace Selene
 				SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
 				return nullptr;
 			default:
-				SLN_ASSERT(false, "Unknown RendererAPI!");
+				SLN_ASSERT(false, "Unknown RendereringAPI!");
 				return nullptr;
 		}
 	}

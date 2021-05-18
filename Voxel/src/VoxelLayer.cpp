@@ -18,7 +18,6 @@ namespace Voxel
 		m_Camera->SetPosition({ 0.0f, 10.0f, 0.0f });
 		m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
-		/*
 		// Skybox
 		{
 			float skyboxVertices[] =
@@ -96,7 +95,6 @@ namespace Voxel
 		Selene::RenderingEngine::GetShaderLibrary()->Load("chunk", "chunk.vert", "chunk.frag");
 		m_World = std::make_unique<World>();
 		m_World->Init();
-		*/
 	}
 
 	void VoxelLayer::Update(Selene::Timestep ts)
@@ -105,14 +103,14 @@ namespace Voxel
 
 		if (m_DynamicWorldGeneration)
 		{
-			//m_World->Update(m_Camera->GetPosition());
+			m_World->Update(m_Camera->GetPosition());
 		}
 	}
 
 	void VoxelLayer::Render()
 	{
 		Selene::RenderingEngine::BeginFrame(*m_Camera);
-		/*{
+		{
 			// Skybox
 			glDepthMask(GL_FALSE);
 			glCullFace(GL_FRONT);
@@ -126,7 +124,7 @@ namespace Voxel
 			glDepthMask(GL_TRUE);
 
 			m_World->Render();
-		}*/
+		}
 		Selene::RenderingEngine::EndFrame();
 	}
 

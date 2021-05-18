@@ -21,5 +21,5 @@ namespace Voxel
 
 Selene::Game* Selene::CreateGame()
 {
-	return new Voxel::VoxelGame(Selene::RenderingAPI::API::DX11);
+	return new Voxel::VoxelGame(Selene::RenderingAPI::API::OpenGL);
 }

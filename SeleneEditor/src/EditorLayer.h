@@ -10,7 +10,6 @@ namespace Selene
 	public:
 		EditorLayer();
 	protected:
-		virtual void Attach() override;
 		virtual void Update(Timestep ts) override;
 		virtual void Render() override;
 		virtual void RenderUI() override;
@@ -19,5 +18,6 @@ namespace Selene
 		std::unique_ptr<Dockspace> m_Dockspace;
 		std::unique_ptr<Camera> m_Camera;
 		std::shared_ptr<Scene> m_Scene;
+		std::shared_ptr<Framebuffer> m_Framebuffer;
 	};
 }
