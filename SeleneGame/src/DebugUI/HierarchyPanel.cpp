@@ -54,7 +54,7 @@ void HierarchyPanel::Draw()
 
 	ImGui::Begin(ICON_FK_WRENCH " Details");
 	{
-		//ImGui::Text("Details");
+		ImGui::Text("Details");
 	}
 	ImGui::End();
 }
