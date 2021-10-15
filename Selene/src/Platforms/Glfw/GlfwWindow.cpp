@@ -44,10 +44,12 @@ namespace Selene
 		int glfwInitSuccess = glfwInit();
 		SLN_ASSERT(glfwInitSuccess, "Failed to initialize Glfw");
 
+		/*
 		if (RenderingAPI::GetAPI() == RenderingAPI::API::DX11 || RenderingAPI::GetAPI() == RenderingAPI::API::Vulkan)
 		{
 			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		}
+		*/
 		
 		// Create window
 		SLN_INFO("Creating Window [%s (%i, %i])", m_Data.Title, m_Data.Width, m_Data.Height);

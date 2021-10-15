@@ -22,5 +22,6 @@ namespace Selene
 		std::vector<Layer*> m_Layers;
 		ImGuiLayer* m_ImGuiLayer;
 		uint32_t m_LayerInsertIndex = 0;
+		bool m_HasOverlay = false;
 	};
 }

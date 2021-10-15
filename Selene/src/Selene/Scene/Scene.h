@@ -12,7 +12,7 @@ namespace Selene
 		Scene() = default;
 	public:
 		Actor CreateActor(const std::string& name);
-		void DestroyActor(Actor actor);
+		void DestroyActor(const Actor& actor);
 	public:
 		inline entt::registry& GetRegistry() { return m_Registry; }
 	private:

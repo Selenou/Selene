@@ -14,8 +14,6 @@ namespace Selene
 				return nullptr;
 			case RenderingAPI::API::OpenGL:
 				return std::make_shared<OpenGLFramebuffer>(spec);
-			//case RenderingAPI::API::DX11:
-				// return std::make_shared<OpenGLFramebuffer>();
 			default:
 				SLN_ASSERT(false, "Unknown RendereringAPI!");
 				return nullptr;

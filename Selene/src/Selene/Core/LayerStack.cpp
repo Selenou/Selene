@@ -76,18 +76,26 @@ namespace Selene
 
 	void LayerStack::PushOverlay(Layer* layer)
 	{
-		m_Layers.emplace_back(layer);
-		layer->Attach();
+		if (!m_HasOverlay)
+		{
+			m_Layers.emplace_back(layer);
+			layer->Attach();
+			m_HasOverlay = true;
+		}
 	}
 
 	void LayerStack::PopOverlay(Layer* layer)
 	{
-		auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
-
-		if (it != m_Layers.end())
+		if (m_HasOverlay)
 		{
-			layer->Detach();
-			m_Layers.erase(it);
+			auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
+
+			if (it != m_Layers.end())
+			{
+				layer->Detach();
+				m_Layers.erase(it);
+				m_HasOverlay = false;
+			}
 		}
 	}
 }

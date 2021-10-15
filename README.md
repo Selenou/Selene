@@ -9,14 +9,9 @@ Game Engine written in modern C++
 + Currently working with OpenGL (4.5 with full DSA support) and Windows 64
 + I plan to add Vulkan/DX11/DX12/Metal implementation in the future
 
-### SeleneEditor
-+ An editor for Selene Engine based on ImGui (WIP)
+### SeleneGame
++ A sandbox with some debug info using imgui
 
-### Voxel
-+ A sandbox for testing stuff about voxels with Selene Engine
-+ The world can be generated dynamically when player move around
-+ Working implementation of Greedy meshing algorithm 
-+ Texture array for correct UV mapping
 
 ## References
 + [The Cherno](https://www.youtube.com/channel/UCQ-W1KE9EYfdxhL6S4twUNw)

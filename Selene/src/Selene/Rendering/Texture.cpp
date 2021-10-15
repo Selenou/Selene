@@ -31,11 +31,8 @@ namespace Selene
 				return nullptr;
 			case RenderingAPI::API::OpenGL:
 				return std::make_shared<OpenGLTexture2D>(path);
-			case RenderingAPI::API::Vulkan:
-				SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
-				return nullptr;
 			default:
-				SLN_ASSERT(false, "Unknown RendereringAPI!");
+				SLN_ASSERT(false, "Unknown RenderingAPI!");
 				return nullptr;
 		}
 	}
@@ -93,17 +90,14 @@ namespace Selene
 	{
 		switch (RenderingEngine::GetAPI())
 		{
-		case RenderingAPI::API::None:
-			SLN_ASSERT(false, "RenderingAPI::None is currently not supported!");
-			return nullptr;
-		case RenderingAPI::API::OpenGL:
-			return std::make_shared<OpenGLTextureCubeMap>(path);
-		case RenderingAPI::API::Vulkan:
-			SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
-			return nullptr;
-		default:
-			SLN_ASSERT(false, "Unknown RendereringAPI!");
-			return nullptr;
+			case RenderingAPI::API::None:
+				SLN_ASSERT(false, "RenderingAPI::None is currently not supported!");
+				return nullptr;
+			case RenderingAPI::API::OpenGL:
+				return std::make_shared<OpenGLTextureCubeMap>(path);
+			default:
+				SLN_ASSERT(false, "Unknown RenderingAPI!");
+				return nullptr;
 		}
 	}
 
@@ -115,17 +109,14 @@ namespace Selene
 	{
 		switch (RenderingEngine::GetAPI())
 		{
-		case RenderingAPI::API::None:
-			SLN_ASSERT(false, "RenderingAPI::None is currently not supported!");
-			return nullptr;
-		case RenderingAPI::API::OpenGL:
-			return std::make_shared<OpenGLTextureArray>(path, hCount, vCount);
-		case RenderingAPI::API::Vulkan:
-			SLN_ASSERT(false, "RenderingAPI::Vulkan is currently not supported!");
-			return nullptr;
-		default:
-			SLN_ASSERT(false, "Unknown RendereringAPI!");
-			return nullptr;
+			case RenderingAPI::API::None:
+				SLN_ASSERT(false, "RenderingAPI::None is currently not supported!");
+				return nullptr;
+			case RenderingAPI::API::OpenGL:
+				return std::make_shared<OpenGLTextureArray>(path, hCount, vCount);
+			default:
+				SLN_ASSERT(false, "Unknown RenderingAPI!");
+				return nullptr;
 		}
 	}
 }

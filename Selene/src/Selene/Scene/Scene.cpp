@@ -12,7 +12,7 @@ namespace Selene
 		 return actor;
 	}
 
-	void Scene::DestroyActor(Actor actor)
+	void Scene::DestroyActor(const Actor& actor)
 	{
 		m_Registry.destroy(actor.GetActorID());
 	}

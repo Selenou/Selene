@@ -10,9 +10,7 @@ namespace Selene
 		enum class API
 		{
 			None = 0,
-			OpenGL,
-			DX11,
-			Vulkan
+			OpenGL
 		};
 
 		struct Info

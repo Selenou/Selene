@@ -1,6 +1,6 @@
 workspace "Selene"
 	architecture "x86_64"
-	startproject "SeleneEditor"
+	startproject "SeleneGame"
 
 	configurations 
 	{ 
@@ -22,7 +22,6 @@ IncludeDir["glm"] = "%{wks.location}/Selene/vendor/glm/include"
 IncludeDir["stb_image"] = "%{wks.location}/Selene/vendor/stb_image/include"
 IncludeDir["imgui"] = "%{wks.location}/Selene/vendor/imgui"
 IncludeDir["openal"] = "%{wks.location}/Selene/vendor/openal/include"
-IncludeDir["vulkan"] = "%{wks.location}/Selene/vendor/vulkan/include"
 IncludeDir["assimp"] = "%{wks.location}/Selene/vendor/assimp/include"
 IncludeDir["entt"] = "%{wks.location}/Selene/vendor/entt/include"
 
@@ -33,10 +32,7 @@ group "Dependencies"
 group ""
 
 include "Selene"
-include "SeleneEditor"
-include "Voxel"
-
-
+include "SeleneGame"
 
 newaction 
 {
