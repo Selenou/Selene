@@ -3,6 +3,8 @@ Game Engine written in modern C++
 
 ## Projects description
 
+![Img](capture/selene.png)
+
 ### Selene
 + It's the game engine itself
 + Designed to be API agnostic / Cross-platform 
