@@ -26,7 +26,7 @@ namespace Selene
 	{
 	public:
 		void Load(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
-		const std::shared_ptr<Shader>& Get(const std::string& name) const;
+		const std::shared_ptr<Shader>& Get(const std::string& name);
 	private:
 		std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
 	};

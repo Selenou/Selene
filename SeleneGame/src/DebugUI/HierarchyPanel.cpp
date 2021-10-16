@@ -18,13 +18,13 @@ void HierarchyPanel::Draw()
 		ImGuiWindowFlags_NoNav |
 		ImGuiWindowFlags_NoMove;
 
-	ImVec2 windowtPos = ImGui::GetWindowPos();
+	ImVec2 windowPos = ImGui::GetWindowPos();
 	float offset = 25.0f;
-	float x = windowtPos.x + offset;
-	float y = windowtPos.y + offset;
+	float x = windowPos.x + offset;
+	float y = windowPos.y + offset;
 	ImVec2 panelPos = ImVec2(x, y);
 	ImGui::SetNextWindowPos(panelPos, ImGuiCond_Always, ImVec2(0.0f, 0.0f));
-	ImGui::SetNextWindowSize(ImVec2(400, 600), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(300, 450), ImGuiCond_Always);
 	ImGui::SetNextWindowBgAlpha(0.5f);
 
 	ImGui::Begin(ICON_FK_BARS " Scene Hierarchy", nullptr, windowFlags); // Adjacent string literal tokens are concatenated, covered by [lex.phases]/6
@@ -37,9 +37,10 @@ void HierarchyPanel::Draw()
 			Selene::Actor actor { actorID, m_ActiveScene.lock() };
 			auto& name = actor.GetComponent<Selene::NameComponent>().Name;
 
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick |
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf;
+				/*ImGuiTreeNodeFlags_OpenOnDoubleClick |
 				ImGuiTreeNodeFlags_OpenOnArrow |
-				ImGuiTreeNodeFlags_SpanAvailWidth;
+				ImGuiTreeNodeFlags_SpanAvailWidth;*/
 
 			if (m_SelectedActor == actor)
 			{
@@ -55,7 +56,6 @@ void HierarchyPanel::Draw()
 
 			if (isOpen)
 			{
-				//ImGui::Text("Hello there");
 				ImGui::TreePop();
 			}
 		});
@@ -67,10 +67,17 @@ void HierarchyPanel::Draw()
 	}
 	ImGui::End();
 
+	/*windowPos = ImGui::GetWindowPos();
+	x = windowPos.x + offset;
+	y = windowPos.y + ImGui::GetContentRegionAvail().y - offset;
+	panelPos = ImVec2(x, y);
+	ImGui::SetNextWindowPos(panelPos, ImGuiCond_Always, ImVec2(0.0f, 1.0f));
+	ImGui::SetNextWindowSize(ImVec2(600, 500), ImGuiCond_Always);
+	ImGui::SetNextWindowBgAlpha(0.5f);
 
-	/*ImGui::Begin(ICON_FK_WRENCH " Details");
+	ImGui::Begin(ICON_FK_WRENCH " Inspector", nullptr, windowFlags);
 	{
-		ImGui::Text("Details");
+		//ImGui::Text("Details");
 	}
 	ImGui::End();*/
 }

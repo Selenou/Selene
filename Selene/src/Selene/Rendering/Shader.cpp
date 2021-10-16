@@ -31,9 +31,16 @@ namespace Selene
 		SLN_INFO("Shader [%s] is loaded and cached", name);
 	}
 
-	const std::shared_ptr<Shader>& ShaderLibrary::Get(const std::string& name) const
+	const std::shared_ptr<Shader>& ShaderLibrary::Get(const std::string& name)
 	{
-		SLN_ASSERT((m_Shaders.find(name) != m_Shaders.end()), "Shader [%s] is not loaded", name);
+		bool isLoaded = m_Shaders.find(name) != m_Shaders.end();
+
+		if (!isLoaded)
+		{
+			SLN_INFO("Shader [%s] is not loaded", name);
+			ShaderLibrary::Load(name, name + ".vert", name + ".frag");
+		}
+
 		return m_Shaders.at(name);
 	}
 }

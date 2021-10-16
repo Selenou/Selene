@@ -16,10 +16,10 @@ void RenderingPanel::Draw()
 		ImGuiWindowFlags_NoNav |
 		ImGuiWindowFlags_NoMove;
 
-	ImVec2 windowtPos = ImGui::GetWindowPos();
+	ImVec2 windowPos = ImGui::GetWindowPos();
 	float offset = 25.0f;
-	float x = windowtPos.x + ImGui::GetContentRegionAvail().x - offset;
-	float y = windowtPos.y + offset;
+	float x = windowPos.x + ImGui::GetContentRegionAvail().x - offset;
+	float y = windowPos.y + offset;
 	ImVec2 panelPos = ImVec2(x,y);
 	ImGui::SetNextWindowPos(panelPos, ImGuiCond_Always, ImVec2(1.0f, 0.0f));
 	ImGui::SetNextWindowBgAlpha(0.15f);

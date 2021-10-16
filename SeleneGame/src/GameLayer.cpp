@@ -11,11 +11,9 @@ GameLayer::GameLayer() : Layer("Game")
 
 	m_Camera = std::make_unique<Selene::Camera>();
 	//m_Camera->SetOrthographic(2.0f);
-	m_Camera->SetPerspective(45.0f);
-	//m_Camera->SetPosition({ 0.0f, 10.0f, 0.0f });
+	m_Camera->SetPerspective(45.0f, 0.1f, 20000.0f);
+	m_Camera->SetPosition({ 0.0f, 0.0f, 10000.0f });
 	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
-	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
-
 
 	// Skybox
 	{
@@ -91,9 +89,12 @@ GameLayer::GameLayer() : Layer("Game")
 	}
 
 	Selene::Actor cadence = Selene::Game::GetInstance().GetActiveScene()->CreateActor("CadenceBackgroundMusic");
-	auto& sourceComponent = cadence.AddComponent<Selene::AudioSourceComponent>(*(Selene::AudioEngine::CreateAudioSource("assets/sounds/fairy.wav")));
-	sourceComponent.Source.SetIsLooping(true);
-	//sourceComponent.Source.Play();
+	auto& sourceComponent = cadence.AddComponent<Selene::AudioSourceComponent>(Selene::AudioEngine::CreateAudioSource("assets/sounds/fairy.wav"));
+	sourceComponent.Source->SetIsLooping(true);
+	//sourceComponent.Source->Play();
+
+	Selene::Actor moon = Selene::Game::GetInstance().GetActiveScene()->CreateActor("MajoraMoon");
+	moon.AddComponent<Selene::MeshComponent>(std::make_shared<Selene::Mesh>("moon/moon.obj"));
 }
 
 void GameLayer::Update(Selene::Timestep ts)
@@ -116,6 +117,12 @@ void GameLayer::Render()
 		Selene::RenderingEngine::Submit(m_SkyboxPipeline, m_SkyboxEbo->GetCount(), m_SkyboxVbo->GetCount());
 		glCullFace(GL_BACK);
 		glDepthMask(GL_TRUE);
+
+		auto meshView = Selene::Game::GetInstance().GetActiveScene()->GetRegistry().view<Selene::MeshComponent>();
+		for (auto entity : meshView)
+		{
+			Selene::RenderingEngine::SubmitMesh(meshView.get<Selene::MeshComponent>(entity).Mesh);
+		}
 	}
 	Selene::RenderingEngine::EndFrame();
 }
@@ -135,10 +142,10 @@ void GameLayer::OnEvent(Selene::Event& event)
 		return false;
 	});
 
-	dispatcher.Dispatch<Selene::KeyPressEvent>([=](Selene::KeyPressEvent& e)
+	/*dispatcher.Dispatch<Selene::KeyPressEvent>([=](Selene::KeyPressEvent& e)
 	{
 		if (e.GetKeyCode() == Selene::Key::A)
 			SLN_TRACE("A PRESSED");
 		return false;
-	});
+	});*/
 }

@@ -6,7 +6,9 @@ namespace Selene
 {
 	struct AudioSourceComponent
 	{
-		AudioSource Source;
-		AudioSourceComponent(const AudioSource& source) : Source(source) {}
+		AudioSource* Source;
+
+		AudioSourceComponent() = default;
+		AudioSourceComponent(const AudioSourceComponent&) = default;
 	};
 }
