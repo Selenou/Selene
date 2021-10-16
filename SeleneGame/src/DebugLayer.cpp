@@ -18,7 +18,7 @@ DebugLayer::DebugLayer() : Layer("Debug")
 	io.Fonts->AddFontFromFileTTF("assets/fonts/forkawesome/forkawesome-webfont.ttf", 13.0f, &config, icon_ranges);
 
 	m_Panels.emplace_back(std::make_unique<RenderingPanel>());
-	//m_Panels.emplace_back(std::make_unique<HierarchyPanel>(scene));
+	m_Panels.emplace_back(std::make_unique<HierarchyPanel>(Selene::Game::GetInstance().GetActiveScene()));
 	m_Panels.emplace_back(std::make_unique<LogsPanel>());
 }
 
@@ -28,6 +28,7 @@ void DebugLayer::RenderUI()
 	ImGui::SetNextWindowPos(viewport->GetWorkPos());
 	ImGui::SetNextWindowSize(viewport->GetWorkSize());
 	ImGui::SetNextWindowViewport(viewport->ID);
+
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
@@ -45,13 +46,8 @@ void DebugLayer::RenderUI()
 		{
 			panel->Draw();
 		}
-	
-		ImGui::PopStyleVar(3);
 	}
 	ImGui::End();
-}
 
-void DebugLayer::OnEvent(Selene::Event& event)
-{
-	//Selene::EventDispatcher dispatcher(event);
+	ImGui::PopStyleVar(3);
 }

@@ -90,15 +90,10 @@ GameLayer::GameLayer() : Layer("Game")
 		m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
 	}
 
-
-
-
-	m_Scene = std::make_shared<Selene::Scene>();
-
-	Selene::Actor cadence = m_Scene->CreateActor("CadenceBackgroundMusic");
+	Selene::Actor cadence = Selene::Game::GetInstance().GetActiveScene()->CreateActor("CadenceBackgroundMusic");
 	auto& sourceComponent = cadence.AddComponent<Selene::AudioSourceComponent>(*(Selene::AudioEngine::CreateAudioSource("assets/sounds/fairy.wav")));
 	sourceComponent.Source.SetIsLooping(true);
-	sourceComponent.Source.Play();
+	//sourceComponent.Source.Play();
 }
 
 void GameLayer::Update(Selene::Timestep ts)

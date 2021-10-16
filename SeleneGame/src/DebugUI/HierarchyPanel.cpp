@@ -10,15 +10,32 @@ HierarchyPanel::HierarchyPanel(std::shared_ptr<Selene::Scene> scene) : m_ActiveS
 
 void HierarchyPanel::Draw()
 {
-	ImGui::Begin(ICON_FK_BARS " Scene Hierarchy"); // Adjacent string literal tokens are concatenated, covered by [lex.phases]/6
+	ImGuiWindowFlags windowFlags =
+		ImGuiWindowFlags_NoDocking |
+		ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoSavedSettings |
+		ImGuiWindowFlags_NoFocusOnAppearing |
+		ImGuiWindowFlags_NoNav |
+		ImGuiWindowFlags_NoMove;
+
+	ImVec2 windowtPos = ImGui::GetWindowPos();
+	float offset = 25.0f;
+	float x = windowtPos.x + offset;
+	float y = windowtPos.y + offset;
+	ImVec2 panelPos = ImVec2(x, y);
+	ImGui::SetNextWindowPos(panelPos, ImGuiCond_Always, ImVec2(0.0f, 0.0f));
+	ImGui::SetNextWindowSize(ImVec2(400, 600), ImGuiCond_Always);
+	ImGui::SetNextWindowBgAlpha(0.5f);
+
+	ImGui::Begin(ICON_FK_BARS " Scene Hierarchy", nullptr, windowFlags); // Adjacent string literal tokens are concatenated, covered by [lex.phases]/6
 	{
 		Selene::Actor clickedActor;
-		/*
-		m_ActiveScene.lock()->m_Registry.each([&](auto actorID)
+		
+		m_ActiveScene.lock()->GetRegistry().each([&](auto actorID)
 		{
 			// Draw each actor tree node
-			Actor actor { actorID, m_ActiveScene.lock() };
-			auto& name = actor.GetComponent<NameComponent>().Name;
+			Selene::Actor actor { actorID, m_ActiveScene.lock() };
+			auto& name = actor.GetComponent<Selene::NameComponent>().Name;
 
 			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnDoubleClick |
 				ImGuiTreeNodeFlags_OpenOnArrow |
@@ -38,11 +55,10 @@ void HierarchyPanel::Draw()
 
 			if (isOpen)
 			{
-				ImGui::Text("Hello there");
+				//ImGui::Text("Hello there");
 				ImGui::TreePop();
 			}
 		});
-		*/
 
 		if (clickedActor.GetActorID() != entt::null)
 		{
@@ -52,9 +68,9 @@ void HierarchyPanel::Draw()
 	ImGui::End();
 
 
-	ImGui::Begin(ICON_FK_WRENCH " Details");
+	/*ImGui::Begin(ICON_FK_WRENCH " Details");
 	{
 		ImGui::Text("Details");
 	}
-	ImGui::End();
+	ImGui::End();*/
 }

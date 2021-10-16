@@ -18,6 +18,8 @@ namespace Selene
 		m_Window = std::unique_ptr<Window>(Window::Create()); 
 		m_Window->SetEventCallback(SLN_BIND_EVENT(Game::OnEvent));
 
+		m_ActiveScene = std::make_shared<Scene>();
+
 		RenderingEngine::Init();
 		AudioEngine::Init();
 

@@ -17,6 +17,5 @@ namespace Selene
 		inline entt::registry& GetRegistry() { return m_Registry; }
 	private:
 		entt::registry m_Registry;
-		friend class HierarchyPanel;
 	};
 }
