@@ -19,14 +19,29 @@ namespace Selene
 			m_Position += GetRightDirection() * m_Speed * (float)ts;
 		}
 
-		if (Input::IsKeyPressed(Key::W))
+		if (m_ProjectionType == ProjectionType::Perspective)
 		{
-			m_Position += GetForwardDirection() * m_Speed * (float)ts;
+			if (Input::IsKeyPressed(Key::W))
+			{
+				m_Position += GetForwardDirection() * m_Speed * (float)ts;
+			}
+			else if (Input::IsKeyPressed(Key::S))
+			{
+				m_Position -= GetForwardDirection() * m_Speed * (float)ts;
+			}
 		}
-		else if (Input::IsKeyPressed(Key::S))
+		else //ProjectionType::Orthographic
 		{
-			m_Position -= GetForwardDirection() * m_Speed * (float)ts;
+			if (Input::IsKeyPressed(Key::W))
+			{
+				m_Position += GetUpDirection() * m_Speed * (float)ts;
+			}
+			else if (Input::IsKeyPressed(Key::S))
+			{
+				m_Position -= GetUpDirection() * m_Speed * (float)ts;
+			}
 		}
+		
 
 		// Orientation
 		if (Input::IsMouseButtonPressed(MouseButton::Button0))

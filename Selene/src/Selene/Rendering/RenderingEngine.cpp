@@ -9,7 +9,7 @@ namespace Selene
 
 		s_RenderingEngineData.RenderingAPI = RenderingAPI::Create();
 		s_RenderingEngineData.RenderingAPI->Init();
-		s_RenderingEngineData.RenderingAPI->SetClearColor({ 1.0f, 1.0f, 0.5f, 1.0f });
+		s_RenderingEngineData.RenderingAPI->SetClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 		s_RenderingEngineData.RenderingStats = {};
 
 		s_RenderingEngineData.ShaderLibrary = std::make_unique<ShaderLibrary>();
@@ -66,6 +66,24 @@ namespace Selene
 
 		s_RenderingEngineData.RenderingStats.TotalVertexCount += mesh->m_Vbo->GetCount();
 		s_RenderingEngineData.RenderingStats.TotalIndexCount += mesh->m_Ebo->GetCount();
+	}
+
+	void RenderingEngine::SubmitSprite(std::shared_ptr<Sprite> sprite)
+	{
+		sprite->m_Pipeline->Bind();
+
+		sprite->m_Material->Bind();
+		auto& shader = sprite->m_Material->GetShader();
+
+		shader->SetUniform("u_ViewProjection", s_RenderingEngineData.ViewProjectionMatrix);
+		shader->SetUniform("u_Model", sprite->m_Transform);
+
+		s_RenderingEngineData.RenderingAPI->DrawIndexed(sprite->m_Ebo->GetCount());
+
+		s_RenderingEngineData.RenderingStats.TotalVertexCount += sprite->m_Vbo->GetCount();
+		s_RenderingEngineData.RenderingStats.TotalIndexCount += sprite->m_Ebo->GetCount();
+
+		s_RenderingEngineData.RenderingStats.DrawCalls++;
 	}
 
 	void RenderingEngine::SubmitInstanced(uint32_t indiceCount, uint32_t instanceCount)

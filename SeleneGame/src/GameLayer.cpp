@@ -10,11 +10,17 @@ GameLayer::GameLayer() : Layer("Game")
 	auto& window = Selene::Game::GetInstance().GetWindow();
 
 	m_Camera = std::make_unique<Selene::Camera>();
-	//m_Camera->SetOrthographic(2.0f);
+	
+#ifdef ENABLE_3D_DEMO
 	m_Camera->SetPerspective(45.0f, 0.1f, 20000.0f);
 	m_Camera->SetPosition({ 0.0f, 0.0f, 10000.0f });
+#else
+	m_Camera->SetOrthographic(360); // 640 x 360
+#endif
+
 	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
+#ifdef ENABLE_3D_DEMO
 	// Skybox
 	{
 		float skyboxVertices[] =
@@ -87,14 +93,24 @@ GameLayer::GameLayer() : Layer("Game")
 		m_SkyboxShader = Selene::RenderingEngine::GetShaderLibrary()->Get("skybox");
 		m_TextureCubeMap = Selene::TextureCubeMap::Create("assets/textures/skybox/purple1024.png");
 	}
+#endif
 
-	Selene::Actor cadence = Selene::Game::GetInstance().GetActiveScene()->CreateActor("CadenceBackgroundMusic");
-	auto& sourceComponent = cadence.AddComponent<Selene::AudioSourceComponent>(Selene::AudioEngine::CreateAudioSource("assets/sounds/fairy.wav"));
-	sourceComponent.Source->SetIsLooping(true);
+	//Selene::Actor cadence = Selene::Game::GetInstance().GetActiveScene()->CreateActor("CadenceBackgroundMusic");
+	//auto& sourceComponent = cadence.AddComponent<Selene::AudioSourceComponent>(Selene::AudioEngine::CreateAudioSource("assets/sounds/fairy.wav"));
+	//sourceComponent.Source->SetIsLooping(true);
 	//sourceComponent.Source->Play();
 
-	Selene::Actor moon = Selene::Game::GetInstance().GetActiveScene()->CreateActor("MajoraMoon");
+#ifdef ENABLE_3D_DEMO
+	Selene::Actor moon = Selene::Game::GetInstance().GetActiveScene()->CreateActor("MajoraMoonMesh");
 	moon.AddComponent<Selene::MeshComponent>(std::make_shared<Selene::Mesh>("moon/moon.obj"));
+#else
+	for (int j = 0; j < 40; j++)
+	{
+		Selene::Actor sprite = Selene::Game::GetInstance().GetActiveScene()->CreateActor("Tile16");
+		Selene::SpriteComponent spriteComponent = sprite.AddComponent<Selene::SpriteComponent>(std::make_shared<Selene::Sprite>("test16.png"));
+		spriteComponent.Sprite->SetPosition({ 8 + (j * 16), 50.0f, 0.0f });
+	}
+#endif
 }
 
 void GameLayer::Update(Selene::Timestep ts)
@@ -106,6 +122,7 @@ void GameLayer::Render()
 {
 	Selene::RenderingEngine::BeginFrame(*m_Camera);
 	{
+#ifdef ENABLE_3D_DEMO
 		// Skybox
 		glDepthMask(GL_FALSE);
 		glCullFace(GL_FRONT);
@@ -123,6 +140,13 @@ void GameLayer::Render()
 		{
 			Selene::RenderingEngine::SubmitMesh(meshView.get<Selene::MeshComponent>(entity).Mesh);
 		}
+#else
+		auto spriteView = Selene::Game::GetInstance().GetActiveScene()->GetRegistry().view<Selene::SpriteComponent>();
+		for (auto entity : spriteView)
+		{
+			Selene::RenderingEngine::SubmitSprite(spriteView.get<Selene::SpriteComponent>(entity).Sprite);
+		}
+#endif
 	}
 	Selene::RenderingEngine::EndFrame();
 }
@@ -136,11 +160,13 @@ void GameLayer::OnEvent(Selene::Event& event)
 		return false;
 	});
 
+#ifdef ENABLE_3D_DEMO
 	dispatcher.Dispatch<Selene::MousePositionMoveEvent>([=](Selene::MousePositionMoveEvent& e)
 	{
 		m_Camera->UpdateMousePosition(e.GetX(), e.GetY());
 		return false;
 	});
+#endif
 
 	/*dispatcher.Dispatch<Selene::KeyPressEvent>([=](Selene::KeyPressEvent& e)
 	{

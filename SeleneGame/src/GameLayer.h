@@ -2,6 +2,8 @@
 
 #include "Selene.h"
 
+//#define ENABLE_3D_DEMO
+
 class GameLayer : public Selene::Layer
 {
 	public:
@@ -13,9 +15,11 @@ class GameLayer : public Selene::Layer
 	private:
 		std::unique_ptr<Selene::Camera> m_Camera;
 
+#ifdef ENABLE_3D_DEMO
 		std::shared_ptr<Selene::Shader> m_SkyboxShader;
 		std::shared_ptr<Selene::TextureCubeMap> m_TextureCubeMap;
 		std::shared_ptr<Selene::VertexBuffer> m_SkyboxVbo;
 		std::shared_ptr<Selene::IndexBuffer> m_SkyboxEbo;
 		std::shared_ptr<Selene::Pipeline> m_SkyboxPipeline;
+#endif
 };

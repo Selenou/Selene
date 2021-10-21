@@ -3,6 +3,7 @@
 #include "RenderingAPI.h"
 #include "Pipeline.h"
 #include "Mesh.h"
+#include "Sprite.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "Selene/Core/Game.h"
@@ -44,6 +45,7 @@ namespace Selene
 		static void EndFrame();
 		static void Submit(std::shared_ptr<Pipeline> pipeline, uint32_t count, uint32_t vboCountTmp); // TODO : remove vboCountTmp 
 		static void SubmitMesh(std::shared_ptr<Mesh> mesh);
+		static void SubmitSprite(std::shared_ptr<Sprite> mesh);
 		static void SubmitInstanced(uint32_t indiceCount, uint32_t instanceCount);
 	public:
 		static inline RenderingAPI::API GetAPI() { return RenderingAPI::GetAPI(); }

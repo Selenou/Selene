@@ -1,5 +1,6 @@
 #include "slnpch.h"
 #include "OpenGLTexture.h"
+#include "Selene/Config.h"
 #include <glad/glad.h>
 #include <stb_image.h>
 
@@ -43,8 +44,12 @@ namespace Selene
 		m_MipmapLevels = CalculateMipMapLevels(width, height);
 		glTextureStorage2D(m_TextureID, m_MipmapLevels, internalFormat, m_Width, m_Height);
 
-		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
-		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		if (Config::TEXTURE_FILTERING_ENABLED)
+			glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
+		else
+			glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_NEAREST : GL_NEAREST_MIPMAP_LINEAR);
+			
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, Config::TEXTURE_FILTERING_ENABLED ? GL_LINEAR : GL_NEAREST);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -286,9 +291,12 @@ namespace Selene
 		GL_LINEAR_MIPMAP_NEAREST	= bilinear filtering, with mipmap selection
 		GL_LINEAR_MIPMAP_LINEAR		= trilinear filtering
 		*/
-		
-		glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_NEAREST : GL_NEAREST_MIPMAP_LINEAR);
-		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		if (Config::TEXTURE_FILTERING_ENABLED)
+			glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
+		else
+			glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, m_MipmapLevels == 1 ? GL_NEAREST : GL_NEAREST_MIPMAP_LINEAR);
+			
+		glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, Config::TEXTURE_FILTERING_ENABLED ? GL_LINEAR : GL_NEAREST);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
