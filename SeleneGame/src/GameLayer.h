@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Selene.h"
-
-//#define ENABLE_3D_DEMO
+#include "Tilemap.h"
 
 class GameLayer : public Selene::Layer
 {
@@ -14,12 +13,5 @@ class GameLayer : public Selene::Layer
 		virtual void OnEvent(Selene::Event& event) override;
 	private:
 		std::unique_ptr<Selene::Camera> m_Camera;
-
-#ifdef ENABLE_3D_DEMO
-		std::shared_ptr<Selene::Shader> m_SkyboxShader;
-		std::shared_ptr<Selene::TextureCubeMap> m_TextureCubeMap;
-		std::shared_ptr<Selene::VertexBuffer> m_SkyboxVbo;
-		std::shared_ptr<Selene::IndexBuffer> m_SkyboxEbo;
-		std::shared_ptr<Selene::Pipeline> m_SkyboxPipeline;
-#endif
+		std::unique_ptr<Tilemap> m_Tilemap;
 };

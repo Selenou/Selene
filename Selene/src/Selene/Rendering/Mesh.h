@@ -1,8 +1,5 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "Buffer.h"
 #include "Pipeline.h"
 #include "Material.h"
@@ -52,8 +49,6 @@ namespace Selene
 		Mesh(const std::string& path, uint32_t importFlags = 0);
 		Mesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, const std::shared_ptr<Material>& material);
 		~Mesh() = default;
-	public: 
-		void SetPosition(const glm::vec3& position) { m_Transform = glm::translate(m_Transform, position); }
 	private:
 		void Load(uint32_t importFlags);
 		void SetupPipeline();
@@ -71,8 +66,6 @@ namespace Selene
 		std::vector<uint32_t> m_Indices;
 
 		std::vector<std::shared_ptr<Material>> m_Materials;
-
-		glm::mat4 m_Transform = glm::mat4(1.0f);
 
 		friend class RenderingEngine;
 	};

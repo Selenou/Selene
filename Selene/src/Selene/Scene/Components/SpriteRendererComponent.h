@@ -7,11 +7,11 @@
 
 namespace Selene
 {
-    struct SpriteComponent
+    struct SpriteRendererComponent
     {
         std::shared_ptr<Sprite> Sprite;
 
-        SpriteComponent() = default;
-        SpriteComponent(const SpriteComponent&) = default;
+        SpriteRendererComponent() = default;
+        SpriteRendererComponent(const SpriteRendererComponent&) = default;
     };
 }

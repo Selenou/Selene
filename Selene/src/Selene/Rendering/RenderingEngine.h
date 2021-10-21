@@ -44,8 +44,9 @@ namespace Selene
 		static void BeginFrame(Camera& camera);
 		static void EndFrame();
 		static void Submit(std::shared_ptr<Pipeline> pipeline, uint32_t count, uint32_t vboCountTmp); // TODO : remove vboCountTmp 
-		static void SubmitMesh(std::shared_ptr<Mesh> mesh);
-		static void SubmitSprite(std::shared_ptr<Sprite> mesh);
+		static void SubmitMesh(const glm::mat4& transform, std::shared_ptr<Mesh> mesh);
+		static void SubmitSprite(const glm::mat4& transform, std::shared_ptr<Sprite> sprite);
+		static void SubmitBatch(std::shared_ptr<Pipeline> pipeline, std::shared_ptr<Material> material, uint32_t count, uint32_t vboCountTmp); // TODO : remove vboCountTmp 
 		static void SubmitInstanced(uint32_t indiceCount, uint32_t instanceCount);
 	public:
 		static inline RenderingAPI::API GetAPI() { return RenderingAPI::GetAPI(); }

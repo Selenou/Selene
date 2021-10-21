@@ -7,11 +7,11 @@
 
 namespace Selene
 {
-    struct MeshComponent
+    struct MeshRendererComponent
     {
         std::shared_ptr<Mesh> Mesh;
 
-        MeshComponent() = default;
-        MeshComponent(const MeshComponent&) = default;
+        MeshRendererComponent() = default;
+        MeshRendererComponent(const MeshRendererComponent&) = default;
     };
 }

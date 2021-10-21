@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NameComponent.h"
+#include "TransformComponent.h"
 #include "AudioSourceComponent.h"
-#include "MeshComponent.h"
-#include "SpriteComponent.h"
+#include "MeshRendererComponent.h"
+#include "SpriteRendererComponent.h"

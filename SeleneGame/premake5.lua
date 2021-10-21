@@ -26,7 +26,8 @@ project "SeleneGame"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.openal}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"./vendor/tileson/include"
 	}
 
 	links 

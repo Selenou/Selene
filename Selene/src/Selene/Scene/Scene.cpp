@@ -1,7 +1,7 @@
 #include "slnpch.h"
 #include "Scene.h"
 #include "Actor.h"
-#include "Components/NameComponent.h"
+#include "Components/Components.h"
 
 namespace Selene
 {
@@ -9,6 +9,7 @@ namespace Selene
 	{
 		 Actor actor { m_Registry.create(), shared_from_this() };
 		 actor.AddComponent<NameComponent>(name);
+		 actor.AddComponent<TransformComponent>();
 		 return actor;
 	}
 

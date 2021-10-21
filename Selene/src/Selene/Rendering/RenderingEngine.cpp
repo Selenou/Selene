@@ -46,7 +46,7 @@ namespace Selene
 		s_RenderingEngineData.RenderingStats.TotalIndexCount += count;
 	}
 
-	void RenderingEngine::SubmitMesh(std::shared_ptr<Mesh> mesh)
+	void RenderingEngine::SubmitMesh(const glm::mat4& transform, std::shared_ptr<Mesh> mesh)
 	{
 		mesh->m_Pipeline->Bind();
 
@@ -57,7 +57,7 @@ namespace Selene
 
 			material->Bind();
 			shader->SetUniform("u_ViewProjection", s_RenderingEngineData.ViewProjectionMatrix);
-			shader->SetUniform("u_Model", mesh->m_Transform);
+			shader->SetUniform("u_Model", transform);
 
 			s_RenderingEngineData.RenderingAPI->DrawIndexedBaseVertex(submesh.IndexCount, submesh.BaseVertex);
 
@@ -68,7 +68,7 @@ namespace Selene
 		s_RenderingEngineData.RenderingStats.TotalIndexCount += mesh->m_Ebo->GetCount();
 	}
 
-	void RenderingEngine::SubmitSprite(std::shared_ptr<Sprite> sprite)
+	void RenderingEngine::SubmitSprite(const glm::mat4& transform, std::shared_ptr<Sprite> sprite)
 	{
 		sprite->m_Pipeline->Bind();
 
@@ -76,7 +76,7 @@ namespace Selene
 		auto& shader = sprite->m_Material->GetShader();
 
 		shader->SetUniform("u_ViewProjection", s_RenderingEngineData.ViewProjectionMatrix);
-		shader->SetUniform("u_Model", sprite->m_Transform);
+		shader->SetUniform("u_Model", transform);
 
 		s_RenderingEngineData.RenderingAPI->DrawIndexed(sprite->m_Ebo->GetCount());
 
@@ -84,6 +84,22 @@ namespace Selene
 		s_RenderingEngineData.RenderingStats.TotalIndexCount += sprite->m_Ebo->GetCount();
 
 		s_RenderingEngineData.RenderingStats.DrawCalls++;
+	}
+
+	void RenderingEngine::SubmitBatch(std::shared_ptr<Pipeline> pipeline, std::shared_ptr<Material> material, uint32_t count, uint32_t vboCountTmp)
+	{
+		pipeline->Bind();
+		material->Bind();
+
+		auto& shader = material->GetShader();
+		shader->SetUniform("u_ViewProjection", s_RenderingEngineData.ViewProjectionMatrix);
+		shader->SetUniform("u_Model", glm::mat4(1.0f));
+
+		s_RenderingEngineData.RenderingAPI->DrawIndexed(count);
+
+		s_RenderingEngineData.RenderingStats.DrawCalls++;
+		s_RenderingEngineData.RenderingStats.TotalVertexCount += vboCountTmp;
+		s_RenderingEngineData.RenderingStats.TotalIndexCount += count;
 	}
 
 	void RenderingEngine::SubmitInstanced(uint32_t indiceCount, uint32_t instanceCount)
