@@ -1,17 +1,21 @@
 #pragma once
 
 #include "Selene.h"
-#include "Tilemap.h"
+
+#include "TileSystem/World.h"
 
 class GameLayer : public Selene::Layer
 {
 	public:
 		GameLayer();
 	protected:
-		virtual void Update(Selene::Timestep ts) override;
-		virtual void Render() override;
-		virtual void OnEvent(Selene::Event& event) override;
+		void Update(Selene::Timestep ts) override;
+		void Render() override;
+		void OnEvent(Selene::Event& event) override;
 	private:
 		std::unique_ptr<Selene::Camera> m_Camera;
-		std::unique_ptr<Tilemap> m_Tilemap;
+		std::unique_ptr<World> m_World;
+
+		entt::entity m_PlayerId = entt::null;
+		glm::vec2 m_PlayerDirection = { 0.0f, 0.0f };
 };

@@ -1,18 +1,14 @@
-#include "Tilemap.h"
+#include "Map.h"
 
-#pragma warning(disable : 4267 4018 4244)
-#include <tileson.hpp>
-#pragma warning(default : 4267 4018 4244)
-
-void Tilemap::ParseMap(const std::string& path)
+void Map::LoadStatic(tson::Map& map)
 {
-	tson::Tileson t;
-	std::unique_ptr<tson::Map> map = t.parse(fs::path(path));
+	std::string layerName = "Static";
+	std::string tilesetName = "debugTileset";
 
-	if (map->getStatus() == tson::ParseStatus::OK)
-	{
-		tson::Layer* tileLayer = map->getLayer("Tile Layer 1");
-		tson::Tileset* tileset = map->getTileset("test");
+ 	if (map.getStatus() == tson::ParseStatus::OK)
+ 	{
+ 		tson::Layer* tileLayer = map.getLayer(layerName);
+ 		tson::Tileset* tileset = map.getTileset(tilesetName);
 
 		if (tileLayer->getType() == tson::LayerType::TileLayer)
 		{
@@ -80,9 +76,9 @@ void Tilemap::ParseMap(const std::string& path)
 			m_Ebo = Selene::IndexBuffer::Create(indices.data(), (uint32_t)(indices.size() * sizeof(uint32_t)));
 
 			Selene::VertexBufferLayout layout = Selene::VertexBufferLayout({
-					{ "a_Position", Selene::DataType::Float3 },
-					{ "a_TexCoord", Selene::DataType::Float2 }
-				});
+				{ "a_Position", Selene::DataType::Float3 },
+				{ "a_TexCoord", Selene::DataType::Float2 }
+			});
 			 
 			m_Vbo->SetLayout(layout);
 

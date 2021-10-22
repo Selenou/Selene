@@ -3,14 +3,18 @@
 #include "Selene.h"
 #include <string>
 
+#pragma warning(disable : 4267 4018 4244)
+#include <tileson.hpp>
+#pragma warning(default : 4267 4018 4244)
+
 class GameLayer;
 
-class Tilemap
+class Map
 {
 public:
-	Tilemap() = default;
+	Map() = default;
 public:
-	void ParseMap(const std::string& path);
+	void LoadStatic(tson::Map& map);
 private: 
 	std::shared_ptr<Selene::VertexBuffer> m_Vbo;
 	std::shared_ptr<Selene::IndexBuffer> m_Ebo;
