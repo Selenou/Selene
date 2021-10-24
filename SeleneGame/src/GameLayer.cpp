@@ -6,19 +6,17 @@ GameLayer::GameLayer() : Layer("Game")
 
 	// Camera
 	m_Camera = std::make_unique<Selene::Camera>();
-	m_Camera->SetOrthographic(660); // 640 x 360
-	m_Camera->SetPosition({ 320.0f, 180.0f, 0.0f });
+	m_Camera->SetOrthographic(360); // 640 x 360
+	m_Camera->SetPosition({ 320.0f, -180.0f, 0.0f });
 	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
 	// TileSystem
 	m_World = std::make_unique<World>("World_01.world");
-	//m_Tilemap = std::make_unique<Map>();
-	//m_Tilemap->ParseMap("assets/maps/map.json");
 
 	// Player
 	Selene::Actor player = Selene::Game::GetInstance().GetActiveScene()->CreateActor("Player");
 	Selene::SpriteRendererComponent spriteComponent = player.AddComponent<Selene::SpriteRendererComponent>(std::make_shared<Selene::Sprite>("player.png"));
-	player.GetComponent<Selene::TransformComponent>().Position = { 300.0f, 152.0f, 0.0f };
+	player.GetComponent<Selene::TransformComponent>().Position = { 320.0f, -180.0f, 0.0f };
 	m_PlayerId = player.GetActorID();
 }
 

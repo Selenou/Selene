@@ -17,14 +17,10 @@ private:
 	void Parse(const std::string& name);
 	void PreloadMaps();
 	void LoadMap(int index);
+	bool IsPlayerLeavingMap(const glm::vec3& playerPosition);
 private:
 	std::unique_ptr<tson::World> m_World;
 	std::unique_ptr<Map> m_CurrentMap;
 	int m_MapNb = 0;
-
-	//tmp
-	int l = 0;
-	int r = 0;
-	int t = 0;
-	int b = 0;
+	std::array<int, 4> m_CurrentMapBorder; // lrtb
 };

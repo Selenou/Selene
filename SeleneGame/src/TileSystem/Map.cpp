@@ -39,25 +39,25 @@ void Map::LoadStatic(tson::Map* map, tson::Vector2i worldPosition)
 				textureCoords[3] = { min.x, min.y };
 
 				vertices.emplace_back(worldPosition.x + 8.0f + position.x + (-0.5f * tileWidth));
-				vertices.emplace_back(360.0f - worldPosition.y - position.y + (-0.5f * tileHeight));
+				vertices.emplace_back(-worldPosition.y - position.y + (-0.5f * tileHeight));
 				vertices.emplace_back(0.0f);
 				vertices.emplace_back(textureCoords[0][0]);
 				vertices.emplace_back(textureCoords[0][1]);
 
 				vertices.emplace_back(worldPosition.x + 8.0f + position.x + (0.5f * tileWidth));
-				vertices.emplace_back(360.0f - worldPosition.y - position.y + (-0.5f * tileHeight));
+				vertices.emplace_back(-worldPosition.y - position.y + (-0.5f * tileHeight));
 				vertices.emplace_back(0.0f);
 				vertices.emplace_back(textureCoords[1][0]);
 				vertices.emplace_back(textureCoords[1][1]);
 
 				vertices.emplace_back(worldPosition.x + 8.0f + position.x + (0.5f * tileWidth));
-				vertices.emplace_back(360.0f - worldPosition.y - position.y + (0.5f * tileHeight));
+				vertices.emplace_back(-worldPosition.y - position.y + (0.5f * tileHeight));
 				vertices.emplace_back(0.0f);
 				vertices.emplace_back(textureCoords[2][0]);
 				vertices.emplace_back(textureCoords[2][1]);
 
 				vertices.emplace_back(worldPosition.x + 8.0f + position.x + (-0.5f * tileWidth));
-				vertices.emplace_back(360.0f - worldPosition.y - position.y + (0.5f * tileHeight));
+				vertices.emplace_back(-worldPosition.y - position.y + (0.5f * tileHeight));
 				vertices.emplace_back(0.0f);
 				vertices.emplace_back(textureCoords[3][0]);
 				vertices.emplace_back(textureCoords[3][1]);
@@ -82,16 +82,9 @@ void Map::LoadStatic(tson::Map* map, tson::Vector2i worldPosition)
 
 			m_Vbo->SetLayout(layout);
 
-			static bool toto = false;
-
-			//if (!toto)
-			{
-				m_Pipeline = Selene::Pipeline::Create();
-				m_Pipeline->BindVertexBuffer(m_Vbo);
-				m_Pipeline->BindIndexBuffer(m_Ebo);
-				toto = true;
-			}
-			
+			m_Pipeline = Selene::Pipeline::Create();
+			m_Pipeline->BindVertexBuffer(m_Vbo);
+			m_Pipeline->BindIndexBuffer(m_Ebo);
 		}
 	}
 }

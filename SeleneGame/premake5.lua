@@ -1,5 +1,5 @@
 project "SeleneGame"
-	kind "ConsoleApp" --WindowedApp
+	kind "WindowedApp" --"ConsoleApp"
     language "C++"
     cppdialect "C++17"
 	staticruntime "on"
@@ -42,7 +42,7 @@ project "SeleneGame"
 		
 		linkoptions 
 		{ 
-			--"/ENTRY:mainCRTStartup"
+			"/ENTRY:mainCRTStartup" -- Remove if ConsoleApp
 		}
 		
 		postbuildcommands 
