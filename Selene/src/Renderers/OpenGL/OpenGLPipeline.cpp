@@ -25,6 +25,14 @@ namespace Selene
 		return 0;
 	}
 
+	OpenGLPipeline::~OpenGLPipeline()
+	{
+		if (m_VaoID)
+		{
+			glDeleteVertexArrays(1, &m_VaoID);
+		}
+	}
+
 	void OpenGLPipeline::Bind() const
 	{
 		glBindVertexArray(m_VaoID);

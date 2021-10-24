@@ -2,17 +2,31 @@
     "maps": [
         {
             "fileName": "001.json",
-            "height": 960,
+            "height": 360,
+            "width": 640,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "002.json",
+            "height": 360,
             "width": 640,
             "x": 640,
             "y": 0
         },
         {
-            "fileName": "002.json",
-            "height": 368,
+            "fileName": "003.json",
+            "height": 360,
             "width": 640,
             "x": 0,
-            "y": 0
+            "y": 360
+        },
+        {
+            "fileName": "004.json",
+            "height": 360,
+            "width": 640,
+            "x": 640,
+            "y": 360
         }
     ],
     "onlyShowAdjacentMaps": false,

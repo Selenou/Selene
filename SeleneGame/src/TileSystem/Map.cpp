@@ -1,14 +1,14 @@
 #include "Map.h"
 
-void Map::LoadStatic(tson::Map& map)
+void Map::LoadStatic(tson::Map* map, tson::Vector2i worldPosition)
 {
 	std::string layerName = "Static";
 	std::string tilesetName = "debugTileset";
 
- 	if (map.getStatus() == tson::ParseStatus::OK)
+ 	if (map->getStatus() == tson::ParseStatus::OK)
  	{
- 		tson::Layer* tileLayer = map.getLayer(layerName);
- 		tson::Tileset* tileset = map.getTileset(tilesetName);
+ 		tson::Layer* tileLayer = map->getLayer(layerName);
+ 		tson::Tileset* tileset = map->getTileset(tilesetName);
 
 		if (tileLayer->getType() == tson::LayerType::TileLayer)
 		{
@@ -38,26 +38,26 @@ void Map::LoadStatic(tson::Map& map)
 				textureCoords[2] = { max.x, min.y };
 				textureCoords[3] = { min.x, min.y };
 
-				vertices.emplace_back(8.0f + position.x + (-0.5f * tileWidth));
-				vertices.emplace_back(360.0f - position.y + (-0.5f * tileHeight));
+				vertices.emplace_back(worldPosition.x + 8.0f + position.x + (-0.5f * tileWidth));
+				vertices.emplace_back(360.0f - worldPosition.y - position.y + (-0.5f * tileHeight));
 				vertices.emplace_back(0.0f);
 				vertices.emplace_back(textureCoords[0][0]);
 				vertices.emplace_back(textureCoords[0][1]);
 
-				vertices.emplace_back(8.0f + position.x + (0.5f * tileWidth));
-				vertices.emplace_back(360.0f - position.y + (-0.5f * tileHeight));
+				vertices.emplace_back(worldPosition.x + 8.0f + position.x + (0.5f * tileWidth));
+				vertices.emplace_back(360.0f - worldPosition.y - position.y + (-0.5f * tileHeight));
 				vertices.emplace_back(0.0f);
 				vertices.emplace_back(textureCoords[1][0]);
 				vertices.emplace_back(textureCoords[1][1]);
 
-				vertices.emplace_back(8.0f + position.x + (0.5f * tileWidth));
-				vertices.emplace_back(360.0f - position.y + (0.5f * tileHeight));
+				vertices.emplace_back(worldPosition.x + 8.0f + position.x + (0.5f * tileWidth));
+				vertices.emplace_back(360.0f - worldPosition.y - position.y + (0.5f * tileHeight));
 				vertices.emplace_back(0.0f);
 				vertices.emplace_back(textureCoords[2][0]);
 				vertices.emplace_back(textureCoords[2][1]);
 
-				vertices.emplace_back(8.0f + position.x + (-0.5f * tileWidth));
-				vertices.emplace_back(360.0f - position.y + (0.5f * tileHeight));
+				vertices.emplace_back(worldPosition.x + 8.0f + position.x + (-0.5f * tileWidth));
+				vertices.emplace_back(360.0f - worldPosition.y - position.y + (0.5f * tileHeight));
 				vertices.emplace_back(0.0f);
 				vertices.emplace_back(textureCoords[3][0]);
 				vertices.emplace_back(textureCoords[3][1]);
@@ -76,15 +76,22 @@ void Map::LoadStatic(tson::Map& map)
 			m_Ebo = Selene::IndexBuffer::Create(indices.data(), (uint32_t)(indices.size() * sizeof(uint32_t)));
 
 			Selene::VertexBufferLayout layout = Selene::VertexBufferLayout({
-				{ "a_Position", Selene::DataType::Float3 },
-				{ "a_TexCoord", Selene::DataType::Float2 }
-			});
-			 
+					{ "a_Position", Selene::DataType::Float3 },
+					{ "a_TexCoord", Selene::DataType::Float2 }
+				});
+
 			m_Vbo->SetLayout(layout);
 
-			m_Pipeline = Selene::Pipeline::Create();
-			m_Pipeline->BindVertexBuffer(m_Vbo);
-			m_Pipeline->BindIndexBuffer(m_Ebo);
+			static bool toto = false;
+
+			//if (!toto)
+			{
+				m_Pipeline = Selene::Pipeline::Create();
+				m_Pipeline->BindVertexBuffer(m_Vbo);
+				m_Pipeline->BindIndexBuffer(m_Ebo);
+				toto = true;
+			}
+			
 		}
 	}
 }

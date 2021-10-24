@@ -6,7 +6,7 @@ GameLayer::GameLayer() : Layer("Game")
 
 	// Camera
 	m_Camera = std::make_unique<Selene::Camera>();
-	m_Camera->SetOrthographic(360); // 640 x 360
+	m_Camera->SetOrthographic(660); // 640 x 360
 	m_Camera->SetPosition({ 320.0f, 180.0f, 0.0f });
 	m_Camera->SetViewportSize(window.GetWidth(), window.GetHeight());
 
@@ -42,7 +42,7 @@ void GameLayer::Update(Selene::Timestep ts)
 
 	Selene::Actor player = Selene::Actor(m_PlayerId, Selene::Game::GetInstance().GetActiveScene());
 	player.GetComponent<Selene::TransformComponent>().Position = { player.GetComponent<Selene::TransformComponent>().Position.x + (ts * speed * m_PlayerDirection.x), player.GetComponent<Selene::TransformComponent>().Position.y + (ts * speed * m_PlayerDirection.y), 0.0f };
-	SLN_TRACE("Player position : {%f,%f}", player.GetComponent<Selene::TransformComponent>().Position.x, player.GetComponent<Selene::TransformComponent>().Position.y);
+	//SLN_TRACE("Player position : {%f,%f}", player.GetComponent<Selene::TransformComponent>().Position.x, player.GetComponent<Selene::TransformComponent>().Position.y);
 
 	m_Camera->SetPosition(player.GetComponent<Selene::TransformComponent>().Position);
 	m_World->Update(player);
