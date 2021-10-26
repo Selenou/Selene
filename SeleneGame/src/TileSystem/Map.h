@@ -15,6 +15,8 @@ public:
 	Map() = default;
 public:
 	void LoadStatic(tson::Map* map, tson::Vector2i worldPosition);
+private:
+	void SetupPipeline();
 private: 
 	std::shared_ptr<Selene::VertexBuffer> m_Vbo;
 	std::shared_ptr<Selene::IndexBuffer> m_Ebo;

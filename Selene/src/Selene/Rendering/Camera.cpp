@@ -7,7 +7,7 @@
 
 namespace Selene
 {
-	void Camera::Update(Timestep ts)
+	/*void Camera::Update(Timestep ts)
 	{
 		// Position
 		if (Input::IsKeyPressed(Key::A))
@@ -58,7 +58,7 @@ namespace Selene
 		m_LastMousePosition = m_NextMousePosition;
 
 		UpdateView();
-	}
+	}*/
 
 	void Camera::SetPerspective(float verticalFOV, float zNear, float zFar)
 	{

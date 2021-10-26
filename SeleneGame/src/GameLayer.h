@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Selene.h"
+#include "Player.h"
 
 #include "TileSystem/World.h"
 
@@ -14,8 +15,6 @@ class GameLayer : public Selene::Layer
 		void OnEvent(Selene::Event& event) override;
 	private:
 		std::unique_ptr<Selene::Camera> m_Camera;
+		std::unique_ptr<Player> m_Player;
 		std::unique_ptr<World> m_World;
-
-		entt::entity m_PlayerId = entt::null;
-		glm::vec2 m_PlayerDirection = { 0.0f, 0.0f };
 };

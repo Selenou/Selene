@@ -9,10 +9,10 @@
         },
         {
             "fileName": "002.json",
-            "height": 360,
+            "height": 720,
             "width": 640,
             "x": 640,
-            "y": 0
+            "y": -360
         },
         {
             "fileName": "003.json",

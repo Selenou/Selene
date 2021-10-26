@@ -1,8 +1,14 @@
 #include "GameLayer.h"
 
+// TODO :
+// // tileson and box2d in engine ?
+// Gamepad support
+// camera class somehow
+// proper camera lerping system
+
 GameLayer::GameLayer() : Layer("Game")
 {
-	auto& window = Selene::Game::GetInstance().GetWindow();
+	auto&& window = Selene::Game::GetInstance().GetWindow();
 
 	// Camera
 	m_Camera = std::make_unique<Selene::Camera>();
@@ -14,36 +20,38 @@ GameLayer::GameLayer() : Layer("Game")
 	m_World = std::make_unique<World>("World_01.world");
 
 	// Player
-	Selene::Actor player = Selene::Game::GetInstance().GetActiveScene()->CreateActor("Player");
-	Selene::SpriteRendererComponent spriteComponent = player.AddComponent<Selene::SpriteRendererComponent>(std::make_shared<Selene::Sprite>("player.png"));
-	player.GetComponent<Selene::TransformComponent>().Position = { 320.0f, -180.0f, 0.0f };
-	m_PlayerId = player.GetActorID();
+	m_Player = std::make_unique<Player>();
 }
 
 void GameLayer::Update(Selene::Timestep ts)
 {
-	//m_Camera->Update(ts);
+	m_Player->Update(ts);
 
-	m_PlayerDirection = { 0.0f, 0.0f };
+	if (m_World->IsPlayerLeavingMap(m_Player->GetPosition()))
+	{
+		m_World->LoadNextMap(m_Player->GetPosition());
 
-	if (Selene::Input::IsKeyPressed(Selene::Key::D))
-		m_PlayerDirection.x = 1.0f;
-	else if (Selene::Input::IsKeyPressed(Selene::Key::A))
-		m_PlayerDirection.x = -1.0f;
+		// Replace Camera if a new map is loaded
+		auto&& newMapBorder = m_World->GetCurrentMapBorder();
+		m_Camera->SetPosition({ 
+			(newMapBorder.Left + newMapBorder.Right) * .5f, 
+			(newMapBorder.Top + newMapBorder.Bottom) * .5f, 
+			0.0f 
+		});
+	}
 
-	if (Selene::Input::IsKeyPressed(Selene::Key::W))
-		m_PlayerDirection.y = 1.0f;
-	else if (Selene::Input::IsKeyPressed(Selene::Key::S))
-		m_PlayerDirection.y = -1.0f;
-
-	float speed = 200.0f;
-
-	Selene::Actor player = Selene::Actor(m_PlayerId, Selene::Game::GetInstance().GetActiveScene());
-	player.GetComponent<Selene::TransformComponent>().Position = { player.GetComponent<Selene::TransformComponent>().Position.x + (ts * speed * m_PlayerDirection.x), player.GetComponent<Selene::TransformComponent>().Position.y + (ts * speed * m_PlayerDirection.y), 0.0f };
-	//SLN_TRACE("Player position : {%f,%f}", player.GetComponent<Selene::TransformComponent>().Position.x, player.GetComponent<Selene::TransformComponent>().Position.y);
-
-	m_Camera->SetPosition(player.GetComponent<Selene::TransformComponent>().Position);
-	m_World->Update(player);
+	// Lerp test if the camera is too far away from the player
+	// TODO : clamp camera position to map border
+	if (m_World->GetCurrentMapBorder().Top - m_World->GetCurrentMapBorder().Bottom > m_Camera->GetOrthographicSize() &&
+		glm::abs(m_Camera->GetPosition().y - m_Player->GetPosition().y) > m_Camera->GetOrthographicSize() / 5)
+	{
+		auto&& newMapBorder = m_World->GetCurrentMapBorder();
+		m_Camera->SetPosition({
+			m_Camera->GetPosition().x,
+			m_Player->GetPosition().y,
+			0.0f
+		});
+	}
 }
 
 void GameLayer::Render()
@@ -76,3 +84,17 @@ void GameLayer::OnEvent(Selene::Event& event)
 		return false;
 	});
 }
+
+
+// 	float lerp(float x, float y, float t)
+// 	{
+// 		return x * (1.f - t) + y * t;
+// 	}
+	// Test lerp, move lerp fct somewhere
+	//auto&& newMapBorder = m_World->GetCurrentMapBorder();
+	//float h = (newMapBorder[0] + newMapBorder[1]) * .5f;
+	//float v = (newMapBorder[2] + newMapBorder[3]) * .5f;
+	//acc-lerpAcc should be just a percentage from 0 to 1, need to accumulate ts and percentage = currentLerpTime / lerpTime;
+	//m_Camera->SetPosition({ h, lerp(lerpToto, v, acc-lerpAcc), 0.0f });
+	//SLN_TRACE("%f, %f", lerpToto, v);
+	//SLN_WARN("%f, %f", m_Camera->GetPosition().x, m_Camera->GetPosition().y);
