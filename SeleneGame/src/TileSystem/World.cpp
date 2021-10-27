@@ -33,10 +33,10 @@ void World::LoadMap(int index)
 		SLN_INFO("Loading map [%s]", mapData.fileName);
 		m_CurrentMap->LoadStatic(map.get(), mapData.position);
 
-		m_CurrentMapBorder.Left = mapData.position.x;
-		m_CurrentMapBorder.Right = mapData.position.x + mapData.size.x;
-		m_CurrentMapBorder.Top = -mapData.position.y;
-		m_CurrentMapBorder.Bottom = -mapData.position.y - mapData.size.y;
+		m_CurrentMapBounds.Left = mapData.position.x;
+		m_CurrentMapBounds.Right = mapData.position.x + mapData.size.x;
+		m_CurrentMapBounds.Top = -mapData.position.y;
+		m_CurrentMapBounds.Bottom = -mapData.position.y - mapData.size.y + 8; // + 8 to cancel the fact that the map is 22.5 tiles high and not 23
 	}
 	else
 	{
@@ -44,21 +44,21 @@ void World::LoadMap(int index)
 	}
 }
 
-void World::LoadNextMap(const glm::vec3& playerPosition)
+void World::LoadNextMap(const glm::vec3& playerPosition/*, const glm::vec2& playerDirection*/)
 {
 	int mapIndex = 0;
 	for (const auto& mapData : m_World->getMapData())
 	{
-		MapBorder borders;
-		borders.Left = mapData.position.x;
-		borders.Right = mapData.position.x + mapData.size.x;
-		borders.Top = -mapData.position.y;
-		borders.Bottom = -mapData.position.y - mapData.size.y;
+		MapBounds bounds;
+		bounds.Left = mapData.position.x;
+		bounds.Right = mapData.position.x + mapData.size.x;
+		bounds.Top = -mapData.position.y;
+		bounds.Bottom = -mapData.position.y - mapData.size.y + 8; // + 8 to cancel the fact that the map is 22.5 tiles high and not 23
 
-		if (playerPosition.x > borders.Left
-			&& playerPosition.x < borders.Right
-			&& playerPosition.y < borders.Top
-			&& playerPosition.y > borders.Bottom)
+		if (playerPosition.x > bounds.Left
+			&& playerPosition.x < bounds.Right
+			&& playerPosition.y < bounds.Top
+			&& playerPosition.y > bounds.Bottom)
 		{
 			LoadMap(mapIndex);
 			return;
@@ -66,12 +66,14 @@ void World::LoadNextMap(const glm::vec3& playerPosition)
 
 		mapIndex++;
 	}
+
+	SLN_ERROR("Cannot load next map, mo match found");
 }
 
 bool World::IsPlayerLeavingMap(const glm::vec3& playerPosition)
 {
-	return playerPosition.x > m_CurrentMapBorder.Right
-		|| playerPosition.x < m_CurrentMapBorder.Left
-		|| playerPosition.y < m_CurrentMapBorder.Bottom
-		|| playerPosition.y > m_CurrentMapBorder.Top;
+	return playerPosition.x > m_CurrentMapBounds.Right
+		|| playerPosition.x < m_CurrentMapBounds.Left
+		|| playerPosition.y < m_CurrentMapBounds.Bottom
+		|| playerPosition.y > m_CurrentMapBounds.Top;
 }

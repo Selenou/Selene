@@ -2,28 +2,28 @@
     "maps": [
         {
             "fileName": "001.json",
-            "height": 360,
+            "height": 368,
             "width": 640,
             "x": 0,
             "y": 0
         },
         {
             "fileName": "002.json",
-            "height": 720,
+            "height": 736,
             "width": 640,
             "x": 640,
             "y": -360
         },
         {
             "fileName": "003.json",
-            "height": 360,
-            "width": 640,
-            "x": 0,
+            "height": 368,
+            "width": 1280,
+            "x": -640,
             "y": 360
         },
         {
             "fileName": "004.json",
-            "height": 360,
+            "height": 368,
             "width": 640,
             "x": 640,
             "y": 360

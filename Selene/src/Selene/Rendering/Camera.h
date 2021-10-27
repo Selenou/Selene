@@ -31,6 +31,7 @@ namespace Selene
 		inline float GetPerspectiveVerticalFOV() const { return m_PerspectiveFOV; }
 		inline float GetNearClip() const { return m_NearClip; }
 		inline float GetFarClip() const { return m_FarClip; }
+		inline float GetAspectRatio() const { return m_AspectRatio; }
 		inline const glm::vec3& GetPosition() const { return m_Position; }
 		inline const glm::quat& GetOrientation() const { return m_Orientation; }
 		inline const glm::vec3 GetForwardDirection() const { return m_Orientation * m_ForwardVector; }

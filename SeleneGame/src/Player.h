@@ -9,6 +9,7 @@ public:
 public:
 	void Update(Selene::Timestep ts);
 	inline const glm::vec3& GetPosition() const { return m_PlayerTransform->Position; }
+	inline const glm::vec2& GetDirection() const { return m_PlayerDirection; }
 private:
 	entt::entity m_PlayerId = entt::null;
 	Selene::TransformComponent* m_PlayerTransform;
