@@ -13,6 +13,8 @@ class GameLayer : public Selene::Layer
 		void Update(Selene::Timestep ts) override;
 		void Render() override;
 		void OnEvent(Selene::Event& event) override;
+	public:
+		inline static bool s_ShowPhysicsDebug = true;
 	private:
 		std::unique_ptr<Selene::Camera> m_Camera;
 		std::unique_ptr<Player> m_Player;

@@ -86,6 +86,46 @@ namespace Selene
 		s_RenderingEngineData.RenderingStats.DrawCalls++;
 	}
 
+	void RenderingEngine::SubmitAABBDebug(const glm::mat4& transform, const glm::vec2& size)
+	{
+		auto m_Material = Material::Create(RenderingEngine::GetShaderLibrary()->Get("unlit/aabbDebug"));
+
+		std::vector<float> vertices =
+		{
+			-0.5f * size.x , -0.5f * size.y,
+			0.5f * size.x, -0.5f * size.y,
+			0.5f * size.x, 0.5f * size.y,
+			-0.5f * size.x, 0.5f * size.y,
+		};
+
+		std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
+
+		auto m_Vbo = VertexBuffer::Create(vertices.data(), (uint32_t)(2 * 4 * sizeof(float)));
+		auto m_Ebo = IndexBuffer::Create(indices.data(), (uint32_t)(6 * sizeof(uint32_t)));
+
+		VertexBufferLayout layout = VertexBufferLayout({{ "a_Position", DataType::Float2 }});
+
+		m_Vbo->SetLayout(layout);
+
+		auto m_Pipeline = Pipeline::Create();
+		m_Pipeline->BindVertexBuffer(m_Vbo);
+		m_Pipeline->BindIndexBuffer(m_Ebo);
+
+		// Actual draw
+		m_Pipeline->Bind();
+		m_Material->Bind();
+
+		auto& shader = m_Material->GetShader();
+		shader->SetUniform("u_ViewProjection", s_RenderingEngineData.ViewProjectionMatrix);
+		shader->SetUniform("u_Model", transform);
+
+ 		s_RenderingEngineData.RenderingAPI->DrawIndexed(6);
+
+		s_RenderingEngineData.RenderingStats.DrawCalls++;
+		s_RenderingEngineData.RenderingStats.TotalVertexCount += 4;
+		s_RenderingEngineData.RenderingStats.TotalIndexCount += 6;
+	}
+
 	void RenderingEngine::SubmitBatch(std::shared_ptr<Pipeline> pipeline, std::shared_ptr<Material> material, uint32_t count, uint32_t vboCountTmp)
 	{
 		pipeline->Bind();

@@ -12,5 +12,6 @@ namespace Selene
 		constexpr bool TEXTURE_FILTERING_ENABLED	= false;
 		constexpr bool DEPTH_BUFER_ENABLED			= true;
 		constexpr bool FACE_CULLING_ENABLED			= true;
+		constexpr bool BLEND_ENABLED				= true;
 	};
 }

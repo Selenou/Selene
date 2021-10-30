@@ -24,13 +24,11 @@ IncludeDir["imgui"] = "%{wks.location}/Selene/vendor/imgui"
 IncludeDir["openal"] = "%{wks.location}/Selene/vendor/openal/include"
 IncludeDir["assimp"] = "%{wks.location}/Selene/vendor/assimp/include"
 IncludeDir["entt"] = "%{wks.location}/Selene/vendor/entt/include"
-IncludeDir["box2d"] = "%{wks.location}/Selene/vendor/box2d/include"
 
 group "Dependencies"
 	include "Selene/vendor/glfw"
 	include "Selene/vendor/glad"
 	include "Selene/vendor/imgui"
-	include "Selene/vendor/box2d"
 group ""
 
 include "Selene"

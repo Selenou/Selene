@@ -8,7 +8,7 @@ class DebugLayer : public Selene::Layer
 	public:
 		DebugLayer();
 	protected:
-		virtual void RenderUI() override;
+		void RenderUI() override;
 	private :
 		std::vector<std::unique_ptr<Panel>> m_Panels;
 };

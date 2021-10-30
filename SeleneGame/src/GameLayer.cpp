@@ -1,11 +1,17 @@
 #include "GameLayer.h"
 
 // TODO :
-// Debug draw of box2d => goal = being able to see the player collision
-// auto generate collision shape with tiled, use dedicated layer for that => goal = we should be able to walk on a map
+// aabb on map
+// beging able to walk on map
 // tileson in engine ?
 // camera class somehow + lerp inside
 // Gamepad support
+// frame drop if too many logs ?
+
+// ZORDER
+// Z = -1	: map
+// Z = 0	: player
+// Z = 3	: aabb debug
 
 GameLayer::GameLayer() : Layer("Game")
 {
@@ -22,14 +28,10 @@ GameLayer::GameLayer() : Layer("Game")
 
 	// Player
 	m_Player = std::make_unique<Player>();
-
-	Selene::Game::GetInstance().GetActiveScene()->InitPhysicsWorld2D();
 }
 
 void GameLayer::Update(Selene::Timestep ts)
 {
-	Selene::Game::GetInstance().GetActiveScene()->UpdatePhysicsWorld2D(ts);
-
 	m_Player->Update(ts);
 
 	if (m_World->IsPlayerLeavingMap(m_Player->GetPosition()))
@@ -81,6 +83,16 @@ void GameLayer::Render()
 		for (auto entity : spriteView)
 		{
 			Selene::RenderingEngine::SubmitSprite(spriteView.get<Selene::TransformComponent>(entity).GetTransform(), spriteView.get<Selene::SpriteRendererComponent>(entity).Sprite);
+		}
+
+		// Render all debug collision
+		if (s_ShowPhysicsDebug)
+		{
+			auto aabbView = Selene::Game::GetInstance().GetActiveScene()->GetRegistry().view<Selene::TransformComponent, Selene::AABBColliderComponent>();
+			for (auto entity : aabbView)
+			{
+				Selene::RenderingEngine::SubmitAABBDebug(aabbView.get<Selene::TransformComponent>(entity).GetTransform(), aabbView.get<Selene::AABBColliderComponent>(entity).Size);
+			}
 		}
 	}
 	Selene::RenderingEngine::EndFrame();

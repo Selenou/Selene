@@ -46,6 +46,7 @@ namespace Selene
 		static void Submit(std::shared_ptr<Pipeline> pipeline, uint32_t count, uint32_t vboCountTmp); // TODO : remove vboCountTmp 
 		static void SubmitMesh(const glm::mat4& transform, std::shared_ptr<Mesh> mesh);
 		static void SubmitSprite(const glm::mat4& transform, std::shared_ptr<Sprite> sprite);
+		static void SubmitAABBDebug(const glm::mat4& transform, const glm::vec2& size );
 		static void SubmitBatch(std::shared_ptr<Pipeline> pipeline, std::shared_ptr<Material> material, uint32_t count, uint32_t vboCountTmp); // TODO : remove vboCountTmp 
 		static void SubmitInstanced(uint32_t indiceCount, uint32_t instanceCount);
 	public:

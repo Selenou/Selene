@@ -28,6 +28,15 @@ void Map::LoadStatic(tson::Map* map, tson::Vector2i worldPosition)
 				int tileWidth = drawingRect.width;
 				int tileHeight = drawingRect.height;
 
+ 				// test aabb
+// 				Selene::Actor tile = Selene::Game::GetInstance().GetActiveScene()->CreateActor("Tile");
+// 				break;
+
+// 				auto&& tileTransform = &(tile.GetComponent<Selene::TransformComponent>());
+// 				tileTransform->Position = { worldPosition.x + position.x + tileWidth * 0.5f, -worldPosition.y - position.y - tileHeight * 0.5f, 0.0f };
+// 				auto&& aabb = tile.AddComponent<Selene::AABBColliderComponent>();
+// 				aabb.Size = { tileWidth, tileHeight };
+
 				// Texture coords
 				std::array<glm::vec2, 4> textureCoords;
 				{
@@ -44,25 +53,25 @@ void Map::LoadStatic(tson::Map* map, tson::Vector2i worldPosition)
 				{
 					vertices.emplace_back(worldPosition.x + position.x);
 					vertices.emplace_back(-worldPosition.y - position.y - tileHeight);
-					vertices.emplace_back(0.0f);
+					vertices.emplace_back(-1.0f);
 					vertices.emplace_back(textureCoords[0][0]);
 					vertices.emplace_back(textureCoords[0][1]);
 
 					vertices.emplace_back(worldPosition.x + position.x + tileWidth);
 					vertices.emplace_back(-worldPosition.y - position.y - tileHeight);
-					vertices.emplace_back(0.0f);
+					vertices.emplace_back(-1.0f);
 					vertices.emplace_back(textureCoords[1][0]);
 					vertices.emplace_back(textureCoords[1][1]);
 
 					vertices.emplace_back(worldPosition.x + position.x + tileWidth);
 					vertices.emplace_back(-worldPosition.y - position.y);
-					vertices.emplace_back(0.0f);
+					vertices.emplace_back(-1.0f);
 					vertices.emplace_back(textureCoords[2][0]);
 					vertices.emplace_back(textureCoords[2][1]);
 
 					vertices.emplace_back(worldPosition.x + position.x);
 					vertices.emplace_back(-worldPosition.y - position.y);
-					vertices.emplace_back(0.0f);
+					vertices.emplace_back(-1.0f);
 					vertices.emplace_back(textureCoords[3][0]);
 					vertices.emplace_back(textureCoords[3][1]);
 				}

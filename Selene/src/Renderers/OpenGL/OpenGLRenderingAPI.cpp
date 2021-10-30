@@ -16,6 +16,12 @@ namespace Selene
 		{
 			glEnable(GL_CULL_FACE);
 		}
+
+		if (Config::BLEND_ENABLED)
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
 	}
 
 	void OpenGLRenderingAPI::Clear()

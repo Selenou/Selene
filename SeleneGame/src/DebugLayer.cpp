@@ -3,6 +3,7 @@
 #include "DebugUI/RenderingPanel.h"
 #include "DebugUI/HierarchyPanel.h"
 #include "DebugUI/LogsPanel.h"
+#include "DebugUI/DebugMenu.h"
 
 #include <imgui.h>
 
@@ -18,8 +19,9 @@ DebugLayer::DebugLayer() : Layer("Debug")
 	io.Fonts->AddFontFromFileTTF("assets/fonts/forkawesome/forkawesome-webfont.ttf", 13.0f, &config, icon_ranges);
 
 	m_Panels.emplace_back(std::make_unique<RenderingPanel>());
-	m_Panels.emplace_back(std::make_unique<HierarchyPanel>(Selene::Game::GetInstance().GetActiveScene()));
-	m_Panels.emplace_back(std::make_unique<LogsPanel>());
+	m_Panels.emplace_back(std::make_unique<DebugMenu>());
+	//m_Panels.emplace_back(std::make_unique<HierarchyPanel>(Selene::Game::GetInstance().GetActiveScene()));
+	//m_Panels.emplace_back(std::make_unique<LogsPanel>());
 }
 
 void DebugLayer::RenderUI()

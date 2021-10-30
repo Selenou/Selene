@@ -13,7 +13,6 @@ namespace Selene
 		Sprite(const std::string& path, int x, int y, uint32_t w, uint32_t h, bool flipY = false);
 		~Sprite() = default;
 	private:
-		void SetupMaterial();
 		void SetupPipeline();
 	private:
 		std::string m_FilePath;

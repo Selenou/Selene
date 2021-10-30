@@ -24,6 +24,11 @@ namespace Selene
 		template <typename ... Args>
 		static inline void Log(LogSeverity severity, const char* format, Args const& ... args)
 		{
+			if (s_Logs.size() > MAX_BUFFER_SIZE)
+			{
+				s_Logs.erase(s_Logs.begin());
+			}
+
 			// Timestamp
 			char timeBuffer[11];
 			std::time_t currentTime = std::time(nullptr);
@@ -42,7 +47,7 @@ namespace Selene
 
 			// Write in console, Color might not work depending on VS settings (see below)
 			// https://developercommunity.visualstudio.com/t/console-colors-dont-work-when-automatically-close/599998
-			printf("%s%s\n", GetSeverityColor(severity), buffer.get());
+			printf("%s\n", buffer.get()); //"*%s%s\n", GetSeverityColor(severity), buffer.get()
 			// For Selene Editor
 			s_Logs.emplace_back(severity, std::string(buffer.get()));
 		}
@@ -76,7 +81,8 @@ namespace Selene
 	public:
 		static inline void ClearLogs() { s_Logs.clear(); }
 		static inline std::vector<std::pair<LogSeverity, std::string>>& GetLogs() { return s_Logs; }
-	public:
+	private:
 		static inline std::vector<std::pair<LogSeverity, std::string>> s_Logs;
+		static constexpr int MAX_BUFFER_SIZE = 30;
 	};
 }
