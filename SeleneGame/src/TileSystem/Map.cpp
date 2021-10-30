@@ -28,14 +28,12 @@ void Map::LoadStatic(tson::Map* map, tson::Vector2i worldPosition)
 				int tileWidth = drawingRect.width;
 				int tileHeight = drawingRect.height;
 
- 				// test aabb
-// 				Selene::Actor tile = Selene::Game::GetInstance().GetActiveScene()->CreateActor("Tile");
-// 				break;
-
-// 				auto&& tileTransform = &(tile.GetComponent<Selene::TransformComponent>());
-// 				tileTransform->Position = { worldPosition.x + position.x + tileWidth * 0.5f, -worldPosition.y - position.y - tileHeight * 0.5f, 0.0f };
-// 				auto&& aabb = tile.AddComponent<Selene::AABBColliderComponent>();
-// 				aabb.Size = { tileWidth, tileHeight };
+ 				// AABB, could do a kind of greedy meshing algorithm here to improve performance
+				Selene::Actor tile = Selene::Game::GetInstance().GetActiveScene()->CreateActor("Tile");
+				auto&& tileTransform = tile.GetComponent<Selene::TransformComponent>();
+				tileTransform.Position = { worldPosition.x + position.x + tileWidth * 0.5f, -worldPosition.y - position.y - tileHeight * 0.5f, 0.0f };
+				auto&& aabb = tile.AddComponent<Selene::AABBColliderComponent>();
+				aabb.Size = { tileWidth, tileHeight };
 
 				// Texture coords
 				std::array<glm::vec2, 4> textureCoords;

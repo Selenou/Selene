@@ -5,13 +5,11 @@ Player::Player()
 	Selene::Actor player = Selene::Game::GetInstance().GetActiveScene()->CreateActor("Player");
 
 	player.AddComponent<Selene::SpriteRendererComponent>(std::make_shared<Selene::Sprite>("player.png"));
-
-	m_PlayerTransform = &(player.GetComponent<Selene::TransformComponent>());
-	m_PlayerTransform->Position = { 320.0f, -180.0f, 0.0f };
+	player.GetComponent<Selene::TransformComponent>().Position = { 320.0f, -180.0f, 0.0f };
 
 	m_PlayerId = player.GetActorID();
 
-	// Test
+	// AABB
 	auto&& aabb = player.AddComponent<Selene::AABBColliderComponent>();
 	aabb.Size = { 24.0f, 32.0f };
 }
@@ -32,10 +30,13 @@ void Player::Update(Selene::Timestep ts)
 
 	float speed = 200.0f;
 
-	m_PlayerTransform->Position = 
+	Selene::Actor playerActor{ m_PlayerId, Selene::Game::GetInstance().GetActiveScene() };
+	auto&& playerTransform = playerActor.GetComponent<Selene::TransformComponent>();
+
+	playerTransform.Position =
 	{ 
-		m_PlayerTransform->Position.x + (ts * speed * m_PlayerDirection.x), 
-		m_PlayerTransform->Position.y + (ts * speed * m_PlayerDirection.y), 
+		playerTransform.Position.x + (ts * speed * m_PlayerDirection.x),
+		playerTransform.Position.y + (ts * speed * m_PlayerDirection.y),
 		0.0f 
 	};
 }

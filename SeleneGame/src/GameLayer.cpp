@@ -6,7 +6,6 @@
 // tileson in engine ?
 // camera class somehow + lerp inside
 // Gamepad support
-// frame drop if too many logs ?
 
 // ZORDER
 // Z = -1	: map
@@ -105,5 +104,5 @@ void GameLayer::OnEvent(Selene::Event& event)
 	{
 		m_Camera->SetViewportSize(e.GetWidth(), e.GetHeight());
 		return false;
-	});
+	});	
 }

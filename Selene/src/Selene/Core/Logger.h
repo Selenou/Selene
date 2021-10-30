@@ -83,6 +83,6 @@ namespace Selene
 		static inline std::vector<std::pair<LogSeverity, std::string>>& GetLogs() { return s_Logs; }
 	private:
 		static inline std::vector<std::pair<LogSeverity, std::string>> s_Logs;
-		static constexpr int MAX_BUFFER_SIZE = 30;
+		static constexpr int MAX_BUFFER_SIZE = 100;
 	};
 }
