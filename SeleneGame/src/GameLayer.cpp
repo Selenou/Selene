@@ -1,7 +1,9 @@
 #include "GameLayer.h"
 
 // TODO :
-// tileson and box2d in engine ?
+// Debug draw of box2d => goal = being able to see the player collision
+// auto generate collision shape with tiled, use dedicated layer for that => goal = we should be able to walk on a map
+// tileson in engine ?
 // camera class somehow + lerp inside
 // Gamepad support
 
@@ -20,10 +22,14 @@ GameLayer::GameLayer() : Layer("Game")
 
 	// Player
 	m_Player = std::make_unique<Player>();
+
+	Selene::Game::GetInstance().GetActiveScene()->InitPhysicsWorld2D();
 }
 
 void GameLayer::Update(Selene::Timestep ts)
 {
+	Selene::Game::GetInstance().GetActiveScene()->UpdatePhysicsWorld2D(ts);
+
 	m_Player->Update(ts);
 
 	if (m_World->IsPlayerLeavingMap(m_Player->GetPosition()))

@@ -22,5 +22,4 @@ class GameLayer : public Selene::Layer
 		static constexpr int s_ScreenHalfWidth = s_ScreenWidth / 2;
 		static constexpr int s_ScreenHeight = 360;
 		static constexpr int s_ScreenHalfHeight = s_ScreenHeight / 2;
-
 };

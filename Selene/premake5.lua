@@ -34,14 +34,16 @@ project "Selene"
 		"%{IncludeDir.openal}",
 		"%{IncludeDir.vulkan}",
 		"%{IncludeDir.assimp}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.box2d}"
 	}
 	
 	links 
 	{ 
 		"Glfw",
 		"Glad",
-		"ImGui"
+		"ImGui",
+		"Box2D",
 	}
 
 	filter "system:windows"
